@@ -19,4 +19,7 @@ note: command palatte Ctrl + Shift + P (CP)
 ## Merge
 1. please push before merging
 
+## delete remote in vscode after deleting branch in github
+git fetch --prune
+
 ### by zzcheah
