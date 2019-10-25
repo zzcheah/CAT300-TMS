@@ -10,7 +10,7 @@ note: command palatte Ctrl + Shift + P (CP)
 1. make changes
 2. save
 3. commit
-4.push
+4. push
 
 ## Pull Request
 1. Git hub extension
