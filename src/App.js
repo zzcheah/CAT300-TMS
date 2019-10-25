@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Wei Xien is a Pro.
+          PROCS.
         </p>
         <a
           className="App-link"
