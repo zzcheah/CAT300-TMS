@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          PROCS.
+          wx is a gay.
         </p>
         <a
           className="App-link"
