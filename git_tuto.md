@@ -4,6 +4,7 @@ note: command palatte Ctrl + Shift + P (CP)
 
 ## make branch
 1. CP create branch
+2. publish branch
 
 ## Push
 1. make changes
