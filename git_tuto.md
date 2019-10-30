@@ -26,4 +26,10 @@ note: command palatte Ctrl + Shift + P (CP)
 
 git fetch --prune
 
+## add changes in master to your branch
+
+git checkout *yourbranchname*
+git fetch origin
+git merge origin/master
+
 ### by zzcheah
