@@ -28,7 +28,7 @@ git fetch --prune
 
 ## add changes in master to your branch
 
-git checkout *yourbranchname*
+git checkout _yourbranchname_
 git fetch origin
 git merge origin/master
 
