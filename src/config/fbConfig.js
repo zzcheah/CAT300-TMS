@@ -4,16 +4,17 @@ import 'firebase/auth'
 
 //Installing firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyAilZzQRjFt8L78O9dIuXWFgG4ocZjRH-Y",
-    authDomain: "training-management-syst-79d28.firebaseapp.com",
-    databaseURL: "https://training-management-syst-79d28.firebaseio.com",
-    projectId: "training-management-syst-79d28",
-    storageBucket: "training-management-syst-79d28.appspot.com",
-    messagingSenderId: "769527801306",
-    appId: "1:769527801306:web:2610e3354ea5a84d114ce3",
-    measurementId: "G-EZNNZYZLYS"
-  };
-  firebase.initializeApp(firebaseConfig)
-  firebase.firestore().settings({timestampsInSnapshots: true})
-
+  apiKey: "AIzaSyCHgGgEOMYRQRM5KEvDxBjdJyrjil9jcNM",
+  authDomain: "training-management-sys.firebaseapp.com",
+  databaseURL: "https://training-management-sys.firebaseio.com",
+  projectId: "training-management-sys",
+  storageBucket: "training-management-sys.appspot.com",
+  messagingSenderId: "1066917653605",
+  appId: "1:1066917653605:web:7e4e29e7c3432efe55aa8c"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+  //Init firestore instance
+  const firestore = firebase.firestore()
+//firebase.firestore().settings({timestampsInSnapshots: true})
   export default firebase;
