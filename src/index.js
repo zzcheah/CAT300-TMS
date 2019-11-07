@@ -23,6 +23,8 @@ const rrfConfig = {
 // const store = createStore(rootReducer, initialState)
 const store = createStore(rootReducer, 
     compose(
+    //    reactReduxFirebase(firebase),
+        reduxFirestore(firebase),
         applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
 ));
 
