@@ -20,6 +20,7 @@ export const signIn = (credentials) => {
       const firebase = getFirebase();
   
       firebase.auth().signOut().then(() => {
+        firebase.logout();
         dispatch({ type: 'SIGNOUT_SUCCESS' })
       });
     }
