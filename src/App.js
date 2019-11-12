@@ -6,6 +6,8 @@ import ProjectDetails from './components/projects/ProjectDetails'
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import CreateProject from './components/projects/CreateProject';
+import CreateTraining from './components/trainings/CreateTraining';
+import TrainingDetails from './components/trainings/TrainingDetails';
 
 
 function App() {
@@ -16,9 +18,11 @@ function App() {
         <Switch>
           <Route exact path='/' component={Dashboard} />
           <Route path='/project/:id' component ={ProjectDetails} />
+          <Route path='/training/:id' component ={TrainingDetails} />
           <Route path='/signin' component={SignIn} />
           <Route path='/signup' component={SignUp} />
           <Route path='/create' component={CreateProject} />
+          <Route path='/createTraining' component={CreateTraining} />
         </Switch>
       </div>
     </BrowserRouter>
