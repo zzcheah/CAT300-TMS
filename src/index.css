@@ -1,4 +1,4 @@
-html{
+html {
   min-height: 100%;
 }
 
@@ -10,18 +10,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: url(/img/background.jpg) no-repeat;
-  background-size: bottom ;
+  background-size: bottom;
   background-color: black;
   min-height: 100%;
 }
 
-form{
+form {
   padding: 20px;
   margin-top: 60px;
 }
 
-form button, form h5{
-  margin: 20px 0
+form button,
+form h5 {
+  margin: 20px 0;
 }
 
 code {
@@ -29,17 +30,17 @@ code {
     monospace;
 }
 
-input[type=text]:not(.browser-default):focus:not([readonly]),
-input[type=email]:not(.browser-default):focus:not([readonly]),
-input[type=password]:not(.browser-default):focus:not([readonly]),
-textarea.materialize-textarea:focus:not([readonly]){
+input[type="text"]:not(.browser-default):focus:not([readonly]),
+input[type="email"]:not(.browser-default):focus:not([readonly]),
+input[type="password"]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
   border-color: #ec407a;
   box-shadow: none;
 }
 
-input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label,
-input[type=email]:not(.browser-default):focus:not([readonly]) + label,
-input[type=password]:not(.browser-default):focus:not([readonly]) + label{
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label,
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
   color: #ec407a !important;
 }
