@@ -4,19 +4,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import moment from "moment";
-
-const List = ({ items }) => (
-  <div className="row ">
-    {items.map((item, i) => (
-      <div>
-        <div key={i} className="col s1 waves-effect waves-light btn">
-          {item}
-        </div>
-        <div className="col offset-s0 m0 l0"></div>
-      </div>
-    ))}
-  </div>
-);
+import "../../style/tag.css";
 
 const TrainingDetails = props => {
   // console.log(props)
@@ -31,17 +19,23 @@ const TrainingDetails = props => {
             <p>{training.description}</p>
             <p>Cost : RM{training.price}</p>
             <p>Available seats: {training.seat}</p>
-            <div className="card">
-              <span className="card-title">Tag(s)</span>
-              <div className="card_action">
-                <List items={training.tag} />
-              </div>
+
+            <span>Tag(s)</span>
+
+            <div className="tags-input">
+              <ul id="tags">
+                {training.tags.map((tag, index) => (
+                  <li key={index} className="tag">
+                    <span className="tag-title">{tag}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           <div className="card-action grey lighten-4 grey-text">
             <div>organized by {training.organizer} </div>
             <div>{training.venue} </div>
-            <div>{moment(training.createdAt.toDate()).calendar()}</div>
+            <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
           </div>
         </div>
       </div>

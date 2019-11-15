@@ -3,6 +3,7 @@ import { createTraining } from "../../store/actions/trainingActions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
+import { storage } from "../../config/fbConfig";
 
 class CreateTraining extends Component {
   state = {
@@ -12,16 +13,17 @@ class CreateTraining extends Component {
     venue: "",
     imagePath: "",
     dateTime: null,
-
-    price: null,
-    seat: null,
+    price: 0,
+    seat: 0,
     tags: [],
     inputSpace: "",
-    repeat: false
+    repeat: false,
+    url: ""
   };
 
   addTags = () => {
-    const { tags, inputSpace, repeat } = this.state;
+    const { tags, inputSpace, dateTime, url } = this.state;
+
     if (inputSpace) {
       if (tags.indexOf(inputSpace) > -1) {
         this.setState({
@@ -32,25 +34,13 @@ class CreateTraining extends Component {
         this.setState({
           tags: nextState,
           inputSpace: "",
-          repeat: false
+          repeat: false,
+          dateTime: new Date(dateTime)
         });
       }
     }
+    console.log(url, "url");
   };
-
-  // addTags = event => {
-  //   const { tags } = this.state;
-  //   if (event.target.value !== "") {
-  //     if (tags.indexOf(event.target.value) < -1) {
-  //     } else {
-  //       const nextState = [...tags, event.target.value];
-  //       event.target.value = "";
-  //       this.setState({
-  //         tags: nextState
-  //       });
-  //     }
-  //   }
-  // };
 
   removeTags = index => {
     const { tags } = this.state;
@@ -62,19 +52,48 @@ class CreateTraining extends Component {
 
   handleChange = e => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]:
+        e.target.id === "dateTime" ? new Date(e.target.value) : e.target.value,
+      repeat: false
     });
   };
   handleSubmit = e => {
     e.preventDefault();
+
     delete this.state.inputSpace;
+    delete this.state.repeat;
     this.props.createTraining(this.state);
     this.props.history.push("/");
   };
 
+  handleImageUpload = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          console.log(snapshot);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(x => {
+              this.setState({ url: x });
+            });
+        }
+      );
+    }
+  };
+
   render() {
     const { auth } = this.props;
-    const { tags, inputSpace, repeat } = this.state;
+    const { tags, inputSpace, repeat, url } = this.state;
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
@@ -113,13 +132,23 @@ class CreateTraining extends Component {
             <input
               type="datetime-local"
               id="dateTime"
+              // min="2018-06-07T00:00"
+              // max="2020-06-14T00:00"
               onChange={this.handleChange}
             />
           </div>
 
+          <img
+            src={`${url}` || "https://img.mobiscroll.com/demos/fruit-4.png"}
+            alt="placeholder"
+          />
           <div className="input-field">
             <label htmlFor="imagePath">Image Path</label>
-            <input type="text" id="imagePath" onChange={this.handleChange} />
+            <input
+              type="file"
+              id="imagePath"
+              onChange={this.handleImageUpload}
+            />
           </div>
 
           <div className="input-field">
@@ -128,7 +157,7 @@ class CreateTraining extends Component {
           </div>
 
           <div className="input-field">
-            <label htmlFor="seat">Price</label>
+            <label htmlFor="seat">Seat</label>
             <input type="number" id="seat" onChange={this.handleChange} />
           </div>
 
@@ -145,10 +174,12 @@ class CreateTraining extends Component {
               onChange={this.handleChange}
             />
             <div>
-              <span className="btn green" onClick={this.addTags}>
+              <span className="btn green z-depth-0" onClick={this.addTags}>
                 Add
               </span>
-              {repeat ? <span>{inputSpace} is already added</span> : null}
+              {repeat ? (
+                <span className="red-text"> {inputSpace} is already added</span>
+              ) : null}
             </div>
             <div className="tags-input">
               <ul id="tags">
