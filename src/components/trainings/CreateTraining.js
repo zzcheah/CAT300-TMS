@@ -87,6 +87,7 @@ class CreateTraining extends Component {
       repeat: false
     });
   };
+
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state.tags, "tags");
