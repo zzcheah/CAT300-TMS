@@ -3,10 +3,24 @@ import { createTraining } from "../../store/actions/trainingActions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
-import { storage } from "../../config/fbConfig";
+import firebase, { storage } from "../../config/fbConfig";
+import MultiSearchSelect from "react-search-multi-select";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { polyfill } from "react-lifecycles-compat";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import ListItemText from "@material-ui/core/ListItemText";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
+import Chip from "@material-ui/core/Chip";
 
 class CreateTraining extends Component {
   state = {
+    testvalues: [],
     title: "",
     description: "",
     organizer: "",
@@ -19,6 +33,22 @@ class CreateTraining extends Component {
     inputSpace: "",
     repeat: false,
     url: ""
+  };
+
+  tagsHolder;
+
+  saveTags = () => {
+    this.setState({
+      tags: this.tagsHolder
+    });
+    const { tags } = this.state;
+    console.log(tags, "tags");
+  };
+
+  test = arr => {
+    this.tagsHolder = arr;
+
+    console.log(this.tagsHolder, "tagsHolder");
   };
 
   addTags = () => {
@@ -59,7 +89,7 @@ class CreateTraining extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-
+    console.log(this.state.tags, "tags");
     delete this.state.inputSpace;
     delete this.state.repeat;
     this.props.createTraining(this.state);
@@ -91,15 +121,141 @@ class CreateTraining extends Component {
     }
   };
 
+  async getTags(documents) {
+    await firebase
+      .firestore()
+      .collection("tags")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+          documents.push(doc.data().type);
+          documents.sort();
+        });
+      });
+  }
+
   render() {
+    // newnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwen
+    const useStyles = makeStyles(theme => ({
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+        maxWidth: 300
+      },
+      chips: {
+        display: "flex",
+        flexWrap: "wrap"
+      },
+      chip: {
+        margin: 2
+      },
+      noLabel: {
+        marginTop: theme.spacing(3)
+      }
+    }));
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+      PaperProps: {
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+          width: 250
+        }
+      }
+    };
+
+    const names = [
+      "Oliver Hansen",
+      "Van Henry",
+      "April Tucker",
+      "Ralph Hubbard",
+      "Omar Alexander",
+      "Carlos Abbott",
+      "Miriam Wagner",
+      "Bradley Wilkerson",
+      "Virginia Andrews",
+      "Kelly Snyder"
+    ];
+
+    // function getStyles(name, personName, theme) {
+    //   return {
+    //     fontWeight:
+    //       personName.indexOf(name) === -1
+    //         ? theme.typography.fontWeightRegular
+    //         : theme.typography.fontWeightMedium
+    //   };
+    // }
+
+    const testHandleChange = event => {
+      const { testvalues } = this.state;
+
+      const nextState = [...testvalues, event.target.value];
+      this.setState({
+        testvalues: nextState
+      });
+    };
+
+    // newnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwen
+
     const { auth } = this.props;
-    const { tags, inputSpace, repeat, url } = this.state;
+    const { testvalues, values, tags, inputSpace, repeat, url } = this.state;
+    var dummy = [];
+
+    this.getTags(dummy);
+
+    console.log(dummy, "dummy");
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
       <div className="container">
         <form onSubmit={this.handleSubmit} className="white">
           <h5 className="grey-text text-darken-3">Create Training</h5>
+
+          {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+
+          {/* <FormControl>
+            <InputLabel>Chip</InputLabel>
+            <Select
+              labelId="demo-mutiple-chip-label"
+              id="demo-mutiple-chip"
+              multiple
+              value={testvalues}
+              onChange={testHandleChange}
+              input={<Input id="select-multiple-chip" />}
+              renderValue={selected => (
+                <div>
+                  {selected.map(value => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </div>
+              )}
+              MenuProps={MenuProps}
+            >
+              {dummy.map(name => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  // style={getStyles(name, personName, theme)}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl> */}
+
+          {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <MultiSearchSelect
+              searchable={true}
+              showTags={true}
+              multiSelect={true}
+              width="500px"
+              onSelect={this.test}
+              options={dummy}
+            />
+          </div>
 
           <div className="input-field">
             <label htmlFor="title">Title</label>
@@ -161,16 +317,15 @@ class CreateTraining extends Component {
             <input type="number" id="seat" onChange={this.handleChange} />
           </div>
 
+          {/* start of input tag 333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */}
           <div className="input-field">
             <label htmlFor="tags">Tag(s)</label>
             <br />
-
             <input
               type="text"
               id="inputSpace"
               value={inputSpace}
               placeholder="add tags"
-              //onKeyUp={this.addTags}
               onChange={this.handleChange}
             />
             <div>
@@ -181,6 +336,30 @@ class CreateTraining extends Component {
                 <span className="red-text"> {inputSpace} is already added</span>
               ) : null}
             </div>
+
+            {/* <Select
+            labelId="demo-mutiple-chip-label"
+            id="inputSpace"
+            multiple
+            value={dummy}
+            onChange={this.addTags}
+            input={<Input id="select-multiple-chip" />}
+            // renderValue={selected => (
+            //   <div>
+            //     {selected.map(value => (
+            //       <Chip key={value} label={value} />
+            //     ))}
+            //   </div>
+            // )}
+            MenuProps={MenuProps}
+          >
+            {dummy.map(dum => (
+              <MenuItem key={dum} value={dum}>
+                {dum}
+              </MenuItem>
+            ))}
+          </Select> */}
+
             <div className="tags-input">
               <ul id="tags">
                 {tags.map((tag, index) => (
@@ -196,10 +375,16 @@ class CreateTraining extends Component {
                 ))}
               </ul>
             </div>
-          </div>
 
-          <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">Create</button>
+            {/* end of tag input 333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333*/}
+            <div className="input-field">
+              <button
+                className="btn pink lighten-1 z-depth-0"
+                onMouseEnter={this.saveTags}
+              >
+                Create
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -218,5 +403,10 @@ const mapDispatchToProps = dispatch => {
     createTraining: training => dispatch(createTraining(training))
   };
 };
-
+// polyfill(CreateTraining);
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTraining);
+
+// export default compose(
+//   connect(mapStateToProps, mapDispatchToProps),
+//   firestoreConnect(["tags"])
+// )(CreateTraining);
