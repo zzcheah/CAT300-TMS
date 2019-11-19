@@ -8,7 +8,9 @@ import "../../style/tag.css";
 
 const TrainingDetails = props => {
   // console.log(props)
-  const { training, auth } = props;
+  const { trainings, training, auth } = props;
+  console.log(trainings, "train");
+
   if (auth.isEmpty) return <Redirect to="/signin" />;
   if (training) {
     return (
@@ -16,6 +18,7 @@ const TrainingDetails = props => {
         <div className="card z-depth-0">
           <div className="card-content">
             <span className="card-title">{training.title}</span>
+
             <p>{training.description}</p>
             <p>Cost : RM{training.price}</p>
             <p>Available seats: {training.seat}</p>
@@ -53,9 +56,11 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
+
   return {
     auth: state.firebase.auth,
-    training: training
+    training: training,
+    trainings: trainings
   };
 };
 
