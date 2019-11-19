@@ -30,7 +30,7 @@ class CreateTraining extends Component {
     url: ""
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchOrganizers();
   }
 
