@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { createTraining } from "../../store/actions/trainingActions";
+import {
+  createTraining,
+  fetchOrganizers
+} from "../../store/actions/trainingActions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
@@ -7,16 +10,8 @@ import firebase, { storage } from "../../config/fbConfig";
 import MultiSearchSelect from "react-search-multi-select";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import { polyfill } from "react-lifecycles-compat";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
+
+import DropDownMenu from "../utilities/DropDownMenu";
 
 class CreateTraining extends Component {
   state = {
@@ -35,6 +30,16 @@ class CreateTraining extends Component {
     url: ""
   };
 
+  componentWillMount() {
+    this.props.fetchOrganizers();
+  }
+
+  orgCallback = organizer => {
+    this.setState({
+      organizer: organizer
+    });
+  };
+
   tagsHolder;
 
   saveTags = () => {
@@ -42,7 +47,6 @@ class CreateTraining extends Component {
       tags: this.tagsHolder
     });
     const { tags } = this.state;
-    console.log(tags, "tags");
   };
 
   test = arr => {
@@ -136,116 +140,18 @@ class CreateTraining extends Component {
   }
 
   render() {
-    // newnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwen
-    const useStyles = makeStyles(theme => ({
-      formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth: 300
-      },
-      chips: {
-        display: "flex",
-        flexWrap: "wrap"
-      },
-      chip: {
-        margin: 2
-      },
-      noLabel: {
-        marginTop: theme.spacing(3)
-      }
-    }));
-
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-      PaperProps: {
-        style: {
-          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250
-        }
-      }
-    };
-
-    const names = [
-      "Oliver Hansen",
-      "Van Henry",
-      "April Tucker",
-      "Ralph Hubbard",
-      "Omar Alexander",
-      "Carlos Abbott",
-      "Miriam Wagner",
-      "Bradley Wilkerson",
-      "Virginia Andrews",
-      "Kelly Snyder"
-    ];
-
-    // function getStyles(name, personName, theme) {
-    //   return {
-    //     fontWeight:
-    //       personName.indexOf(name) === -1
-    //         ? theme.typography.fontWeightRegular
-    //         : theme.typography.fontWeightMedium
-    //   };
-    // }
-
-    const testHandleChange = event => {
-      const { testvalues } = this.state;
-
-      const nextState = [...testvalues, event.target.value];
-      this.setState({
-        testvalues: nextState
-      });
-    };
-
-    // newnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwennewnewnewnenwenwenwen
-
     const { auth } = this.props;
     const { testvalues, values, tags, inputSpace, repeat, url } = this.state;
     var dummy = [];
 
     this.getTags(dummy);
 
-    console.log(dummy, "dummy");
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
       <div className="container">
         <form onSubmit={this.handleSubmit} className="white">
           <h5 className="grey-text text-darken-3">Create Training</h5>
-
-          {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
-
-          {/* <FormControl>
-            <InputLabel>Chip</InputLabel>
-            <Select
-              labelId="demo-mutiple-chip-label"
-              id="demo-mutiple-chip"
-              multiple
-              value={testvalues}
-              onChange={testHandleChange}
-              input={<Input id="select-multiple-chip" />}
-              renderValue={selected => (
-                <div>
-                  {selected.map(value => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </div>
-              )}
-              MenuProps={MenuProps}
-            >
-              {dummy.map(name => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                  // style={getStyles(name, personName, theme)}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
-
-          {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
           <div style={{ display: "flex", justifyContent: "center" }}>
             <MultiSearchSelect
@@ -272,10 +178,12 @@ class CreateTraining extends Component {
             ></textarea>
           </div>
 
-          <div className="input-field">
-            <label htmlFor="organizer">Organizer</label>
-            <input type="text" id="organizer" onChange={this.handleChange} />
-          </div>
+          <label htmlFor="organizer">Organizer</label>
+          {/* <input type="text" id="organizer" onChange={this.handleChange} /> */}
+          <DropDownMenu
+            options={this.props.organizers}
+            parentCallback={this.orgCallback}
+          />
 
           <div className="input-field">
             <label htmlFor="venue">Venue</label>
@@ -338,29 +246,6 @@ class CreateTraining extends Component {
               ) : null}
             </div>
 
-            {/* <Select
-            labelId="demo-mutiple-chip-label"
-            id="inputSpace"
-            multiple
-            value={dummy}
-            onChange={this.addTags}
-            input={<Input id="select-multiple-chip" />}
-            // renderValue={selected => (
-            //   <div>
-            //     {selected.map(value => (
-            //       <Chip key={value} label={value} />
-            //     ))}
-            //   </div>
-            // )}
-            MenuProps={MenuProps}
-          >
-            {dummy.map(dum => (
-              <MenuItem key={dum} value={dum}>
-                {dum}
-              </MenuItem>
-            ))}
-          </Select> */}
-
             <div className="tags-input">
               <ul id="tags">
                 {tags.map((tag, index) => (
@@ -395,13 +280,15 @@ class CreateTraining extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    organizers: state.training.organizers
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    createTraining: training => dispatch(createTraining(training))
+    createTraining: training => dispatch(createTraining(training)),
+    fetchOrganizers: () => dispatch(fetchOrganizers())
   };
 };
 // polyfill(CreateTraining);
