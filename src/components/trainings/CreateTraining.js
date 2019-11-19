@@ -57,6 +57,7 @@ class CreateTraining extends Component {
       repeat: false
     });
   };
+
   handleSubmit = e => {
     e.preventDefault();
 
