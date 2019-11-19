@@ -48,3 +48,28 @@ export const setOrganizers = organizers => {
     payload: organizers
   };
 };
+
+export const fetchTags = () => {
+  return dispatch => {
+    firebase
+      .firestore()
+      .collection("tags")
+      .get()
+      .then(snapshot => {
+        var tags = [];
+        if (snapshot.docs.empty != false) {
+          snapshot.docs.forEach(doc => {
+            tags.push(doc.data().type);
+          });
+          dispatch(setTags(tags));
+        }
+      });
+  };
+};
+
+export const setTags = tags => {
+  return {
+    type: "SET_TAGS",
+    payload: tags
+  };
+};

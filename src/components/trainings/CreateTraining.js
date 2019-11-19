@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {
   createTraining,
-  fetchOrganizers
+  fetchOrganizers,
+  fetchTags
 } from "../../store/actions/trainingActions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -11,7 +12,10 @@ import MultiSearchSelect from "react-search-multi-select";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 import DropDownMenu from "../utilities/DropDownMenu";
+import Chips from "../utilities/Chips";
 
 class CreateTraining extends Component {
   state = {
@@ -30,8 +34,10 @@ class CreateTraining extends Component {
     url: ""
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchOrganizers();
+    this.props.fetchTags();
+    console.log(this.props.tags);
   }
 
   orgCallback = organizer => {
@@ -40,48 +46,8 @@ class CreateTraining extends Component {
     });
   };
 
-  tagsHolder;
-
-  saveTags = () => {
-    this.setState({
-      tags: this.tagsHolder
-    });
-    const { tags } = this.state;
-  };
-
-  test = arr => {
-    this.tagsHolder = arr;
-
-    console.log(this.tagsHolder, "tagsHolder");
-  };
-
-  addTags = () => {
-    const { tags, inputSpace, dateTime, url } = this.state;
-
-    if (inputSpace) {
-      if (tags.indexOf(inputSpace) > -1) {
-        this.setState({
-          repeat: true
-        });
-      } else {
-        const nextState = [...tags, inputSpace];
-        this.setState({
-          tags: nextState,
-          inputSpace: "",
-          repeat: false,
-          dateTime: new Date(dateTime)
-        });
-      }
-    }
-    console.log(url, "url");
-  };
-
-  removeTags = index => {
-    const { tags } = this.state;
-    const nextState = [...tags.filter(tag => tags.indexOf(tag) !== index)];
-    this.setState({
-      tags: nextState
-    });
+  tagsCallback = tags => {
+    console.log(tags);
   };
 
   handleChange = e => {
@@ -94,7 +60,6 @@ class CreateTraining extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state.tags, "tags");
     delete this.state.inputSpace;
     delete this.state.repeat;
     this.props.createTraining(this.state);
@@ -126,43 +91,16 @@ class CreateTraining extends Component {
     }
   };
 
-  async getTags(documents) {
-    await firebase
-      .firestore()
-      .collection("tags")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.docs.forEach(doc => {
-          documents.push(doc.data().type);
-          documents.sort();
-        });
-      });
-  }
-
   render() {
     const { auth } = this.props;
-    const { testvalues, values, tags, inputSpace, repeat, url } = this.state;
-    var dummy = [];
-
-    this.getTags(dummy);
+    const { tags, inputSpace, repeat, url } = this.state;
 
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
-      <div className="container">
+      <Container>
         <form onSubmit={this.handleSubmit} className="white">
           <h5 className="grey-text text-darken-3">Create Training</h5>
-
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <MultiSearchSelect
-              searchable={true}
-              showTags={true}
-              multiSelect={true}
-              width="500px"
-              onSelect={this.test}
-              options={dummy}
-            />
-          </div>
 
           <div className="input-field">
             <label htmlFor="title">Title</label>
@@ -208,6 +146,7 @@ class CreateTraining extends Component {
             src={`${url}` || "https://img.mobiscroll.com/demos/fruit-4.png"}
             alt="placeholder"
           />
+
           <div className="input-field">
             <label htmlFor="imagePath">Image Path</label>
             <input
@@ -227,54 +166,25 @@ class CreateTraining extends Component {
             <input type="number" id="seat" onChange={this.handleChange} />
           </div>
 
-          {/* start of input tag 333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 */}
           <div className="input-field">
             <label htmlFor="tags">Tag(s)</label>
-            <br />
-            <input
-              type="text"
-              id="inputSpace"
-              value={inputSpace}
-              placeholder="add tags"
-              onChange={this.handleChange}
+            <DropDownMenu
+              options={this.props.tags}
+              parentCallback={this.tagsCallback}
             />
-            <div>
-              <span className="btn green z-depth-0" onClick={this.addTags}>
-                Add
-              </span>
-              {repeat ? (
-                <span className="red-text"> {inputSpace} is already added</span>
-              ) : null}
-            </div>
+            <Chips />
+          </div>
 
-            <div className="tags-input">
-              <ul id="tags">
-                {tags.map((tag, index) => (
-                  <li key={index} className="tag">
-                    <span className="tag-title">{tag}</span>
-                    <span
-                      className="tag-close-icon"
-                      onClick={() => this.removeTags(index)}
-                    >
-                      x
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* end of tag input 333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333*/}
-            <div className="input-field">
-              <button
-                className="btn pink lighten-1 z-depth-0"
-                onMouseEnter={this.saveTags}
-              >
-                Create
-              </button>
-            </div>
+          <div className="input-field">
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              onMouseEnter={this.saveTags}
+            >
+              Create
+            </button>
           </div>
         </form>
-      </div>
+      </Container>
     );
   }
 }
@@ -282,14 +192,16 @@ class CreateTraining extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    organizers: state.training.organizers
+    organizers: state.training.organizers,
+    tags: state.training.tags
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     createTraining: training => dispatch(createTraining(training)),
-    fetchOrganizers: () => dispatch(fetchOrganizers())
+    fetchOrganizers: () => dispatch(fetchOrganizers()),
+    fetchTags: () => dispatch(fetchTags())
   };
 };
 // polyfill(CreateTraining);
