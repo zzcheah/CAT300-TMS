@@ -178,12 +178,13 @@ class CreateTraining extends Component {
             ></textarea>
           </div>
 
-          <label htmlFor="organizer">Organizer</label>
-          {/* <input type="text" id="organizer" onChange={this.handleChange} /> */}
-          <DropDownMenu
-            options={this.props.organizers}
-            parentCallback={this.orgCallback}
-          />
+          <div>
+            <label htmlFor="organizer">Organizer</label>
+            <DropDownMenu
+              options={this.props.organizers}
+              parentCallback={this.orgCallback}
+            />
+          </div>
 
           <div className="input-field">
             <label htmlFor="venue">Venue</label>
