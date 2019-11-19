@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
-import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,41 +14,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Chips() {
+export default function Chips(props) {
   const classes = useStyles();
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Angular" },
-    { key: 1, label: "jQuery" },
-    { key: 2, label: "Polymer" },
-    { key: 3, label: "React" },
-    { key: 4, label: "Vue.js" }
-  ]);
-  const [selectedKeys, setSelectedKeys] = React.useState([]);
+  const { selectedTags } = props;
+  const [chipData, setChipData] = React.useState(selectedTags);
 
   const handleDelete = chipToDelete => () => {
-    setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
-  };
-
-  const handleClick = chip => {
-    if (selectedKeys.includes(chip.key))
-      setSelectedKeys(oldArr => oldArr.filter(key => key !== chip.key));
-    else setSelectedKeys(oldArr => [...oldArr, chip.key]);
+    setChipData(chips => chips.filter(chip => chip !== chipToDelete));
+    props.parentCallback(chipToDelete);
   };
 
   return (
     <div className={classes.root}>
-      {chipData.map(data => {
+      {selectedTags.map(data => {
         return (
           <Chip
-            key={data.key}
-            label={data.label}
+            label={data}
             onDelete={handleDelete(data)}
-            onClick={() => handleClick(data)}
             className={classes.chip}
-            variant={selectedKeys.includes(data.key) ? "default" : "outlined"}
+            variant="outlined"
             color="secondary"
-            // variant="outlined"
-            // color={selectedKeys.includes(data.key) ? "primary" : "secondary"}
           />
         );
       })}

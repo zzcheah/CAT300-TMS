@@ -29,6 +29,7 @@ class CreateTraining extends Component {
     price: 0,
     seat: 0,
     tags: [],
+    selectedTags: [],
     inputSpace: "",
     repeat: false,
     url: ""
@@ -46,8 +47,38 @@ class CreateTraining extends Component {
     });
   };
 
-  tagsCallback = tags => {
-    console.log(tags);
+  tagCallback = tag => {
+    const { selectedTags } = this.state;
+    const { tags } = this.props;
+
+    for (var i = 0; i < tags.length; i++) {
+      if (tags[i] === tag) {
+        tags.splice(i, 1);
+        i--;
+      }
+    }
+    selectedTags.push(tag);
+    this.setState({
+      selectedTags: selectedTags
+    });
+    console.log("added tag");
+    console.log(selectedTags);
+  };
+
+  removeTag = tag => {
+    const { selectedTags } = this.state;
+    const { tags } = this.props;
+    tags.push(tag);
+    for (var i = 0; i < selectedTags.length; i++) {
+      if (selectedTags[i] === tag) {
+        selectedTags.splice(i, 1);
+        i--;
+      }
+    }
+    this.setState({
+      selectedTags: selectedTags
+    });
+    console.log("runned");
   };
 
   handleChange = e => {
@@ -93,98 +124,106 @@ class CreateTraining extends Component {
 
   render() {
     const { auth } = this.props;
-    const { tags, inputSpace, repeat, url } = this.state;
+    const { selectedTags, url } = this.state;
 
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
-      <Container>
-        <form onSubmit={this.handleSubmit} className="white">
-          <h5 className="grey-text text-darken-3">Create Training</h5>
+      <React.Fragment>
+        <CssBaseline />
+        <Container>
+          <form onSubmit={this.handleSubmit} className="white">
+            <h5 className="grey-text text-darken-3">Create Training</h5>
 
-          <div className="input-field">
-            <label htmlFor="title">Title</label>
-            <input type="text" id="title" onChange={this.handleChange} />
-          </div>
+            <div className="input-field">
+              <label htmlFor="title">Title</label>
+              <input type="text" id="title" onChange={this.handleChange} />
+            </div>
 
-          <div className="input-field">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              className="materialize-textarea"
-              onChange={this.handleChange}
-            ></textarea>
-          </div>
+            <div className="input-field">
+              <label htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                className="materialize-textarea"
+                onChange={this.handleChange}
+              ></textarea>
+            </div>
 
-          <div>
-            <label htmlFor="organizer">Organizer</label>
-            <DropDownMenu
-              options={this.props.organizers}
-              parentCallback={this.orgCallback}
+            <div>
+              <label htmlFor="organizer">Organizer</label>
+              <DropDownMenu
+                options={this.props.organizers}
+                parentCallback={this.orgCallback}
+                text="Choose Organizer"
+              />
+            </div>
+
+            <div className="input-field">
+              <label htmlFor="venue">Venue</label>
+              <input type="text" id="venue" onChange={this.handleChange} />
+            </div>
+
+            <div className="input-field">
+              <label htmlFor="dateTime">Date and Time</label>
+              <br />
+              <br />
+              <input
+                type="datetime-local"
+                id="dateTime"
+                // min="2018-06-07T00:00"
+                // max="2020-06-14T00:00"
+                onChange={this.handleChange}
+              />
+            </div>
+
+            <img
+              src={`${url}` || "https://img.mobiscroll.com/demos/fruit-4.png"}
+              alt="placeholder"
             />
-          </div>
 
-          <div className="input-field">
-            <label htmlFor="venue">Venue</label>
-            <input type="text" id="venue" onChange={this.handleChange} />
-          </div>
+            <div className="input-field">
+              <label htmlFor="imagePath">Image Path</label>
+              <input
+                type="file"
+                id="imagePath"
+                onChange={this.handleImageUpload}
+              />
+            </div>
 
-          <div className="input-field">
-            <label htmlFor="dateTime">Date and Time</label>
-            <br />
-            <br />
-            <input
-              type="datetime-local"
-              id="dateTime"
-              // min="2018-06-07T00:00"
-              // max="2020-06-14T00:00"
-              onChange={this.handleChange}
-            />
-          </div>
+            <div className="input-field">
+              <label htmlFor="price">Price</label>
+              <input type="number" id="price" onChange={this.handleChange} />
+            </div>
 
-          <img
-            src={`${url}` || "https://img.mobiscroll.com/demos/fruit-4.png"}
-            alt="placeholder"
-          />
+            <div className="input-field">
+              <label htmlFor="seat">Seat</label>
+              <input type="number" id="seat" onChange={this.handleChange} />
+            </div>
 
-          <div className="input-field">
-            <label htmlFor="imagePath">Image Path</label>
-            <input
-              type="file"
-              id="imagePath"
-              onChange={this.handleImageUpload}
-            />
-          </div>
+            <div className="input-field">
+              <label htmlFor="tags">Tag(s)</label>
+              <DropDownMenu
+                options={this.props.tags}
+                parentCallback={this.tagCallback}
+                text="Choose Tag"
+              />
+              <Chips
+                selectedTags={selectedTags}
+                parentCallback={this.removeTag}
+              />
+            </div>
 
-          <div className="input-field">
-            <label htmlFor="price">Price</label>
-            <input type="number" id="price" onChange={this.handleChange} />
-          </div>
-
-          <div className="input-field">
-            <label htmlFor="seat">Seat</label>
-            <input type="number" id="seat" onChange={this.handleChange} />
-          </div>
-
-          <div className="input-field">
-            <label htmlFor="tags">Tag(s)</label>
-            <DropDownMenu
-              options={this.props.tags}
-              parentCallback={this.tagsCallback}
-            />
-            <Chips />
-          </div>
-
-          <div className="input-field">
-            <button
-              className="btn pink lighten-1 z-depth-0"
-              onMouseEnter={this.saveTags}
-            >
-              Create
-            </button>
-          </div>
-        </form>
-      </Container>
+            <div className="input-field">
+              <button
+                className="btn pink lighten-1 z-depth-0"
+                onMouseEnter={this.saveTags}
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </Container>
+      </React.Fragment>
     );
   }
 }

@@ -12,10 +12,11 @@ const useStyles = makeStyles(theme => ({
 
 function DropDownMenu(props) {
   const classes = useStyles();
-  const options = props.options;
+  const { options, text } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const ITEM_HEIGHT = 48;
+  if (options[0] !== text) options.unshift(text);
 
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget);
@@ -26,7 +27,8 @@ function DropDownMenu(props) {
   };
 
   const handleMenuItemClick = index => {
-    setSelectedIndex(index);
+    if (text === "Choose Tag") setSelectedIndex(0);
+    else setSelectedIndex(index);
     props.parentCallback(options[index]);
     setAnchorEl(null);
   };
@@ -57,6 +59,7 @@ function DropDownMenu(props) {
         {options.map((option, index) => (
           <MenuItem
             key={option}
+            disabled={index === 0}
             selected={index === selectedIndex}
             onClick={() => handleMenuItemClick(index)}
           >
