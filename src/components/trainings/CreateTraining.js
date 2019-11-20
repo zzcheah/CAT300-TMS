@@ -7,15 +7,24 @@ import {
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
-import firebase, { storage } from "../../config/fbConfig";
-import MultiSearchSelect from "react-search-multi-select";
-import { firestoreConnect } from "react-redux-firebase";
+import { storage } from "../../config/fbConfig";
+// import firebase from "../../config/fbConfig";
+// import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import DropDownMenu from "../utilities/DropDownMenu";
 import Chips from "../utilities/Chips";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import CreateIcon from "@material-ui/icons/Create";
+
+const useStyles = theme => ({
+  button: {
+    margin: theme.spacing(0)
+  }
+});
 
 class CreateTraining extends Component {
   state = {
@@ -123,7 +132,7 @@ class CreateTraining extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, classes } = this.props;
     const { selectedTags, url } = this.state;
 
     if (auth.isEmpty) return <Redirect to="/signin" />;
@@ -131,7 +140,7 @@ class CreateTraining extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <Container>
+        <Container className="">
           <form onSubmit={this.handleSubmit} className="white">
             <h5 className="grey-text text-darken-3">Create Training</h5>
 
@@ -207,19 +216,23 @@ class CreateTraining extends Component {
                 parentCallback={this.tagCallback}
                 text="Choose Tag"
               />
-              <Chips
-                selectedTags={selectedTags}
-                parentCallback={this.removeTag}
-              />
             </div>
 
+            <Chips
+              selectedTags={selectedTags}
+              parentCallback={this.removeTag}
+            />
+
             <div className="input-field">
-              <button
-                className="btn pink lighten-1 z-depth-0"
-                onMouseEnter={this.saveTags}
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                className={classes.button}
+                startIcon={<CreateIcon />}
               >
-                Create
-              </button>
+                Save
+              </Button>
             </div>
           </form>
         </Container>
@@ -244,7 +257,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 // polyfill(CreateTraining);
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTraining);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(useStyles)
+)(CreateTraining);
 
 // export default compose(
 //   connect(mapStateToProps, mapDispatchToProps),
