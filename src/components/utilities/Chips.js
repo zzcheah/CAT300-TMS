@@ -4,7 +4,7 @@ import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingTop: "50px",
+    paddingTop: "10px",
     display: "flex",
     justifyContent: "left",
     flexWrap: "wrap",
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 export default function Chips(props) {
   const classes = useStyles();
   const { selectedTags } = props;
-  const [chipData, setChipData] = React.useState(selectedTags);
+  const [, setChipData] = React.useState(selectedTags);
 
   const handleDelete = chipToDelete => () => {
     setChipData(chips => chips.filter(chip => chip !== chipToDelete));
@@ -29,6 +29,7 @@ export default function Chips(props) {
       {selectedTags.map(data => {
         return (
           <Chip
+            key={data}
             label={data}
             onDelete={handleDelete(data)}
             className={classes.chip}

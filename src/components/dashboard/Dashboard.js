@@ -7,33 +7,41 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
+import AppBar from "../utilities/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+
 class Dashboard extends Component {
   render() {
     const { projects, trainings, auth, notifications } = this.props;
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
     return (
-      <div className="dashboard container">
-        <div className="row">
-          <div className="col s12 m6">
-            <ProjectList projects={projects} />
-            <TrainingList trainings={trainings} />
+      <React.Fragment>
+        <AppBar />;
+        <CssBaseline />
+        <Container>
+          <div className="row">
+            <div className="col s12 m6">
+              <ProjectList projects={projects} />
+              <TrainingList trainings={trainings} />
+            </div>
+            <div className="col s12 m5 offset-m1">
+              <img
+                src={require("../../images/ironman.jpg")}
+                alt="ironman"
+                width="50"
+                height="60"
+              />
+              <img
+                src="https://img.mobiscroll.com/demos/fruit-4.png"
+                alt="strawberry"
+              />
+              <Notifications notifications={notifications} />
+            </div>
           </div>
-          <div className="col s12 m5 offset-m1">
-            <img
-              src={require("../../images/ironman.jpg")}
-              alt="ironman"
-              width="50"
-              height="60"
-            />
-            <img
-              src="https://img.mobiscroll.com/demos/fruit-4.png"
-              alt="strawberry"
-            />
-            <Notifications notifications={notifications} />
-          </div>
-        </div>
-      </div>
+        </Container>
+      </React.Fragment>
     );
   }
 }
