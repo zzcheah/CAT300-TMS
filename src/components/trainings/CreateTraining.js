@@ -39,7 +39,6 @@ class CreateTraining extends Component {
       organizer: organizer
     });
   };
-
   tagsHolder;
 
   saveTags = () => {

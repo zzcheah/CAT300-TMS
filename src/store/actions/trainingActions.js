@@ -48,3 +48,5 @@ export const setOrganizers = organizers => {
     payload: organizers
   };
 };
+
+export const editTraining = training => {};

@@ -9,7 +9,7 @@ import { Redirect } from "react-router-dom";
 
 class Dashboard extends Component {
   render() {
-    console.log(new Date());
+    // console.log(new Date());
     const { projects, trainings, auth, notifications } = this.props;
     if (auth.isEmpty) return <Redirect to="/signin" />;
 
