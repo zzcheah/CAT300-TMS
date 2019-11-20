@@ -1,6 +1,7 @@
 const initState = {
   trainings: [],
-  organizers: []
+  organizers: [],
+  tags: []
 };
 
 const trainingReducer = (state = initState, action) => {
@@ -17,6 +18,12 @@ const trainingReducer = (state = initState, action) => {
       return {
         ...state,
         organizers: action.payload
+      };
+
+    case "SET_TAGS":
+      return {
+        ...state,
+        tags: action.payload
       };
 
     default:
