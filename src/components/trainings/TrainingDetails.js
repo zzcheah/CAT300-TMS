@@ -5,17 +5,26 @@ import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import moment from "moment";
 import "../../style/tag.css";
+import { Link } from "react-router-dom";
 
 const TrainingDetails = props => {
-  // console.log(props)
-  const { training, auth } = props;
+  const { id, trainings, training, auth } = props;
+  console.log(props, "props");
+
   if (auth.isEmpty) return <Redirect to="/signin" />;
   if (training) {
     return (
       <div className="container section training-details">
         <div className="card z-depth-0">
           <div className="card-content">
+            <Link to={"/editTraining/" + id} key={id}>
+              <span className="right" onClick={() => null}>
+                x
+              </span>
+            </Link>
+
             <span className="card-title">{training.title}</span>
+
             <p>{training.description}</p>
             <p>Cost : RM{training.price}</p>
             <p>Available seats: {training.seat}</p>
@@ -53,9 +62,12 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
+
   return {
+    id: id,
     auth: state.firebase.auth,
-    training: training
+    training: training,
+    trainings: trainings
   };
 };
 

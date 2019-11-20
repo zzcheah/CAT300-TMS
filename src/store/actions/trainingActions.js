@@ -49,6 +49,8 @@ export const setOrganizers = organizers => {
   };
 };
 
+export const editTraining = training => {};
+
 export const fetchTags = () => {
   return dispatch => {
     firebase
