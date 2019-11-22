@@ -1,0 +1,44 @@
+.header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+
+#test {
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+}
+
+.item {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  border: 1px solid;
+  background-color: blanchedalmond;
+}

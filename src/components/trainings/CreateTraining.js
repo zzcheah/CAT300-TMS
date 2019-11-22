@@ -28,7 +28,7 @@ const useStyles = theme => ({
 
 class CreateTraining extends Component {
   state = {
-    testvalues: [],
+    // testvalues: [],
     title: "",
     description: "",
     organizer: "",

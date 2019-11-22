@@ -19,11 +19,17 @@ const TrainingDetails = props => {
           <div className="card-content">
             <Link to={"/editTraining/" + id} key={id}>
               <span className="right" onClick={() => null}>
-                x
+                Edit
               </span>
             </Link>
 
             <span className="card-title">{training.title}</span>
+
+            {training.url ? (
+              <img src={training.url} alt="test" />
+            ) : (
+              <p>null image</p>
+            )}
 
             <p>{training.description}</p>
             <p>Cost : RM{training.price}</p>

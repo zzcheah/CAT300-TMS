@@ -25,11 +25,28 @@ import firebase, { storage } from "./config/fbConfig";
 //react-redux-firebase config
 const rrfConfig = {
   userProfile: "users",
+  attachAuthIsReady: true, // attaches auth is ready promise to store,
+  firebaseStateName: "firebase", // should match the reducer name ('firebase' is default)
   useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 };
 
-const initialState = {};
-// const store = createStore(rootReducer, initialState)
+// const createStore = (initialState = {}) => {
+//   // Initialize Firebase instance
+//   firebase.initializeApp(fbConfig)
+
+//   // Add redux Firebase to compose
+//   const createStoreWithFirebase = createStore(
+//     rootReducer,
+//     initialState,
+//     compose(
+//       reactReduxFirebase(firebase, config),
+//       applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore }))
+//     )
+//   )
+
+//   // Create store with reducers and initial state
+//   const store = createStoreWithFirebase(rootReducer, initialState)
+
 const store = createStore(
   rootReducer,
   compose(
@@ -50,6 +67,17 @@ const rrfProps = {
 //         process.env.NODE_ENV === 'development'
 //         ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 //         : compose;
+
+// store.firebaseAuthIsReady.then(() => {
+//   ReactDOM.render(
+//     <Provider store={store}>
+//       <ReactReduxFirebaseProvider {...rrfProps}>
+//         <App />
+//       </ReactReduxFirebaseProvider>
+//     </Provider>,
+//     document.getElementById("root")
+//   );
+// });
 
 ReactDOM.render(
   <Provider store={store}>
