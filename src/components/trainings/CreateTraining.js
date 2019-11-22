@@ -231,7 +231,7 @@ class CreateTraining extends Component {
                 className={classes.button}
                 startIcon={<CreateIcon />}
               >
-                Save
+                Create
               </Button>
             </div>
           </form>

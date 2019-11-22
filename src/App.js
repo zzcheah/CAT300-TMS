@@ -9,6 +9,7 @@ import CreateProject from "./components/projects/CreateProject";
 import CreateTraining from "./components/trainings/CreateTraining";
 import EditTraining from "./components/trainings/EditTraining";
 import TrainingDetails from "./components/trainings/TrainingDetails";
+import Recommendation from "./components/recommendation/Recommendation";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <div className="App">
         <Navbar />
         <Switch>
+          {/* <Route exact path="/" component={Dashboard} /> */}
           <Route exact path="/" component={Dashboard} />
           <Route path="/project/:id" component={ProjectDetails} />
           <Route path="/training/:id" component={TrainingDetails} />
@@ -24,6 +26,7 @@ function App() {
           <Route path="/create" component={CreateProject} />
           <Route path="/createTraining" component={CreateTraining} />
           <Route path="/editTraining/:id" component={EditTraining} />
+          <Route path="/recommendation" component={Recommendation} />
         </Switch>
       </div>
     </BrowserRouter>
