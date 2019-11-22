@@ -10,6 +10,8 @@ import CreateTraining from "./components/trainings/CreateTraining";
 import EditTraining from "./components/trainings/EditTraining";
 import TrainingDetails from "./components/trainings/TrainingDetails";
 import Recommendation from "./components/recommendation/Recommendation";
+import ManageTag from "./components/manage/ManageTag";
+import ManageOrganizer from "./components/manage/ManageOrganizer";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path="/createTraining" component={CreateTraining} />
           <Route path="/editTraining/:id" component={EditTraining} />
           <Route path="/recommendation" component={Recommendation} />
+          <Route path="/manageTag" component={ManageTag} />
+          <Route path="/manageOrganizer" component={ManageOrganizer} />
         </Switch>
       </div>
     </BrowserRouter>
