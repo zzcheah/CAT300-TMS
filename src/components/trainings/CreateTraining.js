@@ -19,7 +19,7 @@ import Chips from "../utilities/Chips";
 
 class CreateTraining extends Component {
   state = {
-    testvalues: [],
+    // testvalues: [],
     title: "",
     description: "",
     organizer: "",
