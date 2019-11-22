@@ -13,36 +13,46 @@ import Container from "@material-ui/core/Container";
 
 class Dashboard extends Component {
   render() {
-    const { projects, trainings, auth, notifications } = this.props;
-    if (auth.isEmpty) return <Redirect to="/signin" />;
+    const { test, projects, trainings, auth, notifications } = this.props;
+    // console.log("Dashboard");
+    // console.log(test.auth.isEmpty, "auth.isEmpty");
+    // console.log(test.auth.isLoaded, "auth.isLoaded");
+    // console.log(test.profile.isEmpty, "profile.isEmpty");
+    // console.log(test.profile.isLoaded, "profile.isLoaded");
+    // console.log("------------------------------");
 
-    return (
-      <React.Fragment>
-        <AppBar />;
-        <CssBaseline />
-        <Container>
-          <div className="row">
-            <div className="col s12 m6">
-              <ProjectList projects={projects} />
-              <TrainingList trainings={trainings} />
+    // console.log(auth, "auth 1");
+    if (auth.isEmpty && !auth.isLoaded) return <Redirect to="/circularLoad" />;
+    else if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+    else if (!auth.isEmpty && auth.isLoaded)
+      // }
+      return (
+        <React.Fragment>
+          <AppBar />;
+          <CssBaseline />
+          <Container>
+            <div className="row">
+              <div className="col s12 m6">
+                {/* <ProjectList projects={projects} /> */}
+                <TrainingList trainings={trainings} />
+              </div>
+              <div className="col s12 m5 offset-m1">
+                <img
+                  src={require("../../images/ironman.jpg")}
+                  alt="ironman"
+                  width="50"
+                  height="60"
+                />
+                <img
+                  src="https://img.mobiscroll.com/demos/fruit-4.png"
+                  alt="strawberry"
+                />
+                <Notifications notifications={notifications} />
+              </div>
             </div>
-            <div className="col s12 m5 offset-m1">
-              <img
-                src={require("../../images/ironman.jpg")}
-                alt="ironman"
-                width="50"
-                height="60"
-              />
-              <img
-                src="https://img.mobiscroll.com/demos/fruit-4.png"
-                alt="strawberry"
-              />
-              <Notifications notifications={notifications} />
-            </div>
-          </div>
-        </Container>
-      </React.Fragment>
-    );
+          </Container>
+        </React.Fragment>
+      );
   }
 }
 
@@ -50,6 +60,7 @@ const mapStateToProps = state => {
   return {
     projects: state.firestore.ordered.projects,
     trainings: state.firestore.ordered.trainings,
+    test: state.firebase,
     auth: state.firebase.auth,
     notifications: state.firestore.ordered.notifications
   };

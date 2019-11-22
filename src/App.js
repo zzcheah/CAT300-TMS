@@ -12,6 +12,7 @@ import TrainingDetails from "./components/trainings/TrainingDetails";
 import Recommendation from "./components/recommendation/Recommendation";
 import ManageTag from "./components/manage/ManageTag";
 import ManageOrganizer from "./components/manage/ManageOrganizer";
+import CircularLoad from "./components/loading/CircularLoad";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/recommendation" component={Recommendation} />
           <Route path="/manageTag" component={ManageTag} />
           <Route path="/manageOrganizer" component={ManageOrganizer} />
+          <Route path="/circularLoad" component={CircularLoad} />
         </Switch>
       </div>
     </BrowserRouter>

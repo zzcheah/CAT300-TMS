@@ -50,7 +50,7 @@ const rrfConfig = {
 const store = createStore(
   rootReducer,
   compose(
-    //    reactReduxFirebase(firebase),
+    // reactReduxFirebase(firebase),
     reduxFirestore(firebase),
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore }))
   )
