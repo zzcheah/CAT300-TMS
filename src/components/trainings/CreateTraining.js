@@ -47,7 +47,6 @@ class CreateTraining extends Component {
   componentWillMount() {
     this.props.fetchOrganizers();
     this.props.fetchTags();
-    console.log(this.props.tags);
   }
 
   orgCallback = organizer => {
