@@ -50,15 +50,11 @@ export default function FeatureMatrix(props) {
             <TableRow>
               <TableCell>Users </TableCell>
               {tags.map(tag => (
-                <TableCell align="right">{tag}</TableCell>
+                <TableCell align="center">{tag}</TableCell>
               ))}
               {organizers.map(organizer => (
-                <TableCell align="right">{organizer}</TableCell>
+                <TableCell align="center">{organizer}</TableCell>
               ))}
-              {/* <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -67,12 +63,12 @@ export default function FeatureMatrix(props) {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   {row.calories ? <span>&#8226;</span> : ""}
                 </TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="center">{row.fat}</TableCell>
+                <TableCell align="center">{row.carbs}</TableCell>
+                <TableCell align="center">{row.protein}</TableCell>
               </TableRow>
             ))}
           </TableBody>

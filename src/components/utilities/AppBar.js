@@ -12,6 +12,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Container from "@material-ui/core/Container";
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -145,11 +146,13 @@ export default function PrimarySearchAppBar() {
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
+              <NavLink to="/Recommendation">
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+              </NavLink>
               <IconButton
                 aria-label="show 17 new notifications"
                 color="inherit"

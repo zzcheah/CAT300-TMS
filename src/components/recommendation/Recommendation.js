@@ -110,7 +110,7 @@ class Recommendation extends React.Component {
           </AppBar>
           <TabPanel value={value} index={0}>
             <FeatureMatrix tags={tags} organizers={organizers} />
-            {organizers.map((organizer, index) => (
+            {/* {organizers.map((organizer, index) => (
               <div>
                 {index} {organizer}
               </div>
@@ -133,7 +133,7 @@ class Recommendation extends React.Component {
                     </div>
                   ))
                 : ""}
-            </div>
+            </div> */}
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>

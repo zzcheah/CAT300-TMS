@@ -40,7 +40,7 @@ const TrainingDetails = props => {
 
             <div className="tags-input">
               <ul id="tags">
-                {training.tags.map((tag, index) => (
+                {training.selectedTags.map((tag, index) => (
                   <li key={index} className="tag">
                     <span className="tag-title">{tag}</span>
                   </li>
