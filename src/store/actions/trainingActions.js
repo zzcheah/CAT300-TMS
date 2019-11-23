@@ -29,8 +29,7 @@ export const fetchOrganizers = () => {
     firebase
       .firestore()
       .collection("organizers")
-      .get()
-      .then(snapshot => {
+      .onSnapshot(snapshot => {
         var organizers = [];
         if (snapshot.docs.empty != false) {
           snapshot.docs.forEach(doc => {

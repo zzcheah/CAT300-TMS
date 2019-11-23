@@ -11,11 +11,14 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { firestoreConnect } from "react-redux-firebase";
+
 import {
-  createTraining,
   fetchOrganizers,
   fetchTags
 } from "../../store/actions/trainingActions";
+
+import FeatureMatrix from "./FeatureMatrix";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -74,7 +77,6 @@ class Recommendation extends React.Component {
   componentWillMount() {
     this.props.fetchOrganizers();
     this.props.fetchTags();
-    console.log(this.props.tags);
   }
 
   handleChange = (event, newValue) => {
@@ -82,13 +84,12 @@ class Recommendation extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, organizers, tags, users } = this.props;
     const { value } = this.state;
 
     return (
       <React.Fragment>
         <TitleBar />
-        {/* feature matrix */}
         <CssBaseline />
         <div className={classes.root}>
           <AppBar position="static" color="inherit">
@@ -108,21 +109,31 @@ class Recommendation extends React.Component {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            Page One
+            <FeatureMatrix tags={tags} organizers={organizers} />
+            {organizers.map((organizer, index) => (
+              <div>
+                {index} {organizer}
+              </div>
+            ))}
             <br />
-            Page One
+            {tags.map((tag, index) => (
+              <div>
+                {index} {tag}
+              </div>
+            ))}
             <br />
-            Page One
+            Number of features: {organizers.length + tags.length}
             <br />
-            Page One
             <br />
-            Page One
-            <br />
-            Page One
-            <br />
-            Page One
-            <br />
-            Page One
+            <div>
+              {users
+                ? users.map((user, index) => (
+                    <div>
+                      {index} {user.firstName} {user.lastName}
+                    </div>
+                  ))
+                : ""}
+            </div>
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -139,19 +150,21 @@ class Recommendation extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    //   photos: state.photos.photos
+    organizers: state.training.organizers,
+    tags: state.training.tags,
+    users: state.firestore.ordered.users
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    createTraining: training => dispatch(createTraining(training)),
     fetchOrganizers: () => dispatch(fetchOrganizers()),
     fetchTags: () => dispatch(fetchTags())
   };
 };
-// polyfill(CreateTraining);
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(useStyles)
+  withStyles(useStyles),
+  firestoreConnect([{ collection: "users", orderBy: ["firstName", "asc"] }])
 )(Recommendation);

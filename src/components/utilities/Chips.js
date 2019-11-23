@@ -24,7 +24,7 @@ export default function Chips(props) {
     props.parentCallback(chipToDelete);
   };
 
-  return (
+  return selectedTags ? (
     <div className={classes.root}>
       {selectedTags.map(data => {
         return (
@@ -39,5 +39,7 @@ export default function Chips(props) {
         );
       })}
     </div>
+  ) : (
+    ""
   );
 }

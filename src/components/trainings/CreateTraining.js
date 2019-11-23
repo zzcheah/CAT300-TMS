@@ -37,7 +37,6 @@ class CreateTraining extends Component {
     dateTime: null,
     price: 0,
     seat: 0,
-    tags: [],
     selectedTags: [],
     inputSpace: "",
     repeat: false,
@@ -86,7 +85,7 @@ class CreateTraining extends Component {
     this.setState({
       selectedTags: selectedTags
     });
-    console.log("runned");
+    console.log("removed tag");
   };
 
   handleChange = e => {
@@ -229,6 +228,7 @@ class CreateTraining extends Component {
                 size="large"
                 className={classes.button}
                 startIcon={<CreateIcon />}
+                onClick={this.handleSubmit}
               >
                 Create
               </Button>
