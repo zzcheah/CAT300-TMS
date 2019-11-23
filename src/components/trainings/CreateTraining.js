@@ -133,7 +133,7 @@ class CreateTraining extends Component {
     const { auth, classes } = this.props;
     const { selectedTags, url } = this.state;
 
-    if (auth.isEmpty) return <Redirect to="/signin" />;
+    if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
 
     return (
       <React.Fragment>

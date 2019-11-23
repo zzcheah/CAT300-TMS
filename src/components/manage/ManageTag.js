@@ -7,12 +7,13 @@ import "../../style/tag.css";
 // import Popup from "reactjs-popup";
 import CreateTag from "./CreateTag";
 import "../../style/listDisplay.css";
+import CircularLoad from "../loading/CircularLoad";
 
 const ManageTag = props => {
   const { tags, auth } = props;
   console.log(tags, "tags");
 
-  if (auth.isEmpty) return <Redirect to="/signin" />;
+  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (tags) {
     return (
       <div>
@@ -45,7 +46,7 @@ const ManageTag = props => {
   } else {
     return (
       <div className="container center">
-        <p>Loading tags. . . </p>
+        <CircularLoad />
       </div>
     );
   }

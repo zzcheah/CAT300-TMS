@@ -6,12 +6,13 @@ import { Redirect } from "react-router-dom";
 import moment from "moment";
 import "../../style/tag.css";
 import { Link } from "react-router-dom";
+import CircularLoad from "../loading/CircularLoad";
 
 const TrainingDetails = props => {
   const { id, trainings, training, auth } = props;
   console.log(props, "props");
 
-  if (auth.isEmpty) return <Redirect to="/signin" />;
+  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (training) {
     return (
       <div className="container section training-details">
@@ -58,7 +59,7 @@ const TrainingDetails = props => {
   } else {
     return (
       <div className="container center">
-        <p>Loading training. . . </p>
+        <CircularLoad />
       </div>
     );
   }

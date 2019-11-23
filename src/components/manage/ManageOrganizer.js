@@ -7,12 +7,13 @@ import "../../style/tag.css";
 import Popup from "reactjs-popup";
 import CreateOrganizer from "./CreateOrganizer";
 import "../../style/listDisplay.css";
+import CircularLoad from "../loading/CircularLoad";
 
 const ManageOrganizer = props => {
   const { organizers, auth } = props;
   console.log(organizers, "organizers");
 
-  if (auth.isEmpty) return <Redirect to="/signin" />;
+  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (organizers) {
     return (
       <div>
@@ -45,7 +46,7 @@ const ManageOrganizer = props => {
   } else {
     return (
       <div className="container center">
-        <p>Loading organizers. . . </p>
+        <CircularLoad />
       </div>
     );
   }

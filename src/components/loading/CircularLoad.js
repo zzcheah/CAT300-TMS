@@ -17,12 +17,12 @@ const CircularLoad = props => {
   const classes = useStyles();
   const { auth } = props;
 
-  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
-  else if (!auth.isEmpty && auth.isLoaded) return <Redirect to="/" />;
+  // if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+  // else if (!auth.isEmpty && auth.isLoaded) return <Redirect to="/" />;
 
   return (
     <div className={classes.root}>
-      <CircularProgress color="secondary" />
+      <CircularProgress color="secondary" size="200px" />
     </div>
   );
 };
