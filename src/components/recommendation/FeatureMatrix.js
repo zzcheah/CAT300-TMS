@@ -22,56 +22,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function createData(id, name, vector) {
-  return { id, name, vector };
-}
-
 export default function FeatureMatrix(props) {
   const classes = useStyles();
-  const { organizers, tags, users, trainings } = props;
-
-  const trainingRows = [];
-
-  const userRows = [];
-
-  trainings.map(training => {
-    const vector = [];
-    for (var i = 0; i < tags.length; i++) {
-      if (training.selectedTags.includes(tags[i].type)) vector.push(true);
-      else vector.push(false);
-    }
-
-    for (i = 0; i < organizers.length; i++) {
-      if (training.organizer === organizers[i].name) vector.push(true);
-      else vector.push(false);
-    }
-    trainingRows.push(createData(training.id, training.title, vector));
-    return null;
-  });
-
-  users.map(user => {
-    const vector = [];
-    for (var i = 0; i < tags.length; i++) {
-      if (user.tags.includes(tags[i].type)) vector.push(true);
-      else vector.push(false);
-    }
-    if (user.organizers) {
-      for (i = 0; i < organizers.length; i++) {
-        if (user.organizers.includes(organizers[i].name)) vector.push(true);
-        else vector.push(false);
-      }
-    } else {
-      for (i = 0; i < organizers.length; i++) {
-        vector.push(false);
-      }
-    }
-
-    userRows.push(createData(user.id, user.firstName, vector));
-    // console.log(userRows);
-    return null;
-  });
-
-  props.parentCallback(userRows, trainingRows);
+  const { organizers, tags, userRows, trainingRows } = props;
 
   return (
     <div className={classes.root}>
@@ -85,7 +38,9 @@ export default function FeatureMatrix(props) {
             <TableRow>
               <TableCell>Features </TableCell>
               {tags.map(tag => (
-                <TableCell align="center">{tag.type}</TableCell>
+                <TableCell key={tag.id} align="center">
+                  {tag.type}
+                </TableCell>
               ))}
               {organizers.map(organizer => (
                 <TableCell align="center">{organizer.name}</TableCell>

@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import projectReducer from "./projectReducer";
-import recReducer from "./recReducer";
 import trainingReducer from "./trainingReducer";
 import tagReducer from "./tagReducer";
 import organizerReducer from "./organizerReducer";
@@ -16,8 +15,7 @@ const rootReducer = combineReducers({
   tag: tagReducer,
   organizer: organizerReducer,
   firebase: firebaseReducer,
-  firestore: firestoreReducer,
-  rec: recReducer
+  firestore: firestoreReducer
 });
 
 export default rootReducer;
