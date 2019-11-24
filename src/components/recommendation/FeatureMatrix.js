@@ -46,7 +46,6 @@ export default function FeatureMatrix(props) {
       else vector.push(false);
     }
     trainingRows.push(createData(training.id, training.title, vector));
-    // console.log(trainingRows);
     return null;
   });
 
@@ -71,6 +70,8 @@ export default function FeatureMatrix(props) {
     // console.log(userRows);
     return null;
   });
+
+  props.parentCallback(userRows, trainingRows);
 
   return (
     <div className={classes.root}>
@@ -129,19 +130,6 @@ export default function FeatureMatrix(props) {
                 </TableRow>
               );
             })}
-            {/* {rows.map(row => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="center">
-                  {row.calories ? <span>&#8226;</span> : ""}
-                </TableCell>
-                <TableCell align="center">{row.fat}</TableCell>
-                <TableCell align="center">{row.carbs}</TableCell>
-                <TableCell align="center">{row.protein}</TableCell>
-              </TableRow>
-            ))} */}
           </TableBody>
         </Table>
       </Paper>

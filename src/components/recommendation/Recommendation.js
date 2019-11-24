@@ -14,6 +14,7 @@ import Tab from "@material-ui/core/Tab";
 import { firestoreConnect } from "react-redux-firebase";
 
 import FeatureMatrix from "./FeatureMatrix";
+import { setVector } from "../../store/actions/recActions";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,16 +67,24 @@ const useStyles = theme => ({
 
 class Recommendation extends React.Component {
   state = {
-    value: 0
+    value: 0,
+    userRows: [],
+    trainingRows: []
   };
 
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
   };
 
+  setVector = (userRows, trainingRows) => {
+    console.log("callback success");
+    this.props.setVector(userRows, trainingRows);
+  };
+
   render() {
     const { classes, organizers, tags, users, trainings } = this.props;
     const { value } = this.state;
+    console.log(this.props.temp);
 
     return (
       <React.Fragment>
@@ -105,6 +114,7 @@ class Recommendation extends React.Component {
                 organizers={organizers}
                 users={users}
                 trainings={trainings}
+                parentCallback={this.setVector}
               />
             ) : (
               ""
@@ -113,7 +123,7 @@ class Recommendation extends React.Component {
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Page Two
+            {/* <div>{this.props.temp ? this.props.temp[0].id : ""}</div> */}
           </TabPanel>
           <TabPanel value={value} index={2}>
             Page Three
@@ -126,19 +136,19 @@ class Recommendation extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    // organizers: state.training.organizers,
-    // tags: state.training.tags,
-    // users: state.firestore.data.users,
-
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
-    trainings: state.firestore.ordered.trainings
+    trainings: state.firestore.ordered.trainings,
+    temp: state.rec.userRows
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    setVector: (userRows, trainingRows) =>
+      dispatch(setVector(userRows, trainingRows))
+  };
 };
 
 export default compose(
