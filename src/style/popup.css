@@ -35,6 +35,12 @@
   right: 50px;
 }
 
+#purchase {
+  /* position: fixed; */
+  bottom: 10px;
+  /* right: 50px; */
+}
+
 .item {
   display: inline-block;
   width: auto;

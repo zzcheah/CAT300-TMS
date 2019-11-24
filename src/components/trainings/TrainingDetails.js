@@ -7,10 +7,12 @@ import moment from "moment";
 import "../../style/tag.css";
 import { Link } from "react-router-dom";
 import CircularLoad from "../loading/CircularLoad";
+import PurchaseTicket from "../manage/PurchaseTicket";
+import Button from "@material-ui/core/Button";
 
 const TrainingDetails = props => {
-  const { id, trainings, training, auth } = props;
-  console.log(props, "props");
+  const { id, trainings, training, auth, profile } = props;
+  // console.log(props, "props");
 
   if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (training) {
@@ -19,9 +21,7 @@ const TrainingDetails = props => {
         <div className="card z-depth-0">
           <div className="card-content">
             <Link to={"/editTraining/" + id} key={id}>
-              <span className="right" onClick={() => null}>
-                Edit
-              </span>
+              <span className="right">Edit</span>
             </Link>
 
             <span className="card-title">{training.title}</span>
@@ -37,7 +37,6 @@ const TrainingDetails = props => {
             <p>Available seats: {training.seat}</p>
 
             <span>Tag(s)</span>
-
             <div className="tags-input">
               <ul id="tags">
                 {training.selectedTags.map((tag, index) => (
@@ -50,7 +49,17 @@ const TrainingDetails = props => {
           </div>
           <div className="card-action grey lighten-4 grey-text">
             <div>organized by {training.organizer} </div>
+            <div className="right">
+              {profile.trainings && profile.trainings.includes(id) ? (
+                <button className="btn green lighten-1 z-depth-0 left" disabled>
+                  Purchased
+                </button>
+              ) : (
+                <PurchaseTicket trainingid={id} />
+              )}
+            </div>
             <div>{training.venue} </div>
+
             <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
           </div>
         </div>
@@ -66,13 +75,19 @@ const TrainingDetails = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  // console.log(state, "state");
+  // console.log(ownProps, "ownProps");
+
   const id = ownProps.match.params.id;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
+  console.log(trainings, "trainings");
+  console.log(training, "training");
 
   return {
     id: id,
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
     training: training,
     trainings: trainings
   };

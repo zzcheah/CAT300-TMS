@@ -1,3 +1,5 @@
+import firebase from "../../config/fbConfig.js";
+
 export const purchaseTicket = ticket => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     //make asyn call to database
@@ -5,9 +7,10 @@ export const purchaseTicket = ticket => {
     //   const profile = getState().firebase.profile;
     //   const authorId = getState().firebase.auth.uid;
     firestore
-      .collection("tickets")
-      .add({
-        ...ticket
+      .collection("users")
+      .doc(ticket.userId)
+      .update({
+        trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId)
       })
       .then(() => {
         dispatch({ type: "PURCHASE_TICKET", ticket });

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authAction";
 
 const SignedInLinks = props => {
+  // console.log(props.uid, "lala props");
   return (
     <ul className="right">
       <li>
@@ -22,7 +23,10 @@ const SignedInLinks = props => {
         <a onClick={props.signOut}>Log Out</a>
       </li>
       <li>
-        <NavLink to="/" className="btn btn-floating pink lighten-1">
+        <NavLink
+          to={"/profile/" + props.uid}
+          className="btn btn-floating pink lighten-1"
+        >
           {props.profile.initials}
         </NavLink>
       </li>

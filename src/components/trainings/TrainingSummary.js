@@ -9,7 +9,16 @@ const TrainingSummary = ({ training }) => {
         <p>Posted by {training.organizer} </p>
         <p className="grey-text">
           {moment(training.createdAt.toDate()).calendar()}
-        </p>
+        </p>{" "}
+        <div className="tags-input">
+          <ul id="tags">
+            {training.selectedTags.map((tag, index) => (
+              <li key={index} className="tag">
+                <span className="tag-title">{tag}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

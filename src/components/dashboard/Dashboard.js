@@ -24,7 +24,7 @@ class Dashboard extends Component {
     };
     const { test, projects, trainings, auth, notifications } = this.props;
     // console.log("Dashboard");
-    console.log(test, "test");
+    // console.log(test, "test");
     // console.log(test.auth.isLoaded, "auth.isLoaded");
     // console.log(test.profile.isEmpty, "profile.isEmpty");
     // console.log(test.profile.isLoaded, "profile.isLoaded");
