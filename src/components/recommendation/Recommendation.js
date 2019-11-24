@@ -14,7 +14,6 @@ import Tab from "@material-ui/core/Tab";
 import { firestoreConnect } from "react-redux-firebase";
 
 import FeatureMatrix from "./FeatureMatrix";
-import { setVector } from "../../store/actions/recActions";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
