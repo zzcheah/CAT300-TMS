@@ -84,7 +84,7 @@ class Recommendation extends React.Component {
   };
 
   render() {
-    const { classes, organizers, tags, users } = this.props;
+    const { classes, organizers, tags, users, trainings } = this.props;
     const { value } = this.state;
 
     return (
@@ -109,31 +109,17 @@ class Recommendation extends React.Component {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            <FeatureMatrix tags={tags} organizers={organizers} />
-            {/* {organizers.map((organizer, index) => (
-              <div>
-                {index} {organizer}
-              </div>
-            ))}
-            <br />
-            {tags.map((tag, index) => (
-              <div>
-                {index} {tag}
-              </div>
-            ))}
-            <br />
-            Number of features: {organizers.length + tags.length}
-            <br />
-            <br />
-            <div>
-              {users
-                ? users.map((user, index) => (
-                    <div>
-                      {index} {user.firstName} {user.lastName}
-                    </div>
-                  ))
-                : ""}
-            </div> */}
+            {organizers && tags && users && trainings ? (
+              <FeatureMatrix
+                tags={tags}
+                organizers={organizers}
+                users={users}
+                trainings={trainings}
+              />
+            ) : (
+              ""
+            )}
+
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -152,7 +138,8 @@ const mapStateToProps = state => {
   return {
     organizers: state.training.organizers,
     tags: state.training.tags,
-    users: state.firestore.ordered.users
+    users: state.firestore.ordered.users,
+    trainings: state.firestore.ordered.trainings
   };
 };
 
@@ -166,5 +153,8 @@ const mapDispatchToProps = dispatch => {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(useStyles),
-  firestoreConnect([{ collection: "users", orderBy: ["firstName", "asc"] }])
+  firestoreConnect([
+    { collection: "users", orderBy: ["firstName", "asc"] },
+    { collection: "trainings", orderBy: ["title", "asc"] }
+  ])
 )(Recommendation);

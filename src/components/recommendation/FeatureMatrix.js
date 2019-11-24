@@ -22,21 +22,46 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, vector) {
+  return { name, vector };
 }
-
-const rows = [
-  createData("Frozen yoghurt", true, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
-];
 
 export default function FeatureMatrix(props) {
   const classes = useStyles();
-  const { organizers, tags, users } = props;
+  const { organizers, tags, users, trainings } = props;
+  // const numFeature = tags.length + organizers.length;
+
+  const trainingRows = [];
+
+  const userRows = [];
+
+  trainings.map(training => {
+    const vector = [];
+    for (var i = 0; i < tags.length; i++) {
+      if (training.selectedTags.includes(tags[i])) vector.push(true);
+      else vector.push(false);
+    }
+    for (i = 0; i < organizers.length; i++) {
+      if (training.organizer.includes(organizers[i])) vector.push(true);
+      else vector.push(false);
+    }
+    trainingRows.push(createData(training.title, vector));
+    // console.log(trainingRows);
+  });
+
+  users.map(user => {
+    const vector = [];
+    for (var i = 0; i < tags.length; i++) {
+      if (user.tags.includes(tags[i])) vector.push(true);
+      else vector.push(false);
+    }
+    for (i = 0; i < organizers.length; i++) {
+      if (user.tags.includes(organizers[i])) vector.push(true);
+      else vector.push(false);
+    }
+    userRows.push(createData(user.firstName, vector));
+    // console.log(userRows);
+  });
 
   return (
     <div className={classes.root}>
@@ -48,7 +73,7 @@ export default function FeatureMatrix(props) {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Users </TableCell>
+              <TableCell>Features </TableCell>
               {tags.map(tag => (
                 <TableCell align="center">{tag}</TableCell>
               ))}
@@ -58,7 +83,43 @@ export default function FeatureMatrix(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {trainingRows.map(trainingRow => {
+              return (
+                <TableRow key={trainingRow.name}>
+                  <TableCell component="th" scope="row">
+                    {trainingRow.name}
+                  </TableCell>
+                  {trainingRow.vector.map(vec => (
+                    <TableCell align="center">
+                      {vec ? <span>&#x2714;</span> : ""}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+            <TableRow key="emptyRow">
+              <TableCell component="th" scope="row">
+                Users
+              </TableCell>
+              {userRows[0].vector.map(() => (
+                <TableCell align="center"></TableCell>
+              ))}
+            </TableRow>
+            {userRows.map(userRow => {
+              return (
+                <TableRow key={userRow.name}>
+                  <TableCell component="th" scope="row">
+                    {userRow.name}
+                  </TableCell>
+                  {userRow.vector.map(vec => (
+                    <TableCell align="center">
+                      {vec ? <span>&#x2714;</span> : ""}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+            {/* {rows.map(row => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
                   {row.name}
@@ -70,7 +131,7 @@ export default function FeatureMatrix(props) {
                 <TableCell align="center">{row.carbs}</TableCell>
                 <TableCell align="center">{row.protein}</TableCell>
               </TableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </Paper>
