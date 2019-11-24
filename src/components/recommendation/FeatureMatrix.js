@@ -47,6 +47,7 @@ export default function FeatureMatrix(props) {
     }
     trainingRows.push(createData(training.id, training.title, vector));
     // console.log(trainingRows);
+    return null;
   });
 
   users.map(user => {
@@ -68,9 +69,8 @@ export default function FeatureMatrix(props) {
 
     userRows.push(createData(user.id, user.firstName, vector));
     // console.log(userRows);
+    return null;
   });
-
-  console.log(userRows);
 
   return (
     <div className={classes.root}>

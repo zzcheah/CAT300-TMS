@@ -13,11 +13,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { firestoreConnect } from "react-redux-firebase";
 
-import {
-  fetchOrganizers,
-  fetchTags
-} from "../../store/actions/trainingActions";
-
 import FeatureMatrix from "./FeatureMatrix";
 
 function TabPanel(props) {
@@ -73,11 +68,6 @@ class Recommendation extends React.Component {
   state = {
     value: 0
   };
-
-  componentWillMount() {
-    this.props.fetchOrganizers();
-    this.props.fetchTags();
-  }
 
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
@@ -148,10 +138,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    fetchOrganizers: () => dispatch(fetchOrganizers()),
-    fetchTags: () => dispatch(fetchTags())
-  };
+  return {};
 };
 
 export default compose(
