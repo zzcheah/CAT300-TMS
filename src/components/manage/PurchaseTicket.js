@@ -94,7 +94,8 @@ import "../../style/popup.css";
 class PurchaseTicket extends Component {
   state = {
     userId: this.props.auth.uid,
-    trainingId: this.props.trainingid
+    trainingId: this.props.trainingid,
+    organizer: this.props.organizer
   };
   // handleChange = e => {
   //   this.setState({

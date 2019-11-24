@@ -71,8 +71,8 @@ class ManageProfile extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const currentId = ownProps.match.params.id;
-  //   console.log(id, "lala id");
-  console.log(state, "auth");
+  // console.log(id, "lala id");
+  console.log(state, "state");
 
   return {
     trainings: state.firestore.data.trainings,

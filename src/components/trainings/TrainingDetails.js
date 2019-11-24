@@ -11,7 +11,7 @@ import PurchaseTicket from "../manage/PurchaseTicket";
 import Button from "@material-ui/core/Button";
 
 const TrainingDetails = props => {
-  const { id, trainings, training, auth, profile } = props;
+  const { id, training, auth, profile } = props;
   // console.log(props, "props");
 
   if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
@@ -55,7 +55,10 @@ const TrainingDetails = props => {
                   Purchased
                 </button>
               ) : (
-                <PurchaseTicket trainingid={id} />
+                <PurchaseTicket
+                  trainingid={id}
+                  organizer={training.organizer}
+                />
               )}
             </div>
             <div>{training.venue} </div>
@@ -88,8 +91,7 @@ const mapStateToProps = (state, ownProps) => {
     id: id,
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    training: training,
-    trainings: trainings
+    training: training
   };
 };
 

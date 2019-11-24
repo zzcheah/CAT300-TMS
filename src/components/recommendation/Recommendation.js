@@ -179,6 +179,7 @@ class Recommendation extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state, "state");
   return {
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,

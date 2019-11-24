@@ -10,7 +10,8 @@ export const purchaseTicket = ticket => {
       .collection("users")
       .doc(ticket.userId)
       .update({
-        trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId)
+        trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId),
+        organizers: firebase.firestore.FieldValue.arrayUnion(ticket.organizer)
       })
       .then(() => {
         dispatch({ type: "PURCHASE_TICKET", ticket });

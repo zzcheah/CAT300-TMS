@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/actions/authAction";
 import Chips from "../utilities/Chips";
@@ -32,7 +34,7 @@ class SignUp extends Component {
 
   tagCallback = tag => {
     const { selectedTags } = this.state;
-    const { tags } = this.props;
+    const { tags, test } = this.props;
 
     for (var i = 0; i < tags.length; i++) {
       if (tags[i] === tag) {
@@ -67,7 +69,7 @@ class SignUp extends Component {
   render() {
     const { auth, authError } = this.props;
     const { selectedTags } = this.state;
-    console.log(this.props.tags);
+    // console.log(this.props.tags);
 
     if (!auth.isEmpty) return <Redirect to="/" />;
     return (
@@ -123,11 +125,12 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.training.tags);
+  console.log(state, "state");
   return {
     auth: state.firebase.auth,
     authError: state.auth.authError,
     tags: state.training.tags
+    // test: state.firestore.data.tags
   };
 };
 
@@ -139,3 +142,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+// export default compose(
+//   connect(mapStateToProps, mapDispatchToProps),
+//   firestoreConnect(["tags"])
+// )(SignUp);
