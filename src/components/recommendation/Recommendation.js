@@ -135,6 +135,7 @@ class Recommendation extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state, "state");
   return {
     organizers: state.training.organizers,
     tags: state.training.tags,
