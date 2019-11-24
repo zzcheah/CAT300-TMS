@@ -22,14 +22,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function createData(name, vector) {
-  return { name, vector };
+function createData(id, name, vector) {
+  return { id, name, vector };
 }
 
 export default function FeatureMatrix(props) {
   const classes = useStyles();
   const { organizers, tags, users, trainings } = props;
-  // const numFeature = tags.length + organizers.length;
 
   const trainingRows = [];
 
@@ -38,30 +37,40 @@ export default function FeatureMatrix(props) {
   trainings.map(training => {
     const vector = [];
     for (var i = 0; i < tags.length; i++) {
-      if (training.selectedTags.includes(tags[i])) vector.push(true);
+      if (training.selectedTags.includes(tags[i].type)) vector.push(true);
       else vector.push(false);
     }
+
     for (i = 0; i < organizers.length; i++) {
-      if (training.organizer.includes(organizers[i])) vector.push(true);
+      if (training.organizer === organizers[i].name) vector.push(true);
       else vector.push(false);
     }
-    trainingRows.push(createData(training.title, vector));
+    trainingRows.push(createData(training.id, training.title, vector));
     // console.log(trainingRows);
   });
 
   users.map(user => {
     const vector = [];
     for (var i = 0; i < tags.length; i++) {
-      if (user.tags.includes(tags[i])) vector.push(true);
+      if (user.tags.includes(tags[i].type)) vector.push(true);
       else vector.push(false);
     }
-    for (i = 0; i < organizers.length; i++) {
-      if (user.tags.includes(organizers[i])) vector.push(true);
-      else vector.push(false);
+    if (user.organizers) {
+      for (i = 0; i < organizers.length; i++) {
+        if (user.organizers.includes(organizers[i].name)) vector.push(true);
+        else vector.push(false);
+      }
+    } else {
+      for (i = 0; i < organizers.length; i++) {
+        vector.push(false);
+      }
     }
-    userRows.push(createData(user.firstName, vector));
+
+    userRows.push(createData(user.id, user.firstName, vector));
     // console.log(userRows);
   });
+
+  console.log(userRows);
 
   return (
     <div className={classes.root}>
@@ -75,17 +84,17 @@ export default function FeatureMatrix(props) {
             <TableRow>
               <TableCell>Features </TableCell>
               {tags.map(tag => (
-                <TableCell align="center">{tag}</TableCell>
+                <TableCell align="center">{tag.type}</TableCell>
               ))}
               {organizers.map(organizer => (
-                <TableCell align="center">{organizer}</TableCell>
+                <TableCell align="center">{organizer.name}</TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {trainingRows.map(trainingRow => {
               return (
-                <TableRow key={trainingRow.name}>
+                <TableRow key={trainingRow.id}>
                   <TableCell component="th" scope="row">
                     {trainingRow.name}
                   </TableCell>
@@ -97,6 +106,7 @@ export default function FeatureMatrix(props) {
                 </TableRow>
               );
             })}
+            <br />
             <TableRow key="emptyRow">
               <TableCell component="th" scope="row">
                 Users
@@ -107,7 +117,7 @@ export default function FeatureMatrix(props) {
             </TableRow>
             {userRows.map(userRow => {
               return (
-                <TableRow key={userRow.name}>
+                <TableRow key={userRow.id}>
                   <TableCell component="th" scope="row">
                     {userRow.name}
                   </TableCell>

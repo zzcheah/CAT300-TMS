@@ -136,8 +136,12 @@ class Recommendation extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    organizers: state.training.organizers,
-    tags: state.training.tags,
+    // organizers: state.training.organizers,
+    // tags: state.training.tags,
+    // users: state.firestore.data.users,
+
+    organizers: state.firestore.ordered.organizers,
+    tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
     trainings: state.firestore.ordered.trainings
   };
@@ -154,6 +158,8 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(useStyles),
   firestoreConnect([
+    { collection: "organizers", orderBy: ["name", "asc"] },
+    { collection: "tags", orderBy: ["type", "asc"] },
     { collection: "users", orderBy: ["firstName", "asc"] },
     { collection: "trainings", orderBy: ["title", "asc"] }
   ])
