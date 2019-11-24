@@ -13,11 +13,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { firestoreConnect } from "react-redux-firebase";
 
-import {
-  fetchOrganizers,
-  fetchTags
-} from "../../store/actions/trainingActions";
-
 import FeatureMatrix from "./FeatureMatrix";
 
 function TabPanel(props) {
@@ -73,11 +68,6 @@ class Recommendation extends React.Component {
   state = {
     value: 0
   };
-
-  componentWillMount() {
-    this.props.fetchOrganizers();
-    this.props.fetchTags();
-  }
 
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
@@ -137,24 +127,27 @@ class Recommendation extends React.Component {
 const mapStateToProps = state => {
   console.log(state, "state");
   return {
-    organizers: state.training.organizers,
-    tags: state.training.tags,
+    // organizers: state.training.organizers,
+    // tags: state.training.tags,
+    // users: state.firestore.data.users,
+
+    organizers: state.firestore.ordered.organizers,
+    tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
     trainings: state.firestore.ordered.trainings
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    fetchOrganizers: () => dispatch(fetchOrganizers()),
-    fetchTags: () => dispatch(fetchTags())
-  };
+  return {};
 };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(useStyles),
   firestoreConnect([
+    { collection: "organizers", orderBy: ["name", "asc"] },
+    { collection: "tags", orderBy: ["type", "asc"] },
     { collection: "users", orderBy: ["firstName", "asc"] },
     { collection: "trainings", orderBy: ["title", "asc"] }
   ])
