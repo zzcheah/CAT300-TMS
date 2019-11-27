@@ -67,15 +67,69 @@ const useStyles = theme => ({
 class Recommendation extends React.Component {
   state = {
     value: 0
+    // userRows: [],
+    // trainingRows: []
   };
 
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
   };
 
+  setVector = (userRows, trainingRows) => {
+    console.log("callback success");
+    this.props.setVector(userRows, trainingRows);
+  };
+
+  createData(id, name, vector) {
+    return { id, name, vector };
+  }
+
   render() {
     const { classes, organizers, tags, users, trainings } = this.props;
     const { value } = this.state;
+
+    const trainingRows = [];
+    const userRows = [];
+
+    if (organizers && tags && users && trainings) {
+      console.log("read!");
+      trainings.map(training => {
+        const vector = [];
+        for (var i = 0; i < tags.length; i++) {
+          if (training.selectedTags.includes(tags[i].type)) vector.push(true);
+          else vector.push(false);
+        }
+
+        for (i = 0; i < organizers.length; i++) {
+          if (training.organizer === organizers[i].name) vector.push(true);
+          else vector.push(false);
+        }
+        trainingRows.push(this.createData(training.id, training.title, vector));
+        return null;
+      });
+
+      users.map(user => {
+        const vector = [];
+        for (var i = 0; i < tags.length; i++) {
+          if (user.tags.includes(tags[i].type)) vector.push(true);
+          else vector.push(false);
+        }
+        if (user.organizers) {
+          for (i = 0; i < organizers.length; i++) {
+            if (user.organizers.includes(organizers[i].name)) vector.push(true);
+            else vector.push(false);
+          }
+        } else {
+          for (i = 0; i < organizers.length; i++) {
+            vector.push(false);
+          }
+        }
+
+        userRows.push(this.createData(user.id, user.firstName, vector));
+        // console.log(userRows);
+        return null;
+      });
+    }
 
     return (
       <React.Fragment>
@@ -103,17 +157,17 @@ class Recommendation extends React.Component {
               <FeatureMatrix
                 tags={tags}
                 organizers={organizers}
-                users={users}
-                trainings={trainings}
+                userRows={userRows}
+                trainingRows={trainingRows}
+                parentCallback={this.setVector}
               />
             ) : (
               ""
             )}
-
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Page Two
+            {/* <div>{this.props.temp ? this.props.temp[0].id : ""}</div> */}
           </TabPanel>
           <TabPanel value={value} index={2}>
             Page Three
@@ -127,10 +181,6 @@ class Recommendation extends React.Component {
 const mapStateToProps = state => {
   console.log(state, "state");
   return {
-    // organizers: state.training.organizers,
-    // tags: state.training.tags,
-    // users: state.firestore.data.users,
-
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
