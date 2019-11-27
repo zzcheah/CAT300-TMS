@@ -3,7 +3,7 @@ import Notifications from "./Notifications";
 import ProjectList from "../projects/ProjectList";
 import TrainingList from "../trainings/TrainingList";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
@@ -22,7 +22,14 @@ class Dashboard extends Component {
       margin: "25px 100px 75px",
       paddingLeft: "300px"
     };
-    const { test, projects, trainings, auth, notifications } = this.props;
+    const {
+      test,
+      projects,
+      trainings,
+      auth,
+      notifications,
+      notif
+    } = this.props;
     // console.log("Dashboard");
     // console.log(test, "test");
     // console.log(test.auth.isLoaded, "auth.isLoaded");
@@ -44,9 +51,10 @@ class Dashboard extends Component {
       // }
       return (
         <React.Fragment>
-          <AppBar />
+          <AppBar notif={notif} uid={auth.uid} style={{ zIndex: 0 }} />
+
           {/* <CssBaseline /> */}
-          <Container>
+          <Container style={{ zIndex: -1 }}>
             <div className="row">
               <div className="col s12 m6">
                 {/* <ProjectList projects={projects} /> */}
@@ -74,10 +82,13 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
+  // console.log(state, "state");
+
   return {
     // projects: state.firestore.ordered.projects,
     trainings: state.firestore.ordered.trainings,
     test: state,
+    notif: state.firebase.profile.notif,
     auth: state.firebase.auth,
     notifications: state.firestore.ordered.notifications
   };

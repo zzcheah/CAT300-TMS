@@ -41,6 +41,8 @@ export const signUp = newUser => {
           .collection("users")
           .doc(resp.user.uid)
           .set({
+            notification: false,
+            notif: 0,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             initials: newUser.firstName[0] + newUser.lastName[0],

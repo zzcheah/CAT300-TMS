@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 const TrainingDetails = props => {
   const { id, training, auth, profile } = props;
   // console.log(props, "props");
+  // console.log(moment().format("DDMMYYYY"), "moment");
 
   if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (training) {
@@ -64,6 +65,11 @@ const TrainingDetails = props => {
             <div>{training.venue} </div>
 
             <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
+            {/* <div>{moment(training.date.toDate()).format("DDMMYYYY")}</div> */}
+            {/* {console.log(
+              moment(training.dateTime.toDate()).format("DDMMYYYY"),
+              "training de moment"
+            )} */}
           </div>
         </div>
       </div>
@@ -84,8 +90,8 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
-  console.log(trainings, "trainings");
-  console.log(training, "training");
+  // console.log(trainings, "trainings");
+  // console.log(training, "training");
 
   return {
     id: id,

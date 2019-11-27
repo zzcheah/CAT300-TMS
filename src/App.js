@@ -14,6 +14,7 @@ import ManageTag from "./components/manage/ManageTag";
 import ManageOrganizer from "./components/manage/ManageOrganizer";
 import CircularLoad from "./components/loading/CircularLoad";
 import ManageProfile from "./components/manage/ManageProfile";
+import CreateFeedback from "./components/feedback/CreateFeedback";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
           <Route path="/manageOrganizer" component={ManageOrganizer} />
           <Route path="/circularLoad" component={CircularLoad} />
           <Route path="/profile/:id" component={ManageProfile} />
+          <Route
+            path="/createFeedback/:trainingId"
+            component={CreateFeedback}
+          />
         </Switch>
       </div>
     </BrowserRouter>

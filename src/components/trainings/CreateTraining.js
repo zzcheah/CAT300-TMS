@@ -19,6 +19,7 @@ import Chips from "../utilities/Chips";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = theme => ({
   button: {
@@ -35,6 +36,8 @@ class CreateTraining extends Component {
     venue: "",
     imagePath: "",
     dateTime: null,
+    // date: null,
+    // time: null,
     price: 0,
     seat: 0,
     selectedTags: [],
@@ -170,6 +173,35 @@ class CreateTraining extends Component {
               <input type="text" id="venue" onChange={this.handleChange} />
             </div>
 
+            {/* ---------------------------------------------------------------------------------------------------------------------------------- */}
+            {/* <div>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                // defaultValue="2017-05-24"
+                // className={classes.textField}
+                onChange={this.handleChange}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <TextField
+                id="time"
+                label="Time"
+                type="time"
+                defaultValue="07:30"
+                onChange={this.handleChange}
+                // className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                inputProps={{
+                  step: 300 // 5 min
+                }}
+              />
+            </div> */}
+            {/* ---------------------------------------------------------------------------------------------------------------------------------- */}
             <div className="input-field">
               <label htmlFor="dateTime">Date and Time</label>
               <br />
