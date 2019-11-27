@@ -17,6 +17,10 @@ const createNotification = notification => {
     .then(doc => console.log("notification added", doc));
 };
 
+exports.refreshFM = functions.https.onRequest((request, response) => {
+  response.send("hello, world");
+});
+
 exports.projectCreated = functions.firestore
   .document("projects/{projectId}")
   .onCreate(doc => {

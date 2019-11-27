@@ -43,7 +43,9 @@ export default function FeatureMatrix(props) {
                 </TableCell>
               ))}
               {organizers.map(organizer => (
-                <TableCell align="center">{organizer.name}</TableCell>
+                <TableCell key={organizer.id} align="center">
+                  {organizer.name}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -54,21 +56,20 @@ export default function FeatureMatrix(props) {
                   <TableCell component="th" scope="row">
                     {trainingRow.name}
                   </TableCell>
-                  {trainingRow.vector.map(vec => (
-                    <TableCell align="center">
+                  {trainingRow.vector.map((vec, index) => (
+                    <TableCell key={index} align="center">
                       {vec ? <span>&#x2714;</span> : ""}
                     </TableCell>
                   ))}
                 </TableRow>
               );
             })}
-            <br />
             <TableRow key="emptyRow">
               <TableCell component="th" scope="row">
                 Users
               </TableCell>
-              {userRows[0].vector.map(() => (
-                <TableCell align="center"></TableCell>
+              {userRows[0].vector.map((val, index) => (
+                <TableCell key={index} align="center"></TableCell>
               ))}
             </TableRow>
             {userRows.map(userRow => {
@@ -77,8 +78,8 @@ export default function FeatureMatrix(props) {
                   <TableCell component="th" scope="row">
                     {userRow.name}
                   </TableCell>
-                  {userRow.vector.map(vec => (
-                    <TableCell align="center">
+                  {userRow.vector.map((vec, index) => (
+                    <TableCell key={index} align="center">
                       {vec ? <span>&#x2714;</span> : ""}
                     </TableCell>
                   ))}
