@@ -1,4 +1,5 @@
 import firebase from "../../config/fbConfig";
+import moment from "moment";
 
 export const createTraining = training => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -10,7 +11,9 @@ export const createTraining = training => {
       .collection("trainings")
       .add({
         ...training,
-        createdAt: new Date()
+        dateFormat: moment(training.dateTime).format("DDMMYYYY"),
+        createdAt: new Date(),
+        attendees: []
         // authorFirstName: profile.firstName,
         // authorLastName: profile.lastName,
         // authorId: authorId,

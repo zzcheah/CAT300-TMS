@@ -53,6 +53,7 @@ const ManageTag = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  // console.log(state, "state");
   return {
     auth: state.firebase.auth,
     tags: state.firestore.ordered.tags

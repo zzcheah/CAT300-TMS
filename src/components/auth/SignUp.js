@@ -15,6 +15,7 @@ class SignUp extends Component {
     firstName: "",
     lastName: "",
     selectedTags: []
+    // notification:false
   };
 
   componentWillMount() {
