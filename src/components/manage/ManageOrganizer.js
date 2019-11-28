@@ -4,7 +4,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
-import Popup from "reactjs-popup";
+// import Popup from "reactjs-popup";
 import CreateOrganizer from "./CreateOrganizer";
 import "../../style/listDisplay.css";
 import CircularLoad from "../loading/CircularLoad";

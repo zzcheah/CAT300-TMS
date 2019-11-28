@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 import { firestoreConnect } from "react-redux-firebase";
 
 import FeatureMatrix from "./FeatureMatrix";
@@ -75,23 +77,44 @@ class Recommendation extends React.Component {
     this.setState({ value: newValue });
   };
 
-  setVector = (userRows, trainingRows) => {
-    console.log("callback success");
-    this.props.setVector(userRows, trainingRows);
-  };
-
   createData(id, name, vector) {
     return { id, name, vector };
   }
+
+  handleClick = () => {
+    console.log("presssed");
+    var xhr = new XMLHttpRequest();
+
+    // get a callback when the server responds
+    xhr.addEventListener("load", () => {
+      // update the state of the component with the result here
+      console.log(xhr.responseText);
+    });
+    // open the request with the verb and the url
+    xhr.open(
+      "GET",
+      "https://us-central1-training-management-syst-79d28.cloudfunctions.net/refreshFM"
+    );
+    // send the request
+    xhr.send();
+  };
+
+  trainingRows = [];
+  userRows = [];
 
   render() {
     const { classes, organizers, tags, users, trainings } = this.props;
     const { value } = this.state;
 
-    const trainingRows = [];
-    const userRows = [];
-
-    if (organizers && tags && users && trainings) {
+    if (
+      organizers &&
+      tags &&
+      users &&
+      trainings &&
+      value === 0 &&
+      this.trainingRows.length === 0 &&
+      this.userRows.length === 0
+    ) {
       console.log("read!");
       trainings.map(training => {
         const vector = [];
@@ -104,7 +127,9 @@ class Recommendation extends React.Component {
           if (training.organizer === organizers[i].name) vector.push(true);
           else vector.push(false);
         }
-        trainingRows.push(this.createData(training.id, training.title, vector));
+        this.trainingRows.push(
+          this.createData(training.id, training.title, vector)
+        );
         return null;
       });
 
@@ -125,8 +150,7 @@ class Recommendation extends React.Component {
           }
         }
 
-        userRows.push(this.createData(user.id, user.firstName, vector));
-        // console.log(userRows);
+        this.userRows.push(this.createData(user.id, user.firstName, vector));
         return null;
       });
     }
@@ -153,13 +177,12 @@ class Recommendation extends React.Component {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            {organizers && tags && users && trainings ? (
+            {organizers && tags && users && trainings && value === 0 ? (
               <FeatureMatrix
                 tags={tags}
                 organizers={organizers}
-                userRows={userRows}
-                trainingRows={trainingRows}
-                parentCallback={this.setVector}
+                userRows={this.userRows}
+                trainingRows={this.trainingRows}
               />
             ) : (
               ""
@@ -167,10 +190,24 @@ class Recommendation extends React.Component {
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {/* <div>{this.props.temp ? this.props.temp[0].id : ""}</div> */}
+            {value === 1 ? (
+              <div>
+                {this.trainingRows.map((trainingRow, index) => (
+                  <div key={index}>
+                    {trainingRow.id}
+                    <br />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Page Three
+            {value === 2 ? <div>{console.log("test")}</div> : ""}
+            <Fab color="primary" aria-label="add" onClick={this.handleClick}>
+              <AddIcon />
+            </Fab>
           </TabPanel>
         </div>
       </React.Fragment>
@@ -179,7 +216,6 @@ class Recommendation extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state, "state");
   return {
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,
