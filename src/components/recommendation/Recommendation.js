@@ -133,7 +133,7 @@ class Recommendation extends React.Component {
 
     return (
       <React.Fragment>
-        <TitleBar />
+        {/* <TitleBar /> */}
         <CssBaseline />
         <div className={classes.root}>
           <AppBar position="static" color="inherit">

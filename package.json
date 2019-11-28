@@ -10,6 +10,7 @@
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-codemod": "^5.1.1",
+    "react-delay-render": "^0.1.2",
     "react-dom": "^16.11.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-redux": "^5.1.2",
