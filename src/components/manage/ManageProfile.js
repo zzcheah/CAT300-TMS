@@ -9,6 +9,9 @@ import TrainingSummary from "../trainings/TrainingSummary";
 import { Link } from "react-router-dom";
 import "../../style/popup.css";
 import "../../style/tag.css";
+import ProfileTrainingTabs from "./ProfileTrainingTabs";
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { compose } from "redux";
 
 class ManageProfile extends Component {
   state = {
@@ -50,10 +53,11 @@ class ManageProfile extends Component {
                 ))}
               </ul>
             </div>
-          </div>
-          <div className="card-action grey lighten-4 grey-text">
-            <span>Ticket(s) purchased</span>
-            {profile.trainings &&
+            {profile.trainings ? (
+              <ProfileTrainingTabs trainings={trainings} />
+            ) : null}
+            {/* <span>Ticket(s) purchased</span> */}
+            {/* {profile.trainings &&
               profile.trainings.map(trainingId => {
                 return (
                   <Link to={"/training/" + trainingId} key={trainingId}>
@@ -61,7 +65,7 @@ class ManageProfile extends Component {
                   </Link>
                   //   <p>{trainings[trainingId].title}</p>
                 );
-              })}
+              })} */}
           </div>
         </div>
       </div>
@@ -72,9 +76,10 @@ class ManageProfile extends Component {
 const mapStateToProps = (state, ownProps) => {
   const currentId = ownProps.match.params.id;
   console.log(ownProps, "ownProps");
+  console.log(state, "state");
 
   return {
-    trainings: state.firestore.data.trainings,
+    trainings: state.firestore.ordered.trainings,
     currentId: currentId,
     auth: state.firebase.auth,
     authUid: state.firebase.auth.uid,
@@ -82,10 +87,20 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    // createTag: tag => dispatch(createTag(tag))
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     // createTag: tag => dispatch(createTag(tag))
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageProfile);
+// export default connect(mapStateToProps)(ManageProfile);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(props => [
+    {
+      collection: "trainings",
+      orderBy: ["dateTime", "asc"],
+      where: [["attendees", "array-contains", props.match.params.id]]
+    }
+  ])
+)(ManageProfile);

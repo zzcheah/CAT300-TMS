@@ -23,6 +23,7 @@ import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
 import NotifSummary from "./NotifSummary";
 import { Link } from "react-router-dom";
+import NotificationsOffOutlinedIcon from "@material-ui/icons/NotificationsOffOutlined";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -251,7 +252,12 @@ const Notification = props => {
         onClick={handleToggle}
       >
         <Badge badgeContent={notif} color="secondary" showZero={false}>
-          <NotificationsIcon />
+          {notif != 0 ? (
+            <NotificationsIcon />
+          ) : (
+            <NotificationsOffOutlinedIcon />
+          )}
+          {/* <NotificationsIcon /> */}
         </Badge>
       </IconButton>
       {composite ? renderNotifSubMenu : null}

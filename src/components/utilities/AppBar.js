@@ -29,6 +29,7 @@ import Notification from "../Notification/Notification";
 import Profile from "../layout/Profile";
 import Manage from "../layout/Manage";
 import AddNew from "../layout/AddNew";
+import NotificationsOffOutlinedIcon from "@material-ui/icons/NotificationsOffOutlined";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -288,9 +289,11 @@ const PrimarySearchAppBar = props => {
               {isLoaded(auth) ? (
                 <Notification uid={auth.uid} />
               ) : (
-                <NotificationsIcon />
+                <NotificationsOffOutlinedIcon />
               )}
-              <Profile />
+              {/* <Profile /> */}
+
+              {isLoaded(auth) ? <Profile /> : <AccountCircle />}
             </div>
             <div className={classes.sectionMobile}>
               <IconButton

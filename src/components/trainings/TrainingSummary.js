@@ -8,7 +8,7 @@ const TrainingSummary = ({ training }) => {
         <span className="card-title">{training.title}</span>
         <p>Posted by {training.organizer} </p>
         <p className="grey-text">
-          {moment(training.createdAt.toDate()).calendar()}
+          DateTime: {moment(training.dateTime.toDate()).calendar()}
         </p>{" "}
         <div className="tags-input">
           <ul id="tags">
