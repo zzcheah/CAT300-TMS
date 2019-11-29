@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
-// import { Container } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import TitleBar from "../utilities/AppBar";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,6 +16,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { firestoreConnect } from "react-redux-firebase";
 
 import FeatureMatrix from "./FeatureMatrix";
+import MenuList from "../utilities/MenuList";
+import TrainingList from "../trainings/TrainingList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,9 +70,9 @@ const useStyles = theme => ({
 
 class Recommendation extends React.Component {
   state = {
-    value: 0
-    // userRows: [],
-    // trainingRows: []
+    value: 0,
+    currentUser: -1,
+    recTrainings: []
   };
 
   handleChange = (event, newValue) => {
@@ -92,66 +94,68 @@ class Recommendation extends React.Component {
     });
     // open the request with the verb and the url
     xhr.open(
-      "GET",
+      "POST",
       "https://us-central1-training-management-syst-79d28.cloudfunctions.net/refreshFM"
     );
     // send the request
     xhr.send();
   };
 
-  trainingRows = [];
-  userRows = [];
-
   render() {
-    const { classes, organizers, tags, users, trainings } = this.props;
-    const { value } = this.state;
+    const {
+      classes,
+      organizers,
+      tags,
+      users,
+      trainings,
+      userRows,
+      trainingRows
+    } = this.props;
+    const { value, currentUser, recTrainings } = this.state;
 
-    if (
-      organizers &&
-      tags &&
-      users &&
-      trainings &&
-      value === 0 &&
-      this.trainingRows.length === 0 &&
-      this.userRows.length === 0
-    ) {
-      console.log("read!");
-      trainings.map(training => {
-        const vector = [];
-        for (var i = 0; i < tags.length; i++) {
-          if (training.selectedTags.includes(tags[i].type)) vector.push(true);
-          else vector.push(false);
-        }
+    const uRows = [];
+    const tRows = [];
+    const usersData = [];
 
-        for (i = 0; i < organizers.length; i++) {
-          if (training.organizer === organizers[i].name) vector.push(true);
-          else vector.push(false);
+    const changeCurrentUser = id => {
+      var i;
+      for (i = 0; i < usersData.length; i++) {
+        if (id === usersData[i].id) {
+          break;
         }
-        this.trainingRows.push(
-          this.createData(training.id, training.title, vector)
-        );
-        return null;
+      }
+      if (i === usersData.length) {
+        this.setState({ currentUser: -1 });
+      } else {
+        var temp = [];
+        usersData[i].recommendation.forEach(rec => {
+          trainings.map(data => {
+            if (data.id === rec) {
+              temp.push(data);
+            }
+          });
+        });
+        this.setState({ currentUser: i, recTrainings: temp });
+      }
+    };
+
+    if (userRows && trainingRows) {
+      userRows.map(data => {
+        uRows.push(this.createData(data.id, data.name, data.vector));
       });
 
-      users.map(user => {
-        const vector = [];
-        for (var i = 0; i < tags.length; i++) {
-          if (user.tags.includes(tags[i].type)) vector.push(true);
-          else vector.push(false);
-        }
-        if (user.organizers) {
-          for (i = 0; i < organizers.length; i++) {
-            if (user.organizers.includes(organizers[i].name)) vector.push(true);
-            else vector.push(false);
-          }
-        } else {
-          for (i = 0; i < organizers.length; i++) {
-            vector.push(false);
-          }
-        }
+      trainingRows.map(data => {
+        tRows.push(this.createData(data.id, data.title, data.vector));
+      });
+    }
 
-        this.userRows.push(this.createData(user.id, user.firstName, vector));
-        return null;
+    if (users) {
+      users.map(data => {
+        usersData.push({
+          id: data.id,
+          text: data.firstName + " " + data.lastName,
+          recommendation: data.recommendation
+        });
       });
     }
 
@@ -169,46 +173,67 @@ class Recommendation extends React.Component {
             >
               <LinkTab
                 label="Feature Matrix"
-                href="/drafts"
+                href="/featurematrix"
                 {...a11yProps(0)}
               />
-              <LinkTab label="Page Two" href="/trash" {...a11yProps(1)} />
-              <LinkTab label="Page Three" href="/spam" {...a11yProps(2)} />
+              <LinkTab
+                label="Page Two"
+                href="/userrecommendation"
+                {...a11yProps(1)}
+              />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            {organizers && tags && users && trainings && value === 0 ? (
-              <FeatureMatrix
-                tags={tags}
-                organizers={organizers}
-                userRows={this.userRows}
-                trainingRows={this.trainingRows}
-              />
+            {uRows.length !== 0 && tRows.length !== 0 && tags && organizers ? (
+              <div>
+                <FeatureMatrix
+                  tags={tags}
+                  organizers={organizers}
+                  uRows={uRows}
+                  tRows={tRows}
+                />
+              </div>
             ) : (
               ""
             )}
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 ? (
-              <div>
-                {this.trainingRows.map((trainingRow, index) => (
-                  <div key={index}>
-                    {trainingRow.id}
-                    <br />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              ""
-            )}
+            <Container>
+              {value === 1 && usersData.length !== 0 ? (
+                <div>
+                  <div style={{ height: "20px" }} />
+                  <Typography className={classes.title} variant="h5" noWrap>
+                    Select User
+                  </Typography>
+                  <div style={{ height: "15px" }} />
+                  <MenuList
+                    options={usersData}
+                    parentCallback={changeCurrentUser}
+                    text="Select User"
+                  />
+                  {currentUser !== -1 ? (
+                    <div>
+                      <div style={{ height: "15px" }} />
+                      <hr />
+                      Recommended Trainings:
+                      <TrainingList trainings={recTrainings} />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </Container>
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          {/* <TabPanel value={value} index={2}>
             {value === 2 ? <div>{console.log("test")}</div> : ""}
             <Fab color="primary" aria-label="add" onClick={this.handleClick}>
               <AddIcon />
             </Fab>
-          </TabPanel>
+          </TabPanel> */}
         </div>
       </React.Fragment>
     );
@@ -220,7 +245,9 @@ const mapStateToProps = state => {
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
-    trainings: state.firestore.ordered.trainings
+    trainings: state.firestore.ordered.trainings,
+    userRows: state.firestore.ordered.userRows,
+    trainingRows: state.firestore.ordered.trainingRows
   };
 };
 
@@ -235,6 +262,8 @@ export default compose(
     { collection: "organizers", orderBy: ["name", "asc"] },
     { collection: "tags", orderBy: ["type", "asc"] },
     { collection: "users", orderBy: ["firstName", "asc"] },
-    { collection: "trainings", orderBy: ["title", "asc"] }
+    { collection: "trainings", orderBy: ["title", "asc"] },
+    { collection: "trainingRows", orderBy: ["title", "asc"] },
+    { collection: "userRows", orderBy: ["name", "asc"] }
   ])
 )(Recommendation);

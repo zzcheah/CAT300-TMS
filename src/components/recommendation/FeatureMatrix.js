@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function FeatureMatrix(props) {
   const classes = useStyles();
-  const { organizers, tags, userRows, trainingRows } = props;
+  const { organizers, tags, uRows, tRows } = props;
 
   return (
     <div className={classes.root}>
@@ -50,7 +50,7 @@ export default function FeatureMatrix(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {trainingRows.map(trainingRow => {
+            {tRows.map(trainingRow => {
               return (
                 <TableRow key={trainingRow.id}>
                   <TableCell component="th" scope="row">
@@ -68,11 +68,11 @@ export default function FeatureMatrix(props) {
               <TableCell component="th" scope="row">
                 Users
               </TableCell>
-              {userRows[0].vector.map((val, index) => (
+              {uRows[0].vector.map((val, index) => (
                 <TableCell key={index} align="center"></TableCell>
               ))}
             </TableRow>
-            {userRows.map(userRow => {
+            {uRows.map(userRow => {
               return (
                 <TableRow key={userRow.id}>
                   <TableCell component="th" scope="row">
