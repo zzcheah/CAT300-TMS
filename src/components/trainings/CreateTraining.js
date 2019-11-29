@@ -273,6 +273,7 @@ class CreateTraining extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     auth: state.firebase.auth,
     organizers: state.training.organizers,

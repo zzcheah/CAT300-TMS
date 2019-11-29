@@ -80,7 +80,7 @@ const ViewUserFeedback = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state, "state");
+  // console.log(state, "state");
 
   return {
     feedbacks: state.firestore.ordered.feedbacks

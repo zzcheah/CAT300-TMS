@@ -17,6 +17,8 @@ class ManageProfile extends Component {
   state = {
     type: ""
   };
+  // rendering = true;
+
   //   handleChange = e => {
   //     this.setState({
   //       [e.target.id]: e.target.value
@@ -30,10 +32,13 @@ class ManageProfile extends Component {
 
   render() {
     const { currentId, authUid, profile, auth, trainings } = this.props;
-    console.log(trainings, "check");
+    // console.log(trainings, "check");
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
     else if (currentId != authUid) return <Redirect to="/" />;
+    // setTimeout(() => {
+    //   this.rendering = true;
+    // }, 100);
 
     return (
       <div className="container section project-details">
@@ -58,14 +63,14 @@ class ManageProfile extends Component {
             ) : null}
             {/* <span>Ticket(s) purchased</span> */}
             {/* {profile.trainings &&
-              profile.trainings.map(trainingId => {
-                return (
-                  <Link to={"/training/" + trainingId} key={trainingId}>
-                    <TrainingSummary training={trainings[trainingId]} />
-                  </Link>
-                  //   <p>{trainings[trainingId].title}</p>
-                );
-              })} */}
+            profile.trainings.map(trainingId => {
+              return (
+                <Link to={"/training/" + trainingId} key={trainingId}>
+                  <TrainingSummary training={trainings[trainingId]} />
+                </Link>
+                //   <p>{trainings[trainingId].title}</p>
+              );
+            })} */}
           </div>
         </div>
       </div>
@@ -75,8 +80,8 @@ class ManageProfile extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const currentId = ownProps.match.params.id;
-  console.log(ownProps, "ownProps");
-  console.log(state, "state");
+  // console.log(ownProps, "ownProps");
+  // console.log(state, "state");
 
   return {
     trainings: state.firestore.ordered.trainings,

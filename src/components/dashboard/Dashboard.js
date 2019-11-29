@@ -30,7 +30,7 @@ class Dashboard extends Component {
       notifications,
       notif
     } = this.props;
-    console.log(test, "state from render");
+    console.log(test.firestore.ordered, "state from render");
 
     // console.log("Dashboard");
     // console.log(test, "test");
@@ -84,7 +84,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state, "state from map");
+  // console.log(state, "state from map");
 
   return {
     // projects: state.firestore.ordered.projects,

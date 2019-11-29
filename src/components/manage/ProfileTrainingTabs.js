@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import TrainingSummary from "../trainings/TrainingSummary";
 import moment from "moment";
+import CircularLoad from "../loading/CircularLoad";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,13 +48,13 @@ const useStyles = makeStyles(theme => ({
     width: 500
   }
 }));
+var rendering = false;
 
 export default function ProfileTrainingTabs(props) {
   console.log(props);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -61,6 +62,9 @@ export default function ProfileTrainingTabs(props) {
   const handleChangeIndex = index => {
     setValue(index);
   };
+  setTimeout(() => {
+    rendering = true;
+  }, 100);
 
   return (
     <div className={classes.root}>
@@ -115,4 +119,7 @@ export default function ProfileTrainingTabs(props) {
       </SwipeableViews>
     </div>
   );
+  // } else {
+  //   return <CircularLoad />;
+  // }
 }
