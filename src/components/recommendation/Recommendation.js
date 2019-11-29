@@ -206,7 +206,7 @@ class Recommendation extends React.Component {
                   <Typography className={classes.title} variant="h5" noWrap>
                     Select User
                   </Typography>
-                  <div style={{ height: "50px" }} />
+                  <div style={{ height: "15px" }} />
                   <MenuList
                     options={usersData}
                     parentCallback={changeCurrentUser}
@@ -214,6 +214,7 @@ class Recommendation extends React.Component {
                   />
                   {currentUser !== -1 ? (
                     <div>
+                      <div style={{ height: "15px" }} />
                       <hr />
                       Recommended Trainings:
                       <TrainingList trainings={recTrainings} />
