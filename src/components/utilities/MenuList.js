@@ -14,9 +14,9 @@ function DropDownMenu(props) {
   const classes = useStyles();
   const { options, text } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const ITEM_HEIGHT = 48;
-  // if (options[0] !== text) options.unshift(text);
+  //   if (options[0].text !== text) options.unshift({ text: text });
 
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget);
@@ -27,9 +27,8 @@ function DropDownMenu(props) {
   };
 
   const handleMenuItemClick = index => {
-    if (text === "Choose Tag") setSelectedIndex(0);
-    else setSelectedIndex(index);
-    props.parentCallback(options[index]);
+    setSelectedIndex(index);
+    props.parentCallback(options[index].id);
     setAnchorEl(null);
   };
 
@@ -42,7 +41,7 @@ function DropDownMenu(props) {
         aria-haspopup="true"
         onClick={handleClickListItem}
       >
-        {options[selectedIndex]}
+        {selectedIndex !== -1 ? options[selectedIndex].text : text}
       </Button>
       <Menu
         id="lock-menu"
@@ -61,11 +60,11 @@ function DropDownMenu(props) {
         </MenuItem>
         {options.map((option, index) => (
           <MenuItem
-            key={option}
+            key={index}
             selected={index === selectedIndex}
             onClick={() => handleMenuItemClick(index)}
           >
-            {option}
+            {option.text}
           </MenuItem>
         ))}
       </Menu>

@@ -8,6 +8,7 @@
     "firebase": "^7.4.0",
     "firebase-admin": "^8.8.0",
     "firebase-functions": "^3.3.0",
+    "js-priority-queue": "^0.1.5",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "react": "^16.11.0",

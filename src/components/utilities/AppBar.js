@@ -329,7 +329,7 @@ const PrimarySearchAppBar = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state, "from map");
+  // console.log(state, "from map");
   return {
     auth: state.firebase.auth,
     composite: state.firestore.composite
@@ -341,8 +341,8 @@ export default compose(
   firestoreConnect(props => [
     {
       collection: "notifications",
-      orderBy: ["dateTime", "desc"],
-      where: ["targets", "array-contains", props.uid]
+      orderBy: ["dateTime", "desc"]
+      // where: ["targets", "array-contains", props.uid]
     }
   ])
 )(PrimarySearchAppBar);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Notifications from "./Notifications";
-import ProjectList from "../projects/ProjectList";
+// import ProjectList from "../projects/ProjectList";
 import TrainingList from "../trainings/TrainingList";
 import { connect } from "react-redux";
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
@@ -8,11 +8,16 @@ import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
 import AppBar from "../utilities/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
+// import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import CircularLoad from "../loading/CircularLoad";
+import { testFM } from "../../store/actions/trainingActions";
 
 class Dashboard extends Component {
+  componentWillMount() {
+    // this.props.testFM();
+  }
+
   render() {
     const mystyle = {
       // height: "1000px",
@@ -94,11 +99,17 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    testFM: () => dispatch(testFM())
+  };
+};
+
 export default compose(
   firestoreConnect([
     // { collection: "projects", limit: 5, orderBy: ["createdAt", "desc"] },
     { collection: "trainings", orderBy: ["createdAt", "desc"] },
     { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
   ]),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Dashboard);
