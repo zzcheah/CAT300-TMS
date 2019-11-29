@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.33",
     "firebase": "^7.4.0",
     "firebase-admin": "^8.8.0",
     "firebase-functions": "^3.3.0",

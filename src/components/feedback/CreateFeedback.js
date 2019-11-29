@@ -8,18 +8,29 @@ import moment from "moment";
 import { Redirect } from "react-router-dom";
 import TrainingDetails from "../trainings/TrainingDetails";
 import CircularLoad from "../loading/CircularLoad";
+import Rating from "@material-ui/lab/Rating";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 class CreateFeedback extends Component {
   state = {
     trainingId: this.props.match.params.trainingId,
     feedback: "",
     // notificationId: this.props.match.params.notificationId,
-    trainingTitle: this.props.match.params.trainingTitle
+    trainingTitle: this.props.match.params.trainingTitle,
+    rate: 1
   };
   handleChange = e => {
-    console.log(this.state);
+    // console.log(e);
     this.setState({
       [e.target.id]: e.target.value
+    });
+  };
+  handleRating = (e, newValue) => {
+    // console.log(e);
+    console.log(this.state);
+    this.setState({
+      [e.target.name]: newValue
     });
   };
   handleSubmit = e => {
@@ -36,6 +47,7 @@ class CreateFeedback extends Component {
     // console.log(this.props);
     // console.log(this.state);
     const { auth, test, training } = this.props;
+    // const [value, setValue] = React.useState(2);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
     if (training) {
@@ -71,11 +83,26 @@ class CreateFeedback extends Component {
                 <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
               </div>
               <div className="card-action grey lighten-4 grey-text">
+                {/* form */}
                 <form onSubmit={this.handleSubmit} className="white">
                   <h5 className="grey-text text-darken-3">Create Feedback</h5>
-
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    component="fieldset"
+                    mb={3}
+                    borderColor="transparent"
+                  >
+                    <Rating
+                      name="rate"
+                      value={this.state.rate}
+                      onChange={this.handleRating}
+                      size="large"
+                    />
+                  </Box>
                   <div className="input-field">
-                    <label htmlFor="feedback">Feedback</label>
+                    {/* <label htmlFor="feedback">Feedback</label> */}
+
                     <textarea
                       id="feedback"
                       className="materialize-textarea"

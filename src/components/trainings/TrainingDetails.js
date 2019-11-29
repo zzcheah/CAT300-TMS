@@ -32,7 +32,11 @@ const TrainingDetails = props => {
         );
       } else {
         purchaseButton = (
-          <PurchaseTicket trainingid={id} organizer={training.organizer} />
+          <PurchaseTicket
+            trainingid={id}
+            organizer={training.organizer}
+            trainingTags={training.selectedTags}
+          />
         );
       }
     }

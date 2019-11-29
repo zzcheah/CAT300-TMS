@@ -13,7 +13,16 @@ export const purchaseTicket = ticket => {
     batch.update(usersRef, {
       trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId),
       organizers: firebase.firestore.FieldValue.arrayUnion(ticket.organizer)
+      // tags: firebase.firestore.FieldValue.arrayUnion(ticket.trainingTags)
     });
+
+    if (ticket.trainingTags) {
+      ticket.trainingTags.map(tag => {
+        batch.update(usersRef, {
+          tags: firebase.firestore.FieldValue.arrayUnion(tag)
+        });
+      });
+    }
 
     // Update 'training'
     var trainingRef = firestore.collection("trainings").doc(ticket.trainingId);
