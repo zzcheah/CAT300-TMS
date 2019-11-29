@@ -15,12 +15,16 @@ import ManageOrganizer from "./components/manage/ManageOrganizer";
 import CircularLoad from "./components/loading/CircularLoad";
 import ManageProfile from "./components/manage/ManageProfile";
 import CreateFeedback from "./components/feedback/CreateFeedback";
+import AppBar from "./components/utilities/AppBar.js";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        {/* {!auth.isEmpty && auth.isLoaded? */}
         <Navbar />
+        {/* <AppBar /> */}
+
         <Switch>
           {/* <Route exact path="/" component={Dashboard} /> */}
           <Route exact path="/" component={Dashboard} />
@@ -37,7 +41,7 @@ function App() {
           <Route path="/circularLoad" component={CircularLoad} />
           <Route path="/profile/:id" component={ManageProfile} />
           <Route
-            path="/createFeedback/:trainingId"
+            path="/createFeedback/:trainingTitle/:trainingId/:notificationId"
             component={CreateFeedback}
           />
         </Switch>
@@ -47,3 +51,14 @@ function App() {
 }
 
 export default App;
+
+// const mapStateToProps = state => {
+//   console.log(state, "from App.js");
+//   return {
+//     auth: state.firebase.auth,
+//     notif: state.firebase.profile.notif,
+
+//   };
+// };
+
+// export default connect(mapStateToProps)(App);

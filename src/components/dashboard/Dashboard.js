@@ -35,6 +35,8 @@ class Dashboard extends Component {
       notifications,
       notif
     } = this.props;
+    console.log(test, "state from render");
+
     // console.log("Dashboard");
     // console.log(test, "test");
     // console.log(test.auth.isLoaded, "auth.isLoaded");
@@ -56,7 +58,7 @@ class Dashboard extends Component {
       // }
       return (
         <React.Fragment>
-          <AppBar notif={notif} uid={auth.uid} style={{ zIndex: 0 }} />
+          {/* <AppBar /> */}
 
           {/* <CssBaseline /> */}
           <Container style={{ zIndex: -1 }}>
@@ -87,7 +89,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state, "state");
+  console.log(state, "state from map");
 
   return {
     // projects: state.firestore.ordered.projects,

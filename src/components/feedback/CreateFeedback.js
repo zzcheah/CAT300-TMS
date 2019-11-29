@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { createProject } from "../../store/actions/projectActions";
+import { createFeedback } from "../../store/actions/feedbackAction";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -11,30 +11,31 @@ import CircularLoad from "../loading/CircularLoad";
 
 class CreateFeedback extends Component {
   state = {
-    title: "",
-    feedback: ""
+    trainingId: this.props.match.params.trainingId,
+    feedback: "",
+    // notificationId: this.props.match.params.notificationId,
+    trainingTitle: this.props.match.params.trainingTitle
   };
   handleChange = e => {
+    console.log(this.state);
     this.setState({
       [e.target.id]: e.target.value
     });
   };
-  //   handleSubmit = e => {
-  //     e.preventDefault();
-  //     //  console.log(this.state)
-  //     this.props.createProject(this.state);
-  //     this.props.history.push("/");
-  //   };
+  handleSubmit = e => {
+    e.preventDefault();
+    //  console.log(this.state)
+    this.props.createFeedback(
+      this.state,
+      this.props.match.params.notificationId
+    );
+    this.props.history.push("/training/" + this.state.trainingId);
+  };
 
   render() {
-    const { auth, test, trainingId, training } = this.props;
-    // console.log("CreateFeedback");
-    // // console.log(test.auth.isEmpty, "auth.isEmpty");
-    // console.log(test.auth.isLoaded, "auth.isLoaded");
-    // // console.log(test.profile.isEmpty, "profile.isEmpty");
-    // console.log(test.profile.isLoaded, "profile.isLoaded");
-    // console.log("------------------------------");
-    // console.log(test);
+    // console.log(this.props);
+    // console.log(this.state);
+    const { auth, test, training } = this.props;
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
     if (training) {
@@ -103,28 +104,28 @@ class CreateFeedback extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state, "state");
-  console.log(ownProps, "ownProps");
+  // console.log(state, "state");
+  // console.log(ownProps, "ownProps");
   const id = ownProps.match.params.trainingId;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
 
   return {
     training: training,
-    auth: state.firebase.auth,
-    test: state.firebase,
-    trainingId: ownProps.match.params.trainingId
+    auth: state.firebase.auth
+    // notificationId: ownProps.match.params.notificationId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // createProject: project => dispatch(createProject(project))
+    createFeedback: (feedback, notifId) =>
+      dispatch(createFeedback(feedback, notifId))
   };
 };
 
 // export default connect(mapStateToProps, mapDispatchToProps)(CreateFeedback);
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(["trainings"])
 )(CreateFeedback);

@@ -4,21 +4,6 @@ export const purchaseTicket = ticket => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     //make asyn call to database
     const firestore = getFirestore();
-    //   const profile = getState().firebase.profile;
-    //   const authorId = getState().firebase.auth.uid;
-    // firestore
-    //   .collection("users")
-    //   .doc(ticket.userId)
-    //   .update({
-    //     trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId),
-    //     organizers: firebase.firestore.FieldValue.arrayUnion(ticket.organizer)
-    //   })
-    //   .then(() => {
-    //     dispatch({ type: "PURCHASE_TICKET", ticket });
-    //   })
-    //   .catch(err => {
-    //     dispatch({ type: "PURCHASE_TICKET_ERROR", err });
-    //   });
 
     // Get a new write batch
     var batch = firestore.batch();

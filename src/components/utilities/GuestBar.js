@@ -29,12 +29,13 @@ import Notification from "../Notification/Notification";
 import Profile from "../layout/Profile";
 import Manage from "../layout/Manage";
 import AddNew from "../layout/AddNew";
-import NotificationsOffOutlinedIcon from "@material-ui/icons/NotificationsOffOutlined";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
-    // zIndex: 50
+    "& > *": {
+      margin: theme.spacing(1)
+    }
   },
   paper: {
     marginRight: theme.spacing(2)
@@ -74,8 +75,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// export default function PrimarySearchAppBar() {
-const PrimarySearchAppBar = props => {
+// export default function GuestBar() {
+const GuestBar = props => {
   const { state, composite, notif, auth } = props;
   // console.log(auth.uid);
 
@@ -204,96 +205,29 @@ const PrimarySearchAppBar = props => {
     </Menu>
   );
 
-  ////////////////////////////////////notification submenu
-
-  // const renderNotifSubMenu = (
-  //   <Popper
-  //     open={open}
-  //     anchorEl={anchorRef.current}
-  //     role={undefined}
-  //     transition
-  //     // disablePortal
-  //   >
-  //     {({ TransitionProps, placement }) => (
-  //       <Grow
-  //         {...TransitionProps}
-  //         style={{
-  //           transformOrigin:
-  //             placement === "bottom" ? "center top" : "center bottom"
-  //         }}
-  //       >
-  //         <Paper>
-  //           <ClickAwayListener onClickAway={handleClose}>
-  //             <MenuList
-  //               autoFocusItem={open}
-  //               id="menu-list-grow"
-  //               onKeyDown={handleListKeyDown}
-  //             >
-  //               {Object.keys(composite.notifications).map(key => {
-  //                 return (
-  //                   <Link
-  //                     to={
-  //                       "/createFeedback/" +
-  //                       composite.notifications[key].trainingId
-  //                     }
-  //                     key={composite.notifications[key].trainingId}
-  //                   >
-  //                     <MenuItem onClick={handleClose} key={key}>
-  //                       <NotifSummary
-  //                         notification={composite.notifications[key]}
-  //                       />
-  //                       {/* {composite.notifications[key].trainingTitle} */}
-  //                     </MenuItem>
-  //                   </Link>
-  //                 );
-  //               })}
-  //             </MenuList>
-  //           </ClickAwayListener>
-  //         </Paper>
-  //       </Grow>
-  //     )}
-  //   </Popper>
-  // );
-
-  // return focus to the button when we transitioned from !open -> open
-
-  ////////////////////////////////////notification submenu
-
   return (
     <div className={classes.grow}>
       <AppBar position="static" color="inherit">
         <Container>
           <Toolbar>
-            <NavLink to="/">
-              <img
-                src={require("../../images/logo.png")}
-                alt="pmoinnovation"
-                className={classes.logo}
-              />
-            </NavLink>
+            <img
+              src={require("../../images/logo.png")}
+              alt="pmoinnovation"
+              className={classes.logo}
+            />
             <Typography className={classes.title} variant="h5" noWrap>
               PMO Innovations
             </Typography>
-
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <AddNew />
-              <Manage />
-              <NavLink to="/Recommendation">
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
-                </IconButton>
-              </NavLink>
-              {isLoaded(auth) ? (
-                <Notification uid={auth.uid} />
-              ) : (
-                <NotificationsOffOutlinedIcon />
-              )}
-              {/* <Profile /> */}
-
-              {isLoaded(auth) ? <Profile /> : <AccountCircle />}
+              <div className={classes.root}>
+                <NavLink to="/signin">
+                  <Button>Sign In</Button>
+                </NavLink>
+                <NavLink to="/signup">
+                  <Button>Register</Button>
+                </NavLink>
+              </div>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
@@ -333,4 +267,4 @@ export default compose(
   //     where: ["targets", "array-contains", "nqc6gqvpWSQZtHUvSGuufXKna2D2"]
   //   }
   // ])
-)(PrimarySearchAppBar);
+)(GuestBar);

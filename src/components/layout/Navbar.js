@@ -1,26 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { connect } from "react-redux";
+import AppBar from "../utilities/AppBar";
+import GuestBar from "../utilities/GuestBar";
+import CircularLoad from "../loading/CircularLoad";
 
 const Navbar = props => {
   const { auth, profile } = props;
-  const links = auth.isEmpty ? (
-    <SignedOutLinks />
-  ) : (
-    <SignedInLinks profile={profile} uid={auth.uid} />
-  );
-  return (
-    <nav className="nav-wrapper grey darken-3">
-      <div className="container">
-        <Link to="/" className="brand-logo left">
-          TMS
-        </Link>
-        {auth.isLoaded && links}
-      </div>
-    </nav>
-  );
+
+  if (auth.isEmpty && !auth.isLoaded) return null;
+  else if (auth.isEmpty && auth.isLoaded) return <GuestBar />;
+  else if (!auth.isEmpty && auth.isLoaded) return <AppBar />;
+
+  // return <div>{auth.isLoaded ? <AppBar /> : <GuestBar />}</div>;
 };
 
 const mapStateToProps = state => {
