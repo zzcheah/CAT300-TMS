@@ -42,27 +42,3 @@ export const purchaseTicket = ticket => {
       });
   };
 };
-
-// // Get a new write batch
-// var batch = firestore.batch();
-
-// // Update 'users'
-// var usersRef = firestore.collection("users").doc(ticket.userId);
-// batch.update({
-//   trainings: firebase.firestore.FieldValue.arrayUnion(ticket.trainingId),
-//   organizers: firebase.firestore.FieldValue.arrayUnion(ticket.organizer)
-// })
-
-// // Update 'training'
-// var trainingRef = firestore.collection("training").doc(ticket.trainingId);
-// batch.update({
-//   attendees: firebase.firestore.FieldValue.arrayUnion(ticket.userId)
-// })
-
-// // Commit the batch
-// batch.commit().then(() => {
-//   dispatch({ type: "PURCHASE_TICKET", ticket });
-// })
-// .catch(err => {
-//   dispatch({ type: "PURCHASE_TICKET_ERROR", err });
-// });

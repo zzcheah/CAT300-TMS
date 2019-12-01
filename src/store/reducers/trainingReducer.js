@@ -11,7 +11,7 @@ const trainingReducer = (state = initState, action) => {
       return state;
 
     case "CREATE_TRAINING_ERROR":
-      console.log("create prj error", action.err);
+      console.log("create training error", action.err);
       return state;
 
     case "SET_ORGANIZERS":

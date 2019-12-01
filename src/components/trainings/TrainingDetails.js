@@ -14,7 +14,7 @@ import ViewAllFeedbacks from "../feedback/ViewAllFeedbacks";
 import Button from "@material-ui/core/Button";
 
 const TrainingDetails = props => {
-  const { id, training, auth, profile } = props;
+  const { id, training, auth, profile, state } = props;
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
 
@@ -22,6 +22,7 @@ const TrainingDetails = props => {
   if (training) {
     var purchaseButton;
     if (training.dateTime.toDate() < moment()) {
+      // training that has passed
       purchaseButton = <p>Passed</p>;
     } else {
       if (profile.trainings && profile.trainings.includes(id)) {
@@ -40,6 +41,7 @@ const TrainingDetails = props => {
         );
       }
     }
+
     return (
       <div>
         <div className="container section training-details">
@@ -93,7 +95,9 @@ const TrainingDetails = props => {
               </div>
               <div>{training.venue} </div>
 
+              {/* <div>{moment().diff(training.dateTime.toDate(), "days")}</div> */}
               <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
+
               {/* <div>{moment(training.date.toDate()).format("DDMMYYYY")}</div> */}
               {/* {console.log(
               moment(training.dateTime.toDate()).format("DDMMYYYY"),
@@ -110,6 +114,8 @@ const TrainingDetails = props => {
       </div>
     );
   } else {
+    console.log("Load from trainingDetail");
+    console.log(state);
     return (
       <div className="container center">
         <CircularLoad />
@@ -125,10 +131,9 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const trainings = state.firestore.data.trainings;
   const training = trainings ? trainings[id] : null;
-  // console.log(trainings, "trainings");
-  // console.log(training, "training");
 
   return {
+    state: state,
     id: id,
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -138,7 +143,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([
-    { collection: "trainings", orderBy: ["createdAt", "desc"] }
-  ])
+  firestoreConnect([{ collection: "trainings", orderBy: ["dateTime", "asc"] }])
 )(TrainingDetails);

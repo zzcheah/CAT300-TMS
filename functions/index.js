@@ -2,6 +2,8 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
 const priorityQueue = require("js-priority-queue");
+const cors = require("cors")({ origin: true });
+var moment = require("moment");
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -16,6 +18,65 @@ const createNotification = notification => {
     .collection("notifications")
     .add(notification)
     .then(doc => console.log("notification added", doc));
+};
+
+const deleteNotification = id => {
+  return admin
+    .firestore()
+    .collection("notifications")
+    .doc(id)
+    .delete()
+    .then(console.log("notification deleted", id));
+};
+
+const sortByNotifTime = array_elements => {
+  const result = [];
+  uid = null;
+  numNotification = 0;
+
+  for (var i = 0; i < array_elements.length; i++) {
+    if (array_elements[i] != uid) {
+      if (numNotification > 0) {
+        result.push({
+          uid: uid,
+          numNotification: numNotification
+        });
+      }
+      uid = array_elements[i];
+      numNotification = 1;
+    } else {
+      numNotification++;
+    }
+  }
+  if (numNotification > 0) {
+    result.push({
+      uid: uid,
+      numNotification: numNotification
+    });
+  }
+  return result;
+};
+
+const getUnique = array => {
+  var uniqueArray = [];
+
+  // Loop through array values
+  for (i = 0; i < array.length; i++) {
+    if (uniqueArray.indexOf(array[i]) === -1) {
+      uniqueArray.push(array[i]);
+    }
+  }
+  return uniqueArray;
+};
+
+const updateUserNotification = target => {
+  return admin
+    .firestore()
+    .collection("users")
+    .doc(target.uid)
+    .update({ notif: target.numNotification })
+
+    .then(doc => console.log("notification times added", doc));
 };
 
 const updateRecommendation = () => {
@@ -251,3 +312,118 @@ exports.userJoined = functions.auth.user().onCreate(user => {
       return createNotification(notification);
     });
 });
+
+exports.sendDailyNotifications = functions.https.onRequest(
+  (request, response) => {
+    cors(request, response, () => {
+      const now = moment();
+      const dateFormatted = now.format("DDMMYYYY");
+
+      admin
+        .firestore()
+        .collection("trainings")
+        .where("dateFormat", "==", dateFormatted)
+        .get()
+        .then(querySnapshot => {
+          const promises = [];
+          querySnapshot.forEach(doc => {
+            const newNotification = doc.data();
+            const targets = newNotification.attendees;
+            const notification = {
+              targets: targets,
+              trainingTitle: `${newNotification.title}`,
+              trainingId: doc.id,
+              dateTime: newNotification.dateTime,
+              createdAt: admin.firestore.FieldValue.serverTimestamp()
+            };
+            const notif = createNotification(notification);
+            targets.forEach(tgt => {
+              promises.push(tgt);
+            });
+          });
+          return Promise.all(promises);
+        })
+        .then(snapshots => {
+          snapshots.sort();
+          const results = sortByNotifTime(snapshots);
+
+          results.forEach(target => {
+            return updateUserNotification(target);
+          });
+
+          // const uniqueTargets = getUnique(snapshots);
+          // uniqueTargets.forEach(target => {
+          //   return updateUserNotification(target);
+          // });
+          response.send(results);
+        })
+        .catch(error => {
+          console.log(error);
+          response.status(500).send(error);
+        });
+    });
+  }
+);
+
+exports.deleteEmptyNotification = functions.https.onRequest(
+  (request, response) => {
+    admin
+      .firestore()
+      .collection("notifications")
+      .get()
+      .then(querySnapshot => {
+        const promises = [];
+        querySnapshot.forEach(doc => {
+          if (doc.data().targets.length == 0) {
+            promises.push(doc.id);
+          }
+        });
+        return Promise.all(promises);
+
+        // response.send(promises);
+      })
+      .then(snapshots => {
+        snapshots.forEach(id => {
+          deleteNotification(id);
+        });
+        response.send(snapshots);
+      })
+      .catch(error => {
+        console.log(error);
+        response.status(500).send(error);
+      });
+  }
+);
+
+/////////////////////////////////////////////////////////////////////////
+exports.deleteOutdatedNotification = functions.https.onRequest(
+  (request, response) => {
+    cors(request, response, () => {
+      admin
+        .firestore()
+        .collection("notifications")
+        .get()
+        .then(querySnapshot => {
+          const promises = [];
+          const now = moment();
+          querySnapshot.forEach(doc => {
+            daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
+            if (daysDiff > 14) {
+              promises.push(doc.id);
+            }
+          });
+          return Promise.all(promises);
+        })
+        .then(snapshots => {
+          snapshots.forEach(id => {
+            deleteNotification(id);
+          });
+          response.send(snapshots);
+        })
+        .catch(error => {
+          console.log(error);
+          response.status(500).send(error);
+        });
+    });
+  }
+);

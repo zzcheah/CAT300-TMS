@@ -16,9 +16,6 @@ export const createTraining = training => {
         dateFormat: moment(training.dateTime).format("DDMMYYYY"),
         createdAt: new Date(),
         attendees: []
-        // authorFirstName: profile.firstName,
-        // authorLastName: profile.lastName,
-        // authorId: authorId,
       })
       .then(() => {
         dispatch({ type: "CREATE_TRAINING", training });

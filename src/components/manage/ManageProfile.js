@@ -12,34 +12,40 @@ import "../../style/tag.css";
 import ProfileTrainingTabs from "./ProfileTrainingTabs";
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import { compose } from "redux";
+import moment from "moment";
+import CircularLoad from "../loading/CircularLoad";
 
-class ManageProfile extends Component {
-  state = {
-    type: ""
-  };
-  // rendering = true;
+const ManageProfile = props => {
+  const { currentId, authUid, profile, auth, trainings } = props;
+  console.log(currentId, "current id");
+  console.log(authUid, "authUid");
 
-  //   handleChange = e => {
-  //     this.setState({
-  //       [e.target.id]: e.target.value
-  //     });
-  //   };
-  //   handleSubmit = e => {
-  //     e.preventDefault();
-  //     //  console.log(this.state)
-  //     this.props.createTag(this.state);
-  //   };
+  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+  else if (authUid && currentId != authUid) return <Redirect to="/" />;
 
-  render() {
-    const { currentId, authUid, profile, auth, trainings } = this.props;
-    // console.log(trainings, "check");
+  var pastTraining = [];
+  var comingTraining = [];
 
-    if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
-    else if (currentId != authUid) return <Redirect to="/" />;
-    // setTimeout(() => {
-    //   this.rendering = true;
-    // }, 100);
+  if (trainings) {
+    pastTraining = trainings.filter(
+      training =>
+        training.attendees.includes(currentId) &&
+        training.dateTime.toDate() < moment()
+    );
+    pastTraining.sort(function(a, b) {
+      return b.dateTime - a.dateTime;
+    });
+    comingTraining = trainings.filter(
+      training =>
+        training.attendees.includes(currentId) &&
+        training.dateTime.toDate() >= moment()
+    );
+    comingTraining.sort(function(a, b) {
+      return a.dateTime - b.dateTime;
+    });
+  }
 
+  if (profile) {
     return (
       <div className="container section project-details">
         <div className="card z-depth-0">
@@ -47,39 +53,39 @@ class ManageProfile extends Component {
             <span className="card-title">
               {profile.firstName} {profile.lastName}
             </span>
-            <p>Email: {auth.email}</p>
-            <span>Tag(s)</span>
+            {auth.email ? <p>Email: {auth.email}</p> : null}
+            {profile.tags ? <span>Tag(s)</span> : null}
+
             <div className="tags-input">
               <ul id="tags">
-                {profile.tags.map((tag, index) => (
-                  <li key={index} className="tag">
-                    <span className="tag-title">{tag}</span>
-                  </li>
-                ))}
+                {profile.tags
+                  ? profile.tags.map((tag, index) => (
+                      <li key={index} className="tag">
+                        <span className="tag-title">{tag}</span>
+                      </li>
+                    ))
+                  : null}
               </ul>
             </div>
-            {profile.trainings ? (
-              <ProfileTrainingTabs trainings={trainings} />
+            {trainings ? (
+              <ProfileTrainingTabs
+                pastTraining={pastTraining}
+                comingTraining={comingTraining}
+              />
             ) : null}
-            {/* <span>Ticket(s) purchased</span> */}
-            {/* {profile.trainings &&
-            profile.trainings.map(trainingId => {
-              return (
-                <Link to={"/training/" + trainingId} key={trainingId}>
-                  <TrainingSummary training={trainings[trainingId]} />
-                </Link>
-                //   <p>{trainings[trainingId].title}</p>
-              );
-            })} */}
           </div>
         </div>
       </div>
     );
+  } else {
+    return <CircularLoad />;
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   const currentId = ownProps.match.params.id;
+  // console.log(state);
+
   // console.log(ownProps, "ownProps");
   // console.log(state, "state");
 
@@ -101,11 +107,11 @@ const mapStateToProps = (state, ownProps) => {
 // export default connect(mapStateToProps)(ManageProfile);
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect(props => [
+  firestoreConnect([
     {
       collection: "trainings",
-      orderBy: ["dateTime", "asc"],
-      where: [["attendees", "array-contains", props.match.params.id]]
+      orderBy: ["dateTime", "asc"]
+      // where: [["attendees", "array-contains", props.match.params.id]]
     }
   ])
 )(ManageProfile);

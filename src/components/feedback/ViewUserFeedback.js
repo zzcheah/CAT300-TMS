@@ -39,15 +39,20 @@ const useStyles = makeStyles(theme => ({
 const ViewUserFeedback = props => {
   const classes = useStyles();
   const { feedbacks } = props;
+  var userFb = [];
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
   if (feedbacks) {
+    userFb = feedbacks.filter(
+      fb => fb.trainingId == props.trainingId && fb.userId == props.uid
+    );
+
     return (
       <div>
-        {feedbacks.map(feedback => {
+        {userFb.map(feedback => {
           return (
-            <div>
-              <div key={feedback.id}>
+            <div key={feedback.id}>
+              <div>
                 <Paper className={classes.root}>
                   <div className={classes.avat}>
                     <Avatar className={classes.purple}>
@@ -71,12 +76,16 @@ const ViewUserFeedback = props => {
         })}
       </div>
     );
-  } else
+  } else {
+    console.log("Load from viewUserFeedback");
+
     return (
       <div className="container center">
         <CircularLoad />
+        {/* <p>lala</p> */}
       </div>
     );
+  }
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -91,11 +100,11 @@ export default compose(
   connect(mapStateToProps),
   firestoreConnect(props => [
     {
-      collection: "feedbacks",
-      where: [
-        ["trainingId", "==", props.trainingId],
-        ["userId", "==", props.uid]
-      ]
+      collection: "feedbacks"
+      // where: [
+      //   ["trainingId", "==", props.trainingId],
+      //   ["userId", "==", props.uid]
+      // ]
     }
   ])
 )(ViewUserFeedback);

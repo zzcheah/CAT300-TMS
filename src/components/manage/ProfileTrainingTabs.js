@@ -48,10 +48,9 @@ const useStyles = makeStyles(theme => ({
     width: 500
   }
 }));
-var rendering = false;
 
 export default function ProfileTrainingTabs(props) {
-  console.log(props);
+  // console.log(props);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -62,9 +61,6 @@ export default function ProfileTrainingTabs(props) {
   const handleChangeIndex = index => {
     setValue(index);
   };
-  setTimeout(() => {
-    rendering = true;
-  }, 100);
 
   return (
     <div className={classes.root}>
@@ -88,38 +84,32 @@ export default function ProfileTrainingTabs(props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {props.trainings.map(training => {
-            if (training.dateTime.toDate() > moment()) {
+          {props.comingTraining ? (
+            props.comingTraining.map(training => {
               return (
                 <Link to={"/training/" + training.id} key={training.id}>
                   <TrainingSummary training={training} />
                 </Link>
               );
-            } else {
-              return null;
-            }
-          })}
+            })
+          ) : (
+            <p>You do not have any coming training</p>
+          )}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {props.trainings.map(training => {
-            if (training.dateTime.toDate() < moment()) {
+          {props.pastTraining ? (
+            props.pastTraining.map(training => {
               return (
                 <Link to={"/training/" + training.id} key={training.id}>
                   <TrainingSummary training={training} />
                 </Link>
               );
-            } else {
-              return null;
-            }
-          })}
+            })
+          ) : (
+            <p>You do not have any past training</p>
+          )}
         </TabPanel>
-        {/* <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
-        </TabPanel> */}
       </SwipeableViews>
     </div>
   );
-  // } else {
-  //   return <CircularLoad />;
-  // }
 }

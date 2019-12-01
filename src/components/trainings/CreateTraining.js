@@ -29,15 +29,12 @@ const useStyles = theme => ({
 
 class CreateTraining extends Component {
   state = {
-    // testvalues: [],
     title: "",
     description: "",
     organizer: "",
     venue: "",
     imagePath: "",
     dateTime: null,
-    // date: null,
-    // time: null,
     price: 0,
     seat: 0,
     selectedTags: [],
@@ -48,7 +45,12 @@ class CreateTraining extends Component {
 
   componentWillMount() {
     this.props.fetchOrganizers();
+
     this.props.fetchTags();
+  }
+
+  componentWillUnmount() {
+    delete this.state.training;
   }
 
   orgCallback = organizer => {
@@ -135,6 +137,7 @@ class CreateTraining extends Component {
   render() {
     const { auth, classes } = this.props;
     const { selectedTags, url } = this.state;
+    console.log(this.props);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
 
@@ -173,35 +176,6 @@ class CreateTraining extends Component {
               <input type="text" id="venue" onChange={this.handleChange} />
             </div>
 
-            {/* ---------------------------------------------------------------------------------------------------------------------------------- */}
-            {/* <div>
-              <TextField
-                id="date"
-                label="Date"
-                type="date"
-                // defaultValue="2017-05-24"
-                // className={classes.textField}
-                onChange={this.handleChange}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-              <TextField
-                id="time"
-                label="Time"
-                type="time"
-                defaultValue="07:30"
-                onChange={this.handleChange}
-                // className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                inputProps={{
-                  step: 300 // 5 min
-                }}
-              />
-            </div> */}
-            {/* ---------------------------------------------------------------------------------------------------------------------------------- */}
             <div className="input-field">
               <label htmlFor="dateTime">Date and Time</label>
               <br />

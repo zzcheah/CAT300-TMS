@@ -30,16 +30,6 @@ const ManageTag = props => {
             })}
           </div>
         </div>
-
-        {/* <div className="tags-input">
-          <ul id="tags">
-            {tags.map(tag => (
-              <li key={tag.type} className="tag">
-                <span className="tag-title">{tag.type}</span>
-              </li>
-            ))}
-          </ul>
-        </div> */}
         <CreateTag />
       </div>
     );
