@@ -3,7 +3,6 @@ import TrainingSummary from "./TrainingSummary";
 import { Link } from "react-router-dom";
 
 const TrainingList = ({ trainings }) => {
-  console.log("haha", trainings);
   return (
     <div className="training-list section">
       {trainings &&

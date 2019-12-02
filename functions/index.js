@@ -31,8 +31,8 @@ const deleteNotification = id => {
 
 const sortByNotifTime = array_elements => {
   const result = [];
-  uid = null;
-  numNotification = 0;
+  var uid = null;
+  var numNotification = 0;
 
   for (var i = 0; i < array_elements.length; i++) {
     if (array_elements[i] != uid) {
@@ -61,7 +61,7 @@ const getUnique = array => {
   var uniqueArray = [];
 
   // Loop through array values
-  for (i = 0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) {
     if (uniqueArray.indexOf(array[i]) === -1) {
       uniqueArray.push(array[i]);
     }
@@ -407,7 +407,7 @@ exports.deleteOutdatedNotification = functions.https.onRequest(
           const promises = [];
           const now = moment();
           querySnapshot.forEach(doc => {
-            daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
+            const daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
             if (daysDiff > 14) {
               promises.push(doc.id);
             }
@@ -427,3 +427,33 @@ exports.deleteOutdatedNotification = functions.https.onRequest(
     });
   }
 );
+
+exports.testCloud = functions.https.onRequest((request, response) => {
+  async function quickstart() {
+    console.log("yeayaey");
+    // Imports the Google Cloud client library
+    const language = require("@google-cloud/language");
+
+    // Instantiates a client
+    const client = new language.LanguageServiceClient();
+
+    // The text to analyze
+    const text = "The training is very bad";
+
+    const document = {
+      content: text,
+      type: "PLAIN_TEXT"
+    };
+
+    // Detects the sentiment of the text
+    const [result] = await client.analyzeSentiment({ document: document });
+    const sentiment = result.documentSentiment;
+
+    response.send(`Sentiment score: ${sentiment.score}`);
+    console.log(`Text: ${text}`);
+    console.log(`Sentiment score: ${sentiment.score}`);
+    console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+  }
+  quickstart();
+  return null;
+});

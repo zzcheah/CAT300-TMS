@@ -16,7 +16,7 @@ function DropDownMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const ITEM_HEIGHT = 48;
-  // if (options[0] !== text) options.unshift(text);
+  if (options[0] !== text) options.unshift(text);
 
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget);

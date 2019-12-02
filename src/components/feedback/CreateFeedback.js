@@ -86,6 +86,7 @@ class CreateFeedback extends Component {
                 {/* form */}
                 <form onSubmit={this.handleSubmit} className="white">
                   <h5 className="grey-text text-darken-3">Create Feedback</h5>
+                  How would you rate the training?
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -102,7 +103,7 @@ class CreateFeedback extends Component {
                   </Box>
                   <div className="input-field">
                     {/* <label htmlFor="feedback">Feedback</label> */}
-
+                    Add a comment about the quality of the training provided:
                     <textarea
                       id="feedback"
                       className="materialize-textarea"

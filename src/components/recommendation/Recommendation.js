@@ -177,7 +177,7 @@ class Recommendation extends React.Component {
                 {...a11yProps(0)}
               />
               <LinkTab
-                label="Page Two"
+                label="User Recommendation"
                 href="/userrecommendation"
                 {...a11yProps(1)}
               />

@@ -11,11 +11,13 @@ import AppBar from "../utilities/AppBar";
 // import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import CircularLoad from "../loading/CircularLoad";
-import { testFM } from "../../store/actions/trainingActions";
+import { testFM, testCloud } from "../../store/actions/trainingActions";
 
 class Dashboard extends Component {
   componentWillMount() {
+    console.log("gaga");
     // this.props.testFM();
+    this.props.testCloud();
   }
 
   render() {
@@ -35,7 +37,7 @@ class Dashboard extends Component {
       notifications,
       notif
     } = this.props;
-    console.log(test.firestore.ordered, "state from render");
+    // console.log(test.firestore.ordered, "state from render");
 
     // console.log("Dashboard");
     // console.log(test, "test");
@@ -103,7 +105,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    testFM: () => dispatch(testFM())
+    testFM: () => dispatch(testFM()),
+    testCloud: () => dispatch(testCloud())
   };
 };
 
