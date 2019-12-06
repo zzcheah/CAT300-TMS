@@ -17,6 +17,7 @@ import CircularLoad from "./components/loading/CircularLoad";
 import ManageProfile from "./components/manage/ManageProfile";
 import CreateFeedback from "./components/feedback/CreateFeedback";
 import LandingPage from "./components/layout/LandingPage";
+import SearchResult from "./components/recommendation/SearchResult";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/editTraining/:id" component={EditTraining} />
           <Route path="/recommendation" component={Recommendation} />
           <Route path="/feedback" component={FeedbackAnalysis} />
+          <Route path="/result/:tags" component={SearchResult} />
           <Route path="/manageTag" component={ManageTag} />
           <Route path="/manageOrganizer" component={ManageOrganizer} />
           <Route path="/circularLoad" component={CircularLoad} />

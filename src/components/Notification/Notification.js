@@ -22,6 +22,7 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
 import NotifSummary from "./NotifSummary";
+import NotifItem from "./NotifItem";
 import { Link } from "react-router-dom";
 import NotificationsOffOutlinedIcon from "@material-ui/icons/NotificationsOffOutlined";
 
@@ -195,7 +196,19 @@ const Notification = props => {
                 id="menu-list-grow"
                 onKeyDown={handleListKeyDown}
               >
-                {Object.keys(composite.notifications).map(key => {
+                {Object.entries(composite.notifications).map((notif, index) => {
+                  console.log("KEY1:", notif[0]);
+                  return (
+                    <MenuItem onClick={handleClose} key={index}>
+                      <NotifItem
+                        notification={{ id: notif[0], data: notif[1] }}
+                      />
+                    </MenuItem>
+                  );
+                  // console.log(notif);
+                })}
+                {/* {Object.keys(composite.notifications).map(key => {
+                  console.log("KEY2:", key);
                   return (
                     <Link
                       to={
@@ -212,11 +225,10 @@ const Notification = props => {
                         <NotifSummary
                           notification={composite.notifications[key]}
                         />
-                        {/* {composite.notifications[key].trainingTitle} */}
                       </MenuItem>
                     </Link>
                   );
-                })}
+                })} */}
               </MenuList>
             </ClickAwayListener>
           </Paper>

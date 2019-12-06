@@ -30,7 +30,7 @@ function Copyright() {
 
 const useStyles = theme => ({
   paper: {
-    marginTop: theme.spacing(20),
+    marginTop: theme.spacing(25),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -71,6 +71,7 @@ class LandingPage extends React.Component {
       selectedTags: selectedTags
     });
   };
+
   removeTag = tag => {
     const { selectedTags } = this.state;
     const { tags } = this.props;
@@ -89,10 +90,17 @@ class LandingPage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    delete this.state.inputSpace;
-    delete this.state.repeat;
-    this.props.createTraining(this.state);
-    this.props.history.push("/");
+    console.log(this.state);
+    // this.props.createTraining(this.state);
+    var temp = "";
+    this.state.selectedTags.forEach(element => {
+      temp += element + "&&";
+    });
+
+    const toPush = "/result/" + temp.substring(0, temp.length - 2);
+
+    // console.log(toPush);
+    this.props.history.push(toPush);
   };
 
   render() {
@@ -141,6 +149,7 @@ class LandingPage extends React.Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={selectedTags.length > 0 ? false : true}
               >
                 Search
               </Button>
@@ -166,7 +175,7 @@ const mapDispatchToProps = dispatch => {
     fetchTags: () => dispatch(fetchTags())
   };
 };
-// polyfill(CreateTraining);
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(useStyles)

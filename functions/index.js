@@ -198,8 +198,12 @@ exports.refreshFM = functions.https.onRequest((request, response) => {
       .collection("trainings")
       .get()
       .then(snapshot => {
+        const now = moment();
         snapshot.forEach(doc => {
-          trainings.push(doc);
+          const daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
+          if (daysDiff > 0) {
+            trainings.push(doc);
+          }
         });
       });
 
