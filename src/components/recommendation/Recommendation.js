@@ -128,13 +128,16 @@ class Recommendation extends React.Component {
         this.setState({ currentUser: -1 });
       } else {
         var temp = [];
-        usersData[i].recommendation.forEach(rec => {
-          trainings.map(data => {
-            if (data.id === rec) {
-              temp.push(data);
-            }
+        if (usersData[i].recommendation) {
+          usersData[i].recommendation.forEach(rec => {
+            trainings.map(data => {
+              if (data.id === rec) {
+                temp.push(data);
+              }
+            });
           });
-        });
+        }
+
         this.setState({ currentUser: i, recTrainings: temp });
       }
     };
@@ -226,6 +229,7 @@ class Recommendation extends React.Component {
               ) : (
                 ""
               )}
+              <br />
             </Container>
           </TabPanel>
           {/* <TabPanel value={value} index={2}>

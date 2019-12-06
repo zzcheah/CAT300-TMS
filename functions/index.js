@@ -295,24 +295,6 @@ exports.projectCreated = functions.firestore
     return createNotification(notification);
   });
 
-exports.userJoined = functions.auth.user().onCreate(user => {
-  return admin
-    .firestore()
-    .collection("users")
-    .doc(user.uid)
-    .get()
-    .then(doc => {
-      const newUser = doc.data();
-      const notification = {
-        content: "Joined the party",
-        user: `${newUser.firstName} ${newUser.lastName}`,
-        time: admin.firestore.FieldValue.serverTimestamp()
-      };
-
-      return createNotification(notification);
-    });
-});
-
 exports.sendDailyNotifications = functions.https.onRequest(
   (request, response) => {
     cors(request, response, () => {
@@ -428,32 +410,149 @@ exports.deleteOutdatedNotification = functions.https.onRequest(
   }
 );
 
-exports.testCloud = functions.https.onRequest((request, response) => {
-  async function quickstart() {
-    console.log("yeayaey");
-    // Imports the Google Cloud client library
-    const language = require("@google-cloud/language");
+exports.sentimentAnalyze = functions.firestore
+  .document("feedbacks/{feedbackId}")
+  .onCreate((snap, context) => {
+    // Get an object representing the document
+    // e.g. {'name': 'Marie', 'age': 66}
+    const comment = snap.data().feedback;
+    const id = snap.id;
+    const tid = snap.data().trainingId;
+    const db = admin.firestore();
+    // access a particular field as you would any JS property
+    // const name = newValue.name;
 
-    // Instantiates a client
-    const client = new language.LanguageServiceClient();
+    async function analyzeMood(id, tid, doc) {
+      const language = require("@google-cloud/language");
+      const client = new language.LanguageServiceClient();
 
-    // The text to analyze
-    const text = "The training is very bad";
+      const document = {
+        content: doc,
+        type: "PLAIN_TEXT"
+      };
 
-    const document = {
-      content: text,
-      type: "PLAIN_TEXT"
-    };
+      // Detects the sentiment of the text
+      const [result] = await client.analyzeSentiment({ document: document });
+      const [syntax] = await client.analyzeSyntax({ document });
 
-    // Detects the sentiment of the text
-    const [result] = await client.analyzeSentiment({ document: document });
-    const sentiment = result.documentSentiment;
+      const sentiment = result.documentSentiment;
 
-    response.send(`Sentiment score: ${sentiment.score}`);
-    console.log(`Text: ${text}`);
-    console.log(`Sentiment score: ${sentiment.score}`);
-    console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  }
-  quickstart();
-  return null;
-});
+      console.log(`Sentiment score: ${sentiment.score}`);
+      console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+
+      var words = [];
+
+      db.collection("trainings")
+        .doc(tid)
+        .collection("words")
+        .get()
+        .then(col => {
+          col.docs.map(doc => {
+            const word = doc.id;
+            if (!words.includes(word)) words.push(word);
+          });
+
+          syntax.tokens.forEach(part => {
+            // console.log("words: ", words);
+            if (part.partOfSpeech.tag === "ADJ") {
+              const word = part.text.content.toLowerCase();
+              if (!words.includes(word)) {
+                words.push(word);
+                db.collection("trainings")
+                  .doc(tid)
+                  .collection("words")
+                  .doc(word)
+                  .set({
+                    count: 1
+                  });
+              } else {
+                db.collection("trainings")
+                  .doc(tid)
+                  .collection("words")
+                  .doc(word)
+                  .update({
+                    count: admin.firestore.FieldValue.increment(1)
+                  });
+              }
+            }
+          });
+        });
+
+      db.collection("feedbacks")
+        .doc(id)
+        .update({ mood: sentiment.score });
+    }
+    return analyzeMood(id, tid, comment).then(() => {
+      console.log("DONE");
+    });
+  });
+
+// exports.testSyntax = functions.https.onRequest((request, response) => {
+//   const db = admin.firestore();
+
+//   async function analyzeMood() {
+//     const language = require("@google-cloud/language");
+//     const client = new language.LanguageServiceClient();
+
+//     const document = {
+//       content: "sad, happy excited, glad, boring",
+//       type: "PLAIN_TEXT"
+//     };
+
+//     // Detects the sentiment of the text
+//     const [result] = await client.analyzeSentiment({ document: document });
+//     const [syntax] = await client.analyzeSyntax({ document });
+
+//     const sentiment = result.documentSentiment;
+
+//     // console.log(`Sentiment score: ${sentiment.score}`);
+//     // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+//     // console.log("Tokens:");
+
+//     var words = [];
+
+//     db.collection("trainings")
+//       .doc("HYoOvNO9Lhe27S6Y90EV")
+//       .collection("words")
+//       .get()
+//       .then(col => {
+//         col.docs.map(doc => {
+//           const word = doc.id;
+//           if (!words.includes(word)) words.push(word);
+//         });
+
+//         syntax.tokens.forEach(part => {
+//           console.log("words: ", words);
+//           if (part.partOfSpeech.tag === "ADJ") {
+//             const word = part.text.content.toLowerCase();
+//             if (!words.includes(word)) {
+//               words.push(word);
+//               db.collection("trainings")
+//                 .doc("HYoOvNO9Lhe27S6Y90EV")
+//                 .collection("words")
+//                 .doc(word)
+//                 .set({
+//                   count: 1
+//                 });
+//             } else {
+//               db.collection("trainings")
+//                 .doc("HYoOvNO9Lhe27S6Y90EV")
+//                 .collection("words")
+//                 .doc(word)
+//                 .update({
+//                   count: admin.firestore.FieldValue.increment(1)
+//                 });
+//             }
+//           }
+//         });
+//       });
+
+//     // db
+//     //   .collection("feedbacks")
+//     //   .doc("HYoOvNO9Lhe27S6Y90EV")
+//     //   .update({ mood: sentiment.score });
+//   }
+//   return analyzeMood().then(() => {
+//     response.send("DONE");
+//   });
+// });

@@ -9,10 +9,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url(/img/background-v2.jpg) no-repeat;
+  /* background: url(/img/background-v2.jpg) no-repeat; */
   /* /* background-size: bottom; */
   background-size: 100% 100%;
-  background-color: black;
+  background-color: whitesmoke;
   min-height: 100%;
 }
 

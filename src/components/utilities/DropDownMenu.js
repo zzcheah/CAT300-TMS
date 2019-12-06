@@ -5,6 +5,9 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: "inline"
+  },
   button: {
     margin: theme.spacing(0)
   }
@@ -14,9 +17,8 @@ function DropDownMenu(props) {
   const classes = useStyles();
   const { options, text } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const ITEM_HEIGHT = 48;
-  if (options[0] !== text) options.unshift(text);
 
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget);
@@ -27,8 +29,9 @@ function DropDownMenu(props) {
   };
 
   const handleMenuItemClick = index => {
-    if (text === "Choose Tag") setSelectedIndex(0);
-    else setSelectedIndex(index);
+    if (text !== "Choose Organizer") {
+      setSelectedIndex(-1);
+    } else setSelectedIndex(index);
     props.parentCallback(options[index]);
     setAnchorEl(null);
   };
@@ -42,7 +45,8 @@ function DropDownMenu(props) {
         aria-haspopup="true"
         onClick={handleClickListItem}
       >
-        {options[selectedIndex]}
+        {/* {text === "Choose Organizer" ? text : options[selectedIndex]} */}
+        {selectedIndex !== -1 ? options[selectedIndex] : text}
       </Button>
       <Menu
         id="lock-menu"

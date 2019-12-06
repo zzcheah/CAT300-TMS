@@ -10,12 +10,13 @@ import CreateTraining from "./components/trainings/CreateTraining";
 import EditTraining from "./components/trainings/EditTraining";
 import TrainingDetails from "./components/trainings/TrainingDetails";
 import Recommendation from "./components/recommendation/Recommendation";
+import FeedbackAnalysis from "./components/feedback/FeedbackAnalysis";
 import ManageTag from "./components/manage/ManageTag";
 import ManageOrganizer from "./components/manage/ManageOrganizer";
 import CircularLoad from "./components/loading/CircularLoad";
 import ManageProfile from "./components/manage/ManageProfile";
 import CreateFeedback from "./components/feedback/CreateFeedback";
-import AppBar from "./components/utilities/AppBar.js";
+import LandingPage from "./components/layout/LandingPage";
 
 function App() {
   return (
@@ -23,11 +24,10 @@ function App() {
       <div className="App">
         {/* {!auth.isEmpty && auth.isLoaded? */}
         <Navbar />
-        {/* <AppBar /> */}
 
         <Switch>
           {/* <Route exact path="/" component={Dashboard} /> */}
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/" component={LandingPage} />
           <Route path="/project/:id" component={ProjectDetails} />
           <Route path="/training/:id" component={TrainingDetails} />
           <Route path="/signin" component={SignIn} />
@@ -36,6 +36,7 @@ function App() {
           <Route path="/createTraining" component={CreateTraining} />
           <Route path="/editTraining/:id" component={EditTraining} />
           <Route path="/recommendation" component={Recommendation} />
+          <Route path="/feedback" component={FeedbackAnalysis} />
           <Route path="/manageTag" component={ManageTag} />
           <Route path="/manageOrganizer" component={ManageOrganizer} />
           <Route path="/circularLoad" component={CircularLoad} />

@@ -77,33 +77,75 @@ export const setTags = tags => {
   };
 };
 
+export const fetchWords = id => {
+  return dispatch => {
+    firebase
+      .firestore()
+      .collection("trainings")
+      .doc(id)
+      .collection("words")
+      .get()
+      .then(snapshot => {
+        var words = [];
+        if (snapshot.docs.empty !== false) {
+          snapshot.docs.forEach(doc => {
+            const word = { text: doc.id, value: doc.data().count };
+            words.push(word);
+          });
+          dispatch(setWords(words));
+        }
+      });
+    // .collection("words")
+    // .get()
+    // .then(temp => console.log(temp));
+    // .then(snapshot => {
+    //   console.log(snapshot);
+    //   dispatch(setWords(snapshot));
+    //   console.log("should done first");
+    // });
+  };
+};
+
+export const setWords = words => {
+  return {
+    type: "SET_WORDS",
+    payload: words
+  };
+};
+
 export const testCloud = () => {
   return dispatch => {
-    async function quickstart() {
-      console.log("yeayaey");
-      // Imports the Google Cloud client library
-      const language = require("@google-cloud/language");
+    const db = firebase.firestore();
 
-      // Instantiates a client
-      const client = new language.LanguageServiceClient();
+    var words = [];
 
-      // The text to analyze
-      const text = "Hello, world!";
+    db.collection("trainings")
+      .doc("HYoOvNO9Lhe27S6Y90EV")
+      .collection("words")
+      .get()
+      .then(col => {
+        col.docs.map(doc => {
+          const word = doc.id.toLowerCase();
+          if (!words.includes(word)) words.push(word);
+          return null;
+        });
+        console.log(words);
+      });
 
-      const document = {
-        content: text,
-        type: "PLAIN_TEXT"
-      };
+    // db.collection("trainings")
+    //   .doc("86FxFGoQbu7jSkA3K48I")
+    //   .collection("words")
+    //   .get()
+    //   .then(col => console.log(col.docs[0].id));
 
-      // Detects the sentiment of the text
-      const [result] = await client.analyzeSentiment({ document: document });
-      const sentiment = result.documentSentiment;
-
-      console.log(`Text: ${text}`);
-      console.log(`Sentiment score: ${sentiment.score}`);
-      console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-    }
-    // quickstart();
+    // db.collection("trainings")
+    //   .doc("86FxFGoQbu7jSkA3K48I")
+    //   .collection("words")
+    //   .doc("happy")
+    //   .update({
+    //     count: firebase.firestore.FieldValue.increment(8)
+    //   })
+    //   .then(console.log("hahah"));
   };
 };
 

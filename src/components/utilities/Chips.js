@@ -6,7 +6,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: "10px",
     display: "flex",
-    justifyContent: "left",
     flexWrap: "wrap",
     "& > *": {
       margin: theme.spacing(0.5)
@@ -16,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Chips(props) {
   const classes = useStyles();
-  const { selectedTags } = props;
+  const { selectedTags, justify } = props;
   const [, setChipData] = React.useState(selectedTags);
 
   const handleDelete = chipToDelete => () => {
@@ -25,7 +24,7 @@ export default function Chips(props) {
   };
 
   return selectedTags ? (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ justifyContent: justify }}>
       {selectedTags.map(data => {
         return (
           <Chip

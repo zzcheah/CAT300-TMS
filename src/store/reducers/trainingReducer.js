@@ -1,7 +1,8 @@
 const initState = {
   trainings: [],
   organizers: [],
-  tags: []
+  tags: [],
+  words: []
 };
 
 const trainingReducer = (state = initState, action) => {
@@ -24,6 +25,12 @@ const trainingReducer = (state = initState, action) => {
       return {
         ...state,
         tags: action.payload
+      };
+
+    case "SET_WORDS":
+      return {
+        ...state,
+        words: action.payload
       };
 
     default:

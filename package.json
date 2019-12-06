@@ -25,6 +25,7 @@
     "react-search-multi-select": "^1.0.8",
     "react-star-rating-component": "^1.4.1",
     "react-swipeable-views": "^0.13.3",
+    "react-wordcloud": "^1.1.1",
     "reactjs-popup": "^1.5.0",
     "redux": "^4.0.4",
     "redux-firestore": "^0.9.0",

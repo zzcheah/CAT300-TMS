@@ -5,21 +5,21 @@ import {
   fetchTags
 } from "../../store/actions/trainingActions";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import "../../style/tag.css";
 import { storage } from "../../config/fbConfig";
 // import firebase from "../../config/fbConfig";
 // import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import DropDownMenu from "../utilities/DropDownMenu";
 import Chips from "../utilities/Chips";
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 
 const useStyles = theme => ({
   button: {
@@ -164,6 +164,7 @@ class CreateTraining extends Component {
 
             <div>
               <label htmlFor="organizer">Organizer</label>
+              <br />
               <DropDownMenu
                 options={this.props.organizers}
                 parentCallback={this.orgCallback}
@@ -225,6 +226,7 @@ class CreateTraining extends Component {
             <Chips
               selectedTags={selectedTags}
               parentCallback={this.removeTag}
+              justify="left"
             />
 
             <div className="input-field">
