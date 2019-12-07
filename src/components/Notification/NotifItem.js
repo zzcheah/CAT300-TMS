@@ -31,7 +31,7 @@ const NotifItem = ({ notification }) => {
 
   console.log(notification);
   return notification ? (
-    <Card className={classes.card} style={{ backgroundColor: "whitesmoke" }}>
+    <Card className={classes.card}>
       <CardContent>
         {/* <Typography
           className={classes.title}

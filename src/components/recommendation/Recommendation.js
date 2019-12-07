@@ -64,7 +64,8 @@ function LinkTab(props) {
 const useStyles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    // backgroundColor: theme.palette.background.paper
+    backgroundColor: "whitesmoke"
   }
 });
 

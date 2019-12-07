@@ -27,8 +27,8 @@ function App() {
         <Navbar />
 
         <Switch>
-          {/* <Route exact path="/" component={Dashboard} /> */}
           <Route exact path="/" component={LandingPage} />
+          <Route path="/dashboard" component={Dashboard} />
           <Route path="/project/:id" component={ProjectDetails} />
           <Route path="/training/:id" component={TrainingDetails} />
           <Route path="/signin" component={SignIn} />

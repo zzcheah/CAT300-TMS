@@ -189,7 +189,7 @@ const Notification = props => {
               placement === "bottom" ? "center top" : "center bottom"
           }}
         >
-          <Paper>
+          <Paper style={{ backgroundColor: "whitesmoke" }}>
             <ClickAwayListener onClickAway={handleClose}>
               <MenuList
                 autoFocusItem={open}

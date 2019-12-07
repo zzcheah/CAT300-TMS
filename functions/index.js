@@ -201,7 +201,7 @@ exports.refreshFM = functions.https.onRequest((request, response) => {
         const now = moment();
         snapshot.forEach(doc => {
           const daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
-          if (daysDiff > 0) {
+          if (daysDiff <= 0) {
             trainings.push(doc);
           }
         });

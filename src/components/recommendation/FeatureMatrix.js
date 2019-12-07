@@ -53,7 +53,7 @@ export default function FeatureMatrix(props) {
             {tRows.map(trainingRow => {
               return (
                 <TableRow key={trainingRow.id}>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" size="medium">
                     {trainingRow.name}
                   </TableCell>
                   {trainingRow.vector.map((vec, index) => (
