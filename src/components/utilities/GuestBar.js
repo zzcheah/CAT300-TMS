@@ -213,12 +213,12 @@ const GuestBar = props => {
             <NavLink to="/">
               <img
                 src={require("../../images/logo.png")}
-                alt="pmoinnovation"
+                alt="TMS logo"
                 className={classes.logo}
               />
             </NavLink>
             <Typography className={classes.title} variant="h5" noWrap>
-              PMO Innovations
+              Training Management System
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
