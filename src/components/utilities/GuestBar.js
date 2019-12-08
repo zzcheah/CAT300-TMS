@@ -213,7 +213,7 @@ const GuestBar = props => {
             <NavLink to="/">
               <img
                 src={require("../../images/logo.png")}
-                alt="tms"
+                alt="TMS logo"
                 className={classes.logo}
               />
             </NavLink>
