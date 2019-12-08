@@ -50,9 +50,19 @@ const TrainingDetails = props => {
               <span className="card-title">{training.title}</span>
 
               {training.url ? (
-                <img src={training.url} alt="test" />
+                <img
+                  src={training.url}
+                  alt="image"
+                  height="400px"
+                  weight="400px"
+                />
               ) : (
-                <p>null image</p>
+                <img
+                  src={require("../../images/training.jpg")}
+                  alt="no image"
+                  height="400px"
+                  weight="400px"
+                />
               )}
 
               <p>{training.description}</p>

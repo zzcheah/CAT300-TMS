@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 import Container from "@material-ui/core/Container";
 import CircularLoad from "../loading/CircularLoad";
@@ -33,6 +34,13 @@ class Dashboard extends Component {
     // console.log("------------------------------");
 
     // console.log(auth, "auth 1");
+    var comingTraining = [];
+    if (trainings) {
+      comingTraining = trainings.filter(
+        training => training.dateTime.toDate() >= moment()
+      );
+    }
+
     if (auth.isEmpty && !auth.isLoaded)
       return (
         <Container>
@@ -52,9 +60,10 @@ class Dashboard extends Component {
           <Container style={{ zIndex: -1 }}>
             <div className="row">
               <div className="col s12 m6">
+                <p>Available Training</p>
                 {/* <ProjectList projects={projects} /> */}
                 {!trainings ? <CircularLoad /> : null}
-                <TrainingList trainings={trainings} />
+                <TrainingList trainings={comingTraining} />
               </div>
               {/* <div className="col s12 m5 offset-m1">
                 <img
@@ -97,7 +106,7 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   firestoreConnect([
-    { collection: "trainings", orderBy: ["dateTime", "asc"] },
+    { collection: "trainings", orderBy: ["dateTime", "desc"] },
     { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
   ]),
   connect(mapStateToProps, mapDispatchToProps)

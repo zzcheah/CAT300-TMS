@@ -191,12 +191,14 @@ class CreateTraining extends Component {
             </div>
 
             <img
-              src={`${url}` || "https://img.mobiscroll.com/demos/fruit-4.png"}
+              src={`${url}` || require("../../images/noImage.png")}
               alt="placeholder"
+              height="250px"
+              weight="250px"
             />
 
             <div className="input-field">
-              <label htmlFor="imagePath">Image Path</label>
+              {/* <label htmlFor="imagePath"><br/>Image Path</label> */}
               <input
                 type="file"
                 id="imagePath"
