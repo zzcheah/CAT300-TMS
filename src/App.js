@@ -35,7 +35,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/create" component={CreateProject} />
           <Route path="/createTraining" component={CreateTraining} />
-          <Route path="/editTraining/:id" component={EditTraining} />
+          {/* <Route path="/editTraining/:id" component={EditTraining} /> */}
           <Route path="/recommendation" component={Recommendation} />
           <Route path="/feedback" component={FeedbackAnalysis} />
           <Route path="/result/:tags" component={SearchResult} />

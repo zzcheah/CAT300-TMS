@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authAction";
-import AppBar from "../utilities/AppBar";
 
 const SignedInLinks = props => {
   // console.log(props.uid, "lala props");

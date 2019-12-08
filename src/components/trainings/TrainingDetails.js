@@ -47,10 +47,6 @@ const TrainingDetails = props => {
         <div className="container section training-details">
           <div className="card z-depth-0">
             <div className="card-content">
-              <Link to={"/editTraining/" + id} key={id}>
-                <span className="right">Edit</span>
-              </Link>
-
               <span className="card-title">{training.title}</span>
 
               {training.url ? (
@@ -107,9 +103,8 @@ const TrainingDetails = props => {
           </div>
         </div>
         {auth.isLoaded ? (
-          <ViewUserFeedback uid={auth.uid} trainingId={id} />
-        ) : // <ViewAllFeedbacks trainingId={id} />
-        null}
+          <ViewAllFeedbacks trainingId={id} /> //<ViewUserFeedback uid={auth.uid} trainingId={id} />
+        ) : null}
         {/* view user feedback */}
       </div>
     );

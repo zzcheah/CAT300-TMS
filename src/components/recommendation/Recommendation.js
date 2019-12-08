@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
 import { Container } from "@material-ui/core";
-import TitleBar from "../utilities/AppBar";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import PropTypes from "prop-types";
@@ -11,8 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+
 import { firestoreConnect } from "react-redux-firebase";
 
 import FeatureMatrix from "./FeatureMatrix";

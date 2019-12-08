@@ -56,15 +56,7 @@ class CreateOrganizer extends Component {
                 <input type="text" id="name" onChange={this.handleChange} />
               </div>
               <div className="input-field">
-                <button
-                  className="btn pink lighten-1 z-depth-0"
-                  // onClick={() => {
-                  //   console.log("modal closed ");
-                  //   close();
-                  // }}
-                >
-                  Create
-                </button>
+                <button className="btn pink lighten-1 z-depth-0">Create</button>
               </div>
             </div>
           </form>

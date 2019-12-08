@@ -1,6 +1,4 @@
 import React from "react";
-import moment from "moment";
-import zIndex from "@material-ui/core/styles/zIndex";
 
 const Notifications = props => {
   const { notifications } = props;

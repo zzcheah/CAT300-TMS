@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import Notifications from "./Notifications";
-// import ProjectList from "../projects/ProjectList";
 import TrainingList from "../trainings/TrainingList";
 import { connect } from "react-redux";
-import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
-import AppBar from "../utilities/AppBar";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import CircularLoad from "../loading/CircularLoad";
 import { testFM, testCloud } from "../../store/actions/trainingActions";
@@ -16,27 +12,17 @@ import { testFM, testCloud } from "../../store/actions/trainingActions";
 class Dashboard extends Component {
   componentWillMount() {
     console.log("gaga");
-    // this.props.testFM();
     this.props.testCloud();
   }
 
   render() {
     const mystyle = {
-      // height: "1000px",
-      //backgroundColor: "DodgerBlue",
       padding: "10px",
       textAlign: "center",
       margin: "25px 100px 75px",
       paddingLeft: "300px"
     };
-    const {
-      test,
-      projects,
-      trainings,
-      auth,
-      notifications,
-      notif
-    } = this.props;
+    const { trainings, auth } = this.props;
     // console.log(test.firestore.ordered, "state from render");
 
     // console.log("Dashboard");
@@ -70,7 +56,7 @@ class Dashboard extends Component {
                 {!trainings ? <CircularLoad /> : null}
                 <TrainingList trainings={trainings} />
               </div>
-              <div className="col s12 m5 offset-m1">
+              {/* <div className="col s12 m5 offset-m1">
                 <img
                   src={require("../../images/ironman.jpg")}
                   alt="ironman"
@@ -82,7 +68,7 @@ class Dashboard extends Component {
                   alt="strawberry"
                 />
                 <Notifications notifications={notifications} />
-              </div>
+              </div> */}
             </div>
           </Container>
         </React.Fragment>
@@ -94,7 +80,6 @@ const mapStateToProps = state => {
   // console.log(state, "state from map");
 
   return {
-    // projects: state.firestore.ordered.projects,
     trainings: state.firestore.ordered.trainings,
     test: state,
     notif: state.firebase.profile.notif,
@@ -112,7 +97,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   firestoreConnect([
-    // { collection: "projects", limit: 5, orderBy: ["createdAt", "desc"] },
     { collection: "trainings", orderBy: ["dateTime", "asc"] },
     { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
   ]),

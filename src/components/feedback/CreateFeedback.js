@@ -4,19 +4,15 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import moment from "moment";
-
 import { Redirect } from "react-router-dom";
-import TrainingDetails from "../trainings/TrainingDetails";
 import CircularLoad from "../loading/CircularLoad";
 import Rating from "@material-ui/lab/Rating";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 class CreateFeedback extends Component {
   state = {
     trainingId: this.props.match.params.trainingId,
     feedback: "",
-    // notificationId: this.props.match.params.notificationId,
     trainingTitle: this.props.match.params.trainingTitle,
     rate: 1
   };
@@ -46,7 +42,7 @@ class CreateFeedback extends Component {
   render() {
     // console.log(this.props);
     // console.log(this.state);
-    const { auth, test, training } = this.props;
+    const { auth, training } = this.props;
     // const [value, setValue] = React.useState(2);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
@@ -141,7 +137,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     training: training,
     auth: state.firebase.auth
-    // notificationId: ownProps.match.params.notificationId
   };
 };
 

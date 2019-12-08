@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/actions/authAction";
 import Chips from "../utilities/Chips";
@@ -131,7 +129,6 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     authError: state.auth.authError,
     tags: state.training.tags
-    // test: state.firestore.data.tags
   };
 };
 
