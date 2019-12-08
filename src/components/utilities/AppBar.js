@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   title: {
-    display: "none",
+    display: "block",
     [theme.breakpoints.up("sm")]: {
       display: "block"
     }
@@ -269,12 +269,12 @@ const PrimarySearchAppBar = props => {
             <NavLink to="/">
               <img
                 src={require("../../images/logo.png")}
-                alt="pmoinnovation"
+                alt="tms"
                 className={classes.logo}
               />
             </NavLink>
             <Typography className={classes.title} variant="h5" noWrap>
-              PMO Innovations
+              Training Management System
             </Typography>
 
             <div className={classes.grow} />
