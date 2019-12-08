@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   title: {
-    display: "none",
+    display: "block",
     [theme.breakpoints.up("sm")]: {
       display: "block"
     }
