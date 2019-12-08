@@ -20,7 +20,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        PMO Innovations
+        Training Management System
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -30,7 +30,7 @@ function Copyright() {
 
 const useStyles = theme => ({
   paper: {
-    marginTop: theme.spacing(25),
+    marginTop: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -119,7 +119,11 @@ class LandingPage extends React.Component {
           <LockOutlinedIcon />
         </Avatar> */}
           <Typography component="h1" variant="h3">
-            PMO Innovations
+            <img
+              src={require("../../images/logo.png")}
+              alt="tms"
+              // style={{ height: "100px" }}
+            />
           </Typography>
           <form
             onSubmit={this.handleSubmit}
