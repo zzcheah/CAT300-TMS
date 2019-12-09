@@ -56,8 +56,8 @@ const NotifItem = ({ notification }) => {
         <Link
           to={
             "/createFeedback/" +
-            notification.data.trainingTitle +
-            "/" +
+            // notification.data.trainingTitle +
+            // "/" +
             notification.data.trainingId +
             "/" +
             notification.id

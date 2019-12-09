@@ -44,7 +44,7 @@ function App() {
           <Route path="/circularLoad" component={CircularLoad} />
           <Route path="/profile/:id" component={ManageProfile} />
           <Route
-            path="/createFeedback/:trainingTitle/:trainingId/:notificationId"
+            path="/createFeedback/:trainingId/:notificationId"
             component={CreateFeedback}
           />
         </Switch>

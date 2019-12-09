@@ -78,8 +78,8 @@ const useStyles = makeStyles(theme => ({
 
 // export default function PrimarySearchAppBar() {
 const PrimarySearchAppBar = props => {
-  const { state, composite, notif, auth } = props;
-  // console.log(auth.uid);
+  const { state, role, notif, auth } = props;
+  console.log(role, "role");
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -177,20 +177,6 @@ const PrimarySearchAppBar = props => {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-
-        {/* <IconButton
-          aria-label="show 17 new notifications"
-          color="inherit"
-          ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-          <Badge badgeContent={notif} color="secondary" showZero={false}>
-            <NotificationsIcon />
-          </Badge>
-        </IconButton> */}
-        {/* {renderNotifSubMenu} */}
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -205,59 +191,6 @@ const PrimarySearchAppBar = props => {
       </MenuItem>
     </Menu>
   );
-
-  ////////////////////////////////////notification submenu
-
-  // const renderNotifSubMenu = (
-  //   <Popper
-  //     open={open}
-  //     anchorEl={anchorRef.current}
-  //     role={undefined}
-  //     transition
-  //     // disablePortal
-  //   >
-  //     {({ TransitionProps, placement }) => (
-  //       <Grow
-  //         {...TransitionProps}
-  //         style={{
-  //           transformOrigin:
-  //             placement === "bottom" ? "center top" : "center bottom"
-  //         }}
-  //       >
-  //         <Paper>
-  //           <ClickAwayListener onClickAway={handleClose}>
-  //             <MenuList
-  //               autoFocusItem={open}
-  //               id="menu-list-grow"
-  //               onKeyDown={handleListKeyDown}
-  //             >
-  //               {Object.keys(composite.notifications).map(key => {
-  //                 return (
-  //                   <Link
-  //                     to={
-  //                       "/createFeedback/" +
-  //                       composite.notifications[key].trainingId
-  //                     }
-  //                     key={composite.notifications[key].trainingId}
-  //                   >
-  //                     <MenuItem onClick={handleClose} key={key}>
-  //                       <NotifSummary
-  //                         notification={composite.notifications[key]}
-  //                       />
-  //                       {/* {composite.notifications[key].trainingTitle} */}
-  //                     </MenuItem>
-  //                   </Link>
-  //                 );
-  //               })}
-  //             </MenuList>
-  //           </ClickAwayListener>
-  //         </Paper>
-  //       </Grow>
-  //     )}
-  //   </Popper>
-  // );
-
-  // return focus to the button when we transitioned from !open -> open
 
   ////////////////////////////////////notification submenu
 
@@ -304,7 +237,6 @@ const PrimarySearchAppBar = props => {
               ) : (
                 <NotificationsOffOutlinedIcon />
               )}
-              {/* <Profile /> */}
 
               {isLoaded(auth) ? <Profile /> : <AccountCircle />}
             </div>
@@ -329,11 +261,12 @@ const PrimarySearchAppBar = props => {
 };
 
 const mapStateToProps = state => {
-  // console.log(state, "from map");
+  // console.log(state, "from appbar");
   return {
     auth: state.firebase.auth,
     composite: state.firestore.composite,
-    notif: state.firebase.profile.notif
+    notif: state.firebase.profile.notif,
+    role: state.firebase.profile.role
   };
 };
 
