@@ -27,7 +27,8 @@ export const purchaseTicket = ticket => {
     // Update 'training'
     var trainingRef = firestore.collection("trainings").doc(ticket.trainingId);
     batch.update(trainingRef, {
-      attendees: firebase.firestore.FieldValue.arrayUnion(ticket.userId)
+      attendees: firebase.firestore.FieldValue.arrayUnion(ticket.userId),
+      seat: ticket.seat - 1
     });
 
     // Commit the batch

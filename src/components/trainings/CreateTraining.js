@@ -19,7 +19,12 @@ import DropDownMenu from "../utilities/DropDownMenu";
 import Chips from "../utilities/Chips";
 import Button from "@material-ui/core/Button";
 import CreateIcon from "@material-ui/icons/Create";
-// import TextField from "@material-ui/core/TextField";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = theme => ({
   button: {
@@ -38,8 +43,7 @@ class CreateTraining extends Component {
     price: 0,
     seat: 0,
     selectedTags: [],
-    inputSpace: "",
-    repeat: false,
+    empty: false,
     url: ""
   };
 
@@ -96,17 +100,34 @@ class CreateTraining extends Component {
   handleChange = e => {
     this.setState({
       [e.target.id]:
-        e.target.id === "dateTime" ? new Date(e.target.value) : e.target.value,
-      repeat: false
+        e.target.id === "dateTime" ? new Date(e.target.value) : e.target.value
+    });
+  };
+
+  handleAlert = e => {
+    const { empty } = this.state;
+    this.setState({
+      empty: !empty
     });
   };
 
   handleSubmit = e => {
-    e.preventDefault();
-    delete this.state.inputSpace;
-    delete this.state.repeat;
-    this.props.createTraining(this.state);
-    this.props.history.push("/");
+    if (
+      this.state.title == "" ||
+      this.state.description == "" ||
+      this.state.dateTime == null ||
+      this.state.organizer == "" ||
+      this.state.price == 0 ||
+      this.state.seat == "" ||
+      this.state.selectedTags == []
+    ) {
+      this.handleAlert();
+    } else {
+      e.preventDefault();
+      delete this.state.empty;
+      this.props.createTraining(this.state);
+      this.props.history.push("/");
+    }
   };
 
   handleImageUpload = e => {
@@ -136,7 +157,7 @@ class CreateTraining extends Component {
 
   render() {
     const { auth, classes } = this.props;
-    const { selectedTags, url } = this.state;
+    const { selectedTags, url, empty } = this.state;
     console.log(this.props);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
@@ -245,6 +266,28 @@ class CreateTraining extends Component {
             </div>
           </form>
         </Container>
+
+        <Dialog
+          onClose={this.handleAlert}
+          aria-labelledby="customized-dialog-title"
+          open={empty}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={this.handleAlert}>
+            <Typography gutterBottom color="error">
+              Alert
+            </Typography>
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom color="error">
+              Please fill in every field.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={this.handleAlert} color="secondary">
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   }

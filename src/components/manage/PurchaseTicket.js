@@ -12,7 +12,8 @@ class PurchaseTicket extends Component {
     userId: this.props.auth.uid,
     trainingId: this.props.trainingid,
     organizer: this.props.organizer,
-    trainingTags: this.props.trainingTags
+    trainingTags: this.props.trainingTags,
+    seat: this.props.seat
   };
   // handleChange = e => {
   //   this.setState({
