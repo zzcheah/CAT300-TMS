@@ -24,22 +24,27 @@ const TrainingDetails = props => {
     if (training.dateTime.toDate() < moment()) {
       // training that has passed
       purchaseButton = <p>Passed</p>;
+    } else if (profile.trainings && profile.trainings.includes(id)) {
+      purchaseButton = (
+        <button className="btn green lighten-1 z-depth-0 left" disabled>
+          Purchased
+        </button>
+      );
+    } else if (training && training.seat == 0) {
+      purchaseButton = (
+        <button className="btn green lighten-1 z-depth-0 left" disabled>
+          Out of Stock
+        </button>
+      );
     } else {
-      if (profile.trainings && profile.trainings.includes(id)) {
-        purchaseButton = (
-          <button className="btn green lighten-1 z-depth-0 left" disabled>
-            Purchased
-          </button>
-        );
-      } else {
-        purchaseButton = (
-          <PurchaseTicket
-            trainingid={id}
-            organizer={training.organizer}
-            trainingTags={training.selectedTags}
-          />
-        );
-      }
+      purchaseButton = (
+        <PurchaseTicket
+          trainingid={id}
+          organizer={training.organizer}
+          trainingTags={training.selectedTags}
+          seat={training.seat}
+        />
+      );
     }
 
     return (
@@ -147,6 +152,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default compose(
-  connect(mapStateToProps)
-  // firestoreConnect([{ collection: "trainings", orderBy: ["dateTime", "desc"] }])
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "trainings", orderBy: ["dateTime", "desc"] }])
 )(TrainingDetails);
