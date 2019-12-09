@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 const SearchResult = props => {
   const classes = useStyles();
   const { tagString, trainings } = props;
-  const tags = tagString.split("&&");
+  const tags = tagString.replace("&$", "#").split("&&");
   //   console.log(tags);
   // console.log(trainings);
   var result = [];
