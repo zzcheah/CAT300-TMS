@@ -13,7 +13,7 @@ class CreateFeedback extends Component {
   state = {
     trainingId: this.props.match.params.trainingId,
     feedback: "",
-    trainingTitle: this.props.title,
+    trainingTitle: "",
     rate: 1
   };
   handleChange = e => {
@@ -32,7 +32,9 @@ class CreateFeedback extends Component {
   handleSubmit = e => {
     e.preventDefault();
     //  console.log(this.state)
-
+    this.setState({
+      trainingTitle: this.props.training.title
+    });
     this.props.createFeedback(
       this.state,
       this.props.match.params.notificationId
@@ -147,7 +149,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     training: training,
-    title: training.title,
+    // title: training.title,
     auth: state.firebase.auth
   };
 };
