@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   card: {
+    width: "100%",
     minWidth: 275
   },
   bullet: {

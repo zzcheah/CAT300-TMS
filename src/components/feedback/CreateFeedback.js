@@ -60,14 +60,14 @@ class CreateFeedback extends Component {
                 {training.url ? (
                   <img
                     src={training.url}
-                    alt="image"
+                    alt="trainingImg"
                     width="auto"
                     style={{ maxHeight: "300px", maxWidth: "100%" }}
                   />
                 ) : (
                   <img
                     src={require("../../images/training.jpg")}
-                    alt="no image"
+                    alt="missing"
                     width="auto"
                     style={{ maxHeight: "300px", maxWidth: "100%" }}
                   />
@@ -87,11 +87,16 @@ class CreateFeedback extends Component {
                     ))}
                   </ul>
                 </div>
-                <div>organized by {training.organizer} </div>
-                <div>{training.venue} </div>
-                <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
+                <div
+                  className="card-action black lighten-4 white-text"
+                  style={{ paddingTop: "10px" }}
+                >
+                  <div>organized by {training.organizer} </div>
+                  <div>{training.venue} </div>
+                  <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
+                </div>
               </div>
-              <div className="card-action black lighten-4 white-text">
+              <div>
                 {/* form */}
                 <form onSubmit={this.handleSubmit} className="white">
                   <h5 className="grey-text text-darken-3">Create Feedback</h5>
