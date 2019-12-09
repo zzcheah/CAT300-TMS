@@ -14,6 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import Rating from "@material-ui/lab/Rating";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,11 +60,15 @@ const ViewUserFeedback = props => {
                       {feedback.initials}
                     </Avatar>
                     <Typography variant="h5" component="h1" gutterBottom>
+                      <Rating
+                        name="rate"
+                        value={feedback.rate}
+                        size="large"
+                        readOnly
+                      />
+                      <br />
                       {feedback.feedback}
                     </Typography>
-                    {/* <Typography variant="h5" component="h1" gutterBottom>
-                      {feedback.username}
-                    </Typography> */}
                   </div>
 
                   <Typography variant="caption" display="block">

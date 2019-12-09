@@ -10,11 +10,12 @@ import "../../style/listDisplay.css";
 import CircularLoad from "../loading/CircularLoad";
 
 const ManageTag = props => {
-  const { tags, auth } = props;
+  const { tags, auth, role } = props;
   console.log(tags, "tags");
 
   if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
-  if (tags) {
+  else if (role == "professional") return <Redirect to="/" />;
+  else if (role == "admin" && tags) {
     return (
       <div>
         <div className="container center">
@@ -46,7 +47,8 @@ const mapStateToProps = (state, ownProps) => {
   // console.log(state, "state");
   return {
     auth: state.firebase.auth,
-    tags: state.firestore.ordered.tags
+    tags: state.firestore.ordered.tags,
+    role: state.firebase.profile.role
   };
 };
 

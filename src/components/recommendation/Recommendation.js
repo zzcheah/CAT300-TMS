@@ -16,6 +16,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import FeatureMatrix from "./FeatureMatrix";
 import MenuList from "../utilities/MenuList";
 import TrainingList from "../trainings/TrainingList";
+import CircularLoad from "../loading/CircularLoad";
+import { Redirect } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -108,7 +110,9 @@ class Recommendation extends React.Component {
       users,
       trainings,
       userRows,
-      trainingRows
+      trainingRows,
+      auth,
+      role
     } = this.props;
     const { value, currentUser, recTrainings } = this.state;
 
@@ -160,97 +164,111 @@ class Recommendation extends React.Component {
         });
       });
     }
-
-    return (
-      <React.Fragment>
-        {/* <TitleBar /> */}
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar position="static" color="inherit">
-            <Tabs
-              variant="fullWidth"
-              value={value}
-              onChange={this.handleChange}
-              aria-label="nav tabs example"
-            >
-              <LinkTab
-                label="Feature Matrix"
-                href="/featurematrix"
-                {...a11yProps(0)}
-              />
-              <LinkTab
-                label="User Recommendation"
-                href="/userrecommendation"
-                {...a11yProps(1)}
-              />
-            </Tabs>
-          </AppBar>
-          <TabPanel value={value} index={0}>
-            {uRows.length !== 0 && tRows.length !== 0 && tags && organizers ? (
-              <div>
-                <FeatureMatrix
-                  tags={tags}
-                  organizers={organizers}
-                  uRows={uRows}
-                  tRows={tRows}
+    if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+    else if (role == "professional") return <Redirect to="/" />;
+    else if (role == "admin")
+      return (
+        <React.Fragment>
+          {/* <TitleBar /> */}
+          <CssBaseline />
+          <div className={classes.root}>
+            <AppBar position="static" color="inherit">
+              <Tabs
+                variant="fullWidth"
+                value={value}
+                onChange={this.handleChange}
+                aria-label="nav tabs example"
+              >
+                <LinkTab
+                  label="Feature Matrix"
+                  href="/featurematrix"
+                  {...a11yProps(0)}
                 />
-              </div>
-            ) : (
-              ""
-            )}
-            <br />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Container>
-              {value === 1 && usersData.length !== 0 ? (
+                <LinkTab
+                  label="User Recommendation"
+                  href="/userrecommendation"
+                  {...a11yProps(1)}
+                />
+              </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0}>
+              {uRows.length !== 0 &&
+              tRows.length !== 0 &&
+              tags &&
+              organizers ? (
                 <div>
-                  <div style={{ height: "20px" }} />
-                  <Typography className={classes.title} variant="h5" noWrap>
-                    Select User
-                  </Typography>
-                  <div style={{ height: "15px" }} />
-                  <MenuList
-                    options={usersData}
-                    parentCallback={changeCurrentUser}
-                    text="Select User"
+                  <FeatureMatrix
+                    tags={tags}
+                    organizers={organizers}
+                    uRows={uRows}
+                    tRows={tRows}
                   />
-                  {currentUser !== -1 ? (
-                    <div>
-                      <div style={{ height: "15px" }} />
-                      <hr />
-                      Recommended Trainings:
-                      <TrainingList trainings={recTrainings} />
-                    </div>
-                  ) : (
-                    ""
-                  )}
                 </div>
               ) : (
                 ""
               )}
               <br />
-            </Container>
-          </TabPanel>
-          {/* <TabPanel value={value} index={2}>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Container>
+                {value === 1 && usersData.length !== 0 ? (
+                  <div>
+                    <div style={{ height: "20px" }} />
+                    <Typography className={classes.title} variant="h5" noWrap>
+                      Select User
+                    </Typography>
+                    <div style={{ height: "15px" }} />
+                    <MenuList
+                      options={usersData}
+                      parentCallback={changeCurrentUser}
+                      text="Select User"
+                    />
+                    {currentUser !== -1 ? (
+                      <div>
+                        <div style={{ height: "15px" }} />
+                        <hr />
+                        Recommended Trainings:
+                        <TrainingList trainings={recTrainings} />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                ) : (
+                  ""
+                )}
+                <br />
+              </Container>
+            </TabPanel>
+            {/* <TabPanel value={value} index={2}>
             {value === 2 ? <div>{console.log("test")}</div> : ""}
             <Fab color="primary" aria-label="add" onClick={this.handleClick}>
               <AddIcon />
             </Fab>
           </TabPanel> */}
+          </div>
+        </React.Fragment>
+      );
+    else {
+      return (
+        <div className="container center">
+          <CircularLoad />
         </div>
-      </React.Fragment>
-    );
+      );
+    }
   }
 }
 
 const mapStateToProps = state => {
   return {
+    auth: state.firebase.auth,
     organizers: state.firestore.ordered.organizers,
     tags: state.firestore.ordered.tags,
     users: state.firestore.ordered.users,
     trainings: state.firestore.ordered.trainings,
     userRows: state.firestore.ordered.userRows,
-    trainingRows: state.firestore.ordered.trainingRows
+    trainingRows: state.firestore.ordered.trainingRows,
+    role: state.firebase.profile.role
   };
 };
 

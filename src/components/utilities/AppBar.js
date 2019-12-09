@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 
 // export default function PrimarySearchAppBar() {
 const PrimarySearchAppBar = props => {
-  const { state, role, notif, auth } = props;
+  const { state, role, notif, auth, initials } = props;
   console.log(role, "role");
 
   const classes = useStyles();
@@ -227,6 +227,7 @@ const PrimarySearchAppBar = props => {
                   </IconButton>
                 </NavLink>
               ) : null}
+
               {role && role == "admin" ? (
                 <NavLink to="/feedback">
                   <IconButton>
@@ -234,6 +235,11 @@ const PrimarySearchAppBar = props => {
                   </IconButton>
                 </NavLink>
               ) : null}
+              <NavLink to="/feedback">
+                <IconButton>
+                  <FeedbackIcon style={{ color: "black" }} />
+                </IconButton>
+              </NavLink>
 
               {isLoaded(auth) ? (
                 <Notification uid={auth.uid} />
@@ -243,14 +249,17 @@ const PrimarySearchAppBar = props => {
 
               {isLoaded(auth) ? <Profile /> : <AccountCircle />}
             </div>
-            <Typography
-              className={classes.title}
-              variant="subtitle1"
-              noWrap
-              style={{ maxWidth: "70px" }}
-            >
-              My name
-            </Typography>
+
+            {initials ? (
+              <Typography
+                className={classes.title}
+                variant="subtitle1"
+                noWrap
+                style={{ maxWidth: "70px" }}
+              >
+                {initials}
+              </Typography>
+            ) : null}
 
             <div className={classes.sectionMobile}>
               <IconButton
@@ -273,12 +282,13 @@ const PrimarySearchAppBar = props => {
 };
 
 const mapStateToProps = state => {
-  // console.log(state, "from appbar");
+  console.log(state, "from appbar");
   return {
     auth: state.firebase.auth,
     composite: state.firestore.composite,
     notif: state.firebase.profile.notif,
-    role: state.firebase.profile.role
+    role: state.firebase.profile.role,
+    initials: state.firebase.profile.initials
   };
 };
 

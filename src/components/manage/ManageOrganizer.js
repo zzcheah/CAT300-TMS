@@ -9,11 +9,12 @@ import "../../style/listDisplay.css";
 import CircularLoad from "../loading/CircularLoad";
 
 const ManageOrganizer = props => {
-  const { organizers, auth } = props;
+  const { organizers, auth, role } = props;
   console.log(organizers, "organizers");
 
   if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
-  if (organizers) {
+  else if (role == "professional") return <Redirect to="/" />;
+  else if (role == "admin" && organizers) {
     return (
       <div>
         <div className="container center">
@@ -45,7 +46,8 @@ const ManageOrganizer = props => {
 const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.firebase.auth,
-    organizers: state.firestore.ordered.organizers
+    organizers: state.firestore.ordered.organizers,
+    role: state.firebase.profile.role
   };
 };
 

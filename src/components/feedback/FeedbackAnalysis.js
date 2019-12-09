@@ -14,6 +14,8 @@ import RatingStatistics from "./RatingStatistics";
 import FeedbackList from "./FeedbackList";
 
 import { testCloud } from "../../store/actions/trainingActions";
+import CircularLoad from "../loading/CircularLoad";
+import { Redirect } from "react-router-dom";
 
 const useStyles = theme => ({
   root: {
@@ -37,7 +39,7 @@ class FeedbackAnalysis extends React.Component {
   }
 
   render() {
-    const { classes, feedbacks } = this.props;
+    const { classes, feedbacks, role, auth } = this.props;
 
     const { currentTraining, currentFB } = this.state;
 
@@ -72,96 +74,111 @@ class FeedbackAnalysis extends React.Component {
         return null;
       });
     }
-
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar position="static" color="inherit">
+    if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+    else if (role == "professional") return <Redirect to="/" />;
+    else if (role == "admin")
+      return (
+        <React.Fragment>
+          <CssBaseline />
+          <div className={classes.root}>
+            <AppBar position="static" color="inherit">
+              <Container>
+                <Toolbar>
+                  <Typography className={classes.title} variant="h5" noWrap>
+                    Feedback Analysis
+                  </Typography>
+                </Toolbar>
+              </Container>
+            </AppBar>
             <Container>
-              <Toolbar>
-                <Typography className={classes.title} variant="h5" noWrap>
-                  Feedback Analysis
-                </Typography>
-              </Toolbar>
-            </Container>
-          </AppBar>
-          <Container>
-            {trainingsData.length !== 0 ? (
-              <div>
-                <div style={{ height: "20px" }} />
-                <Typography className={classes.title} variant="h5" noWrap>
-                  Select Training
-                </Typography>
-                <div style={{ height: "20px" }} />
-                <MenuList
-                  options={trainingsData}
-                  parentCallback={changeCurrentTraining}
-                  text="Select Training"
-                />
-                <div style={{ height: "20px" }} />
+              {trainingsData.length !== 0 ? (
+                <div>
+                  <div style={{ height: "20px" }} />
+                  <Typography className={classes.title} variant="h5" noWrap>
+                    Select Training
+                  </Typography>
+                  <div style={{ height: "20px" }} />
+                  <MenuList
+                    options={trainingsData}
+                    parentCallback={changeCurrentTraining}
+                    text="Select Training"
+                  />
+                  <div style={{ height: "20px" }} />
 
-                {currentTraining !== -1 ? (
-                  <div>
+                  {currentTraining !== -1 ? (
                     <div>
-                      <hr />
-                      <div style={{ height: "20px" }} />
-                      <Typography className={classes.title} variant="h6" noWrap>
-                        Training Analysis:
-                      </Typography>
-                      <div style={{ height: "20px" }} />
-                    </div>
-                    <div className="row">
-                      <div className="col s5 ">
-                        <Typography
-                          className={classes.title}
-                          variant="h6"
-                          noWrap
-                        >
-                          Rating: <br />
-                          <div style={{ height: "20px" }} />
-                        </Typography>
-                        <RatingStatistics feedbacks={currentFB} />
-                      </div>
-                      <div className="col s7">
-                        <Typography
-                          className={classes.title}
-                          variant="h6"
-                          noWrap
-                        >
-                          Word Cloud: <br />
-                          <div style={{ height: "40px" }} />
-                        </Typography>
-                        {/* <div className="col s12 m5 offset-m1"> */}
-                        <WordCloud id={trainingsData[currentTraining].id} />
-                      </div>
-                      <div className="col s12 ">
-                        <div style={{ height: "20px" }} />
+                      <div>
                         <hr />
                         <div style={{ height: "20px" }} />
-
-                        <FeedbackList feedbacks={currentFB} />
+                        <Typography
+                          className={classes.title}
+                          variant="h6"
+                          noWrap
+                        >
+                          Training Analysis:
+                        </Typography>
+                        <div style={{ height: "20px" }} />
                       </div>
+                      <div className="row">
+                        <div className="col s5 ">
+                          <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                          >
+                            Rating: <br />
+                            <div style={{ height: "20px" }} />
+                          </Typography>
+                          <RatingStatistics feedbacks={currentFB} />
+                        </div>
+                        <div className="col s7">
+                          <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                          >
+                            Word Cloud: <br />
+                            <div style={{ height: "40px" }} />
+                          </Typography>
+                          {/* <div className="col s12 m5 offset-m1"> */}
+                          <WordCloud id={trainingsData[currentTraining].id} />
+                        </div>
+                        <div className="col s12 ">
+                          <div style={{ height: "20px" }} />
+                          <hr />
+                          <div style={{ height: "20px" }} />
+
+                          <FeedbackList feedbacks={currentFB} />
+                        </div>
+                      </div>
+                      <div style={{ height: "80px" }} />
                     </div>
-                    <div style={{ height: "80px" }} />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            ) : (
-              ""
-            )}
-          </Container>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </Container>
+          </div>
+        </React.Fragment>
+      );
+    else {
+      return (
+        <div className="container center">
+          <CircularLoad />
         </div>
-      </React.Fragment>
-    );
+      );
+    }
   }
 }
 
 const mapStateToProps = state => {
   return {
-    feedbacks: state.firestore.ordered.feedbacks
+    feedbacks: state.firestore.ordered.feedbacks,
+    auth: state.firebase.auth,
+    role: state.firebase.profile.role
   };
 };
 

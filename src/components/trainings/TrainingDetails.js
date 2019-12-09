@@ -14,7 +14,7 @@ import ViewAllFeedbacks from "../feedback/ViewAllFeedbacks";
 import Button from "@material-ui/core/Button";
 
 const TrainingDetails = props => {
-  const { id, training, auth, profile, state } = props;
+  const { id, training, auth, profile, state, role } = props;
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
 
@@ -117,9 +117,14 @@ const TrainingDetails = props => {
             </div>
           </div>
         </div>
-        {auth.isLoaded ? (
+        {auth.isLoaded && role == "admin" ? (
           <ViewAllFeedbacks trainingId={id} /> //<ViewUserFeedback uid={auth.uid} trainingId={id} />
         ) : null}
+
+        {auth.isLoaded && role == "professional" ? (
+          <ViewUserFeedback uid={auth.uid} trainingId={id} />
+        ) : null}
+
         <div style={{ height: "100px" }} />
         {/* view user feedback */}
       </div>
@@ -148,7 +153,8 @@ const mapStateToProps = (state, ownProps) => {
     id: id,
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    training: training
+    training: training,
+    role: state.firebase.profile.role
   };
 };
 

@@ -51,20 +51,13 @@ const ViewAllFeedbacks = props => {
           return (
             <div>
               <div key={feedback.id}>
-                <Paper className={classes.root}>
+                <Paper className={classes.root} elevation="8">
                   <div className={classes.avat}>
                     <Avatar className={classes.purple}>
                       {feedback.initials}
                     </Avatar>
 
                     <Typography variant="h5" component="h1" gutterBottom>
-                      {/* <Box
-                        display="flex"
-                        flexDirection="column"
-                        component="fieldset"
-                        mb={3}
-                        borderColor="transparent" 
-                      >*/}
                       <Rating
                         name="rate"
                         value={feedback.rate}
@@ -72,7 +65,6 @@ const ViewAllFeedbacks = props => {
                         readOnly
                       />
                       <br />
-                      {/* </Box> */}
                       {feedback.feedback}
                     </Typography>
                   </div>

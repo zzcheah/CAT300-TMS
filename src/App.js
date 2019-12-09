@@ -7,7 +7,6 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import CreateProject from "./components/projects/CreateProject";
 import CreateTraining from "./components/trainings/CreateTraining";
-import EditTraining from "./components/trainings/EditTraining";
 import TrainingDetails from "./components/trainings/TrainingDetails";
 import Recommendation from "./components/recommendation/Recommendation";
 import FeedbackAnalysis from "./components/feedback/FeedbackAnalysis";
@@ -35,7 +34,6 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/create" component={CreateProject} />
           <Route path="/createTraining" component={CreateTraining} />
-          {/* <Route path="/editTraining/:id" component={EditTraining} /> */}
           <Route path="/recommendation" component={Recommendation} />
           <Route path="/feedback" component={FeedbackAnalysis} />
           <Route path="/result/:tags" component={SearchResult} />

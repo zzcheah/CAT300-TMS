@@ -26,6 +26,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 
+import CircularLoad from "../loading/CircularLoad";
+
 const useStyles = theme => ({
   button: {
     margin: theme.spacing(0)
@@ -156,148 +158,167 @@ class CreateTraining extends Component {
   };
 
   render() {
-    const { auth, classes } = this.props;
+    const mystyle = {
+      padding: "10px",
+      textAlign: "center",
+      margin: "25px 100px 75px",
+      paddingLeft: "300px"
+    };
+    const { auth, classes, role } = this.props;
     const { selectedTags, url, empty } = this.state;
     console.log(this.props);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+    else if (role == "professional") return <Redirect to="/" />;
+    else if (role == "admin")
+      return (
+        <React.Fragment>
+          <CssBaseline />
+          <Container className="">
+            <form onSubmit={this.handleSubmit} className="white">
+              <h5 className="grey-text text-darken-3">Create Training</h5>
 
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <Container className="">
-          <form onSubmit={this.handleSubmit} className="white">
-            <h5 className="grey-text text-darken-3">Create Training</h5>
+              <div className="input-field">
+                <label htmlFor="title">Title</label>
+                <input type="text" id="title" onChange={this.handleChange} />
+              </div>
 
-            <div className="input-field">
-              <label htmlFor="title">Title</label>
-              <input type="text" id="title" onChange={this.handleChange} />
-            </div>
+              <div className="input-field">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  className="materialize-textarea"
+                  onChange={this.handleChange}
+                ></textarea>
+              </div>
 
-            <div className="input-field">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                className="materialize-textarea"
-                onChange={this.handleChange}
-              ></textarea>
-            </div>
+              <div>
+                <label htmlFor="organizer">Organizer</label>
+                <br />
+                <DropDownMenu
+                  options={this.props.organizers}
+                  parentCallback={this.orgCallback}
+                  text="Choose Organizer"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="organizer">Organizer</label>
-              <br />
-              <DropDownMenu
-                options={this.props.organizers}
-                parentCallback={this.orgCallback}
-                text="Choose Organizer"
+              <div className="input-field">
+                <label htmlFor="venue">Venue</label>
+                <input type="text" id="venue" onChange={this.handleChange} />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="dateTime">Date and Time</label>
+                <br />
+                <br />
+                <input
+                  type="datetime-local"
+                  id="dateTime"
+                  // min="2018-06-07T00:00"
+                  // max="2020-06-14T00:00"
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <img
+                src={`${url}` || require("../../images/noImage.png")}
+                alt="placeholder"
+                width="50%"
               />
-            </div>
 
-            <div className="input-field">
-              <label htmlFor="venue">Venue</label>
-              <input type="text" id="venue" onChange={this.handleChange} />
-            </div>
+              <div className="input-field">
+                {/* <label htmlFor="imagePath"><br/>Image Path</label> */}
+                <input
+                  type="file"
+                  id="imagePath"
+                  onChange={this.handleImageUpload}
+                />
+              </div>
 
-            <div className="input-field">
-              <label htmlFor="dateTime">Date and Time</label>
-              <br />
-              <br />
-              <input
-                type="datetime-local"
-                id="dateTime"
-                // min="2018-06-07T00:00"
-                // max="2020-06-14T00:00"
-                onChange={this.handleChange}
+              <div className="input-field">
+                <label htmlFor="price">Price</label>
+                <input type="number" id="price" onChange={this.handleChange} />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="seat">Seat</label>
+                <input type="number" id="seat" onChange={this.handleChange} />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="tags">Tag(s)</label>
+                <DropDownMenu
+                  options={this.props.tags}
+                  parentCallback={this.tagCallback}
+                  text="Choose Tag"
+                />
+              </div>
+
+              <Chips
+                selectedTags={selectedTags}
+                parentCallback={this.removeTag}
+                justify="left"
               />
-            </div>
 
-            <img
-              src={`${url}` || require("../../images/noImage.png")}
-              alt="placeholder"
-              width="50%"
-            />
+              <div className="input-field">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={classes.button}
+                  startIcon={<CreateIcon />}
+                  onClick={this.handleSubmit}
+                >
+                  Create
+                </Button>
+              </div>
+            </form>
+          </Container>
 
-            <div className="input-field">
-              {/* <label htmlFor="imagePath"><br/>Image Path</label> */}
-              <input
-                type="file"
-                id="imagePath"
-                onChange={this.handleImageUpload}
-              />
-            </div>
-
-            <div className="input-field">
-              <label htmlFor="price">Price</label>
-              <input type="number" id="price" onChange={this.handleChange} />
-            </div>
-
-            <div className="input-field">
-              <label htmlFor="seat">Seat</label>
-              <input type="number" id="seat" onChange={this.handleChange} />
-            </div>
-
-            <div className="input-field">
-              <label htmlFor="tags">Tag(s)</label>
-              <DropDownMenu
-                options={this.props.tags}
-                parentCallback={this.tagCallback}
-                text="Choose Tag"
-              />
-            </div>
-
-            <Chips
-              selectedTags={selectedTags}
-              parentCallback={this.removeTag}
-              justify="left"
-            />
-
-            <div className="input-field">
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={classes.button}
-                startIcon={<CreateIcon />}
-                onClick={this.handleSubmit}
-              >
-                Create
+          <Dialog
+            onClose={this.handleAlert}
+            aria-labelledby="customized-dialog-title"
+            open={empty}
+          >
+            <DialogTitle
+              id="customized-dialog-title"
+              onClose={this.handleAlert}
+            >
+              <Typography gutterBottom color="error">
+                Alert
+              </Typography>
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom color="error">
+                Please fill in every field.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleAlert} color="secondary">
+                ok
               </Button>
-            </div>
-          </form>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
+      );
+    else
+      return (
+        <Container>
+          <div className="container" style={mystyle}>
+            <CircularLoad />
+          </div>
         </Container>
-
-        <Dialog
-          onClose={this.handleAlert}
-          aria-labelledby="customized-dialog-title"
-          open={empty}
-        >
-          <DialogTitle id="customized-dialog-title" onClose={this.handleAlert}>
-            <Typography gutterBottom color="error">
-              Alert
-            </Typography>
-          </DialogTitle>
-          <DialogContent dividers>
-            <Typography gutterBottom color="error">
-              Please fill in every field.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={this.handleAlert} color="secondary">
-              ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
-    );
+      );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+  console.log(state, "state");
   return {
     auth: state.firebase.auth,
     organizers: state.training.organizers,
-    tags: state.training.tags
+    tags: state.training.tags,
+    role: state.firebase.profile.role
   };
 };
 
