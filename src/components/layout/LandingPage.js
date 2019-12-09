@@ -94,6 +94,7 @@ class LandingPage extends React.Component {
     // this.props.createTraining(this.state);
     var temp = "";
     this.state.selectedTags.forEach(element => {
+      if (element === "c#") element = "c&$";
       temp += element + "&&";
     });
 
