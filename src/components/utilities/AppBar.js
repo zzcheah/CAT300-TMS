@@ -235,11 +235,6 @@ const PrimarySearchAppBar = props => {
                   </IconButton>
                 </NavLink>
               ) : null}
-              <NavLink to="/feedback">
-                <IconButton>
-                  <FeedbackIcon style={{ color: "black" }} />
-                </IconButton>
-              </NavLink>
 
               {isLoaded(auth) ? (
                 <Notification uid={auth.uid} />

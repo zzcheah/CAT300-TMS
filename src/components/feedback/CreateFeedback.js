@@ -8,13 +8,19 @@ import { Redirect } from "react-router-dom";
 import CircularLoad from "../loading/CircularLoad";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 class CreateFeedback extends Component {
   state = {
     trainingId: this.props.match.params.trainingId,
     feedback: "",
-    trainingTitle: "",
-    rate: 1
+    rate: 1,
+    empty: false
   };
   handleChange = e => {
     // console.log(e);
@@ -30,22 +36,37 @@ class CreateFeedback extends Component {
     });
   };
   handleSubmit = e => {
-    e.preventDefault();
-    //  console.log(this.state)
+    if (this.state.feedback == "") {
+      e.preventDefault();
+
+      this.handleAlert();
+    } else {
+      e.preventDefault();
+      //  console.log(this.state)
+      delete this.state.empty;
+
+      this.props.createFeedback(
+        this.state,
+        this.props.match.params.notificationId,
+        this.props.training.title
+      );
+      this.props.history.push("/training/" + this.state.trainingId);
+    }
+  };
+
+  handleAlert = e => {
+    const { empty } = this.state;
     this.setState({
-      trainingTitle: this.props.training.title
+      empty: !empty
     });
-    this.props.createFeedback(
-      this.state,
-      this.props.match.params.notificationId
-    );
-    this.props.history.push("/training/" + this.state.trainingId);
   };
 
   render() {
     // console.log(this.props);
     // console.log(this.state);
     const { auth, training, title } = this.props;
+    const { empty } = this.state;
+
     // const [value, setValue] = React.useState(2);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
@@ -133,6 +154,30 @@ class CreateFeedback extends Component {
               </div>
             </div>
           </div>
+          <Dialog
+            onClose={this.handleAlert}
+            aria-labelledby="customized-dialog-title"
+            open={empty}
+          >
+            <DialogTitle
+              id="customized-dialog-title"
+              onClose={this.handleAlert}
+            >
+              <Typography gutterBottom color="error">
+                Alert
+              </Typography>
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom color="error">
+                Please fill in type of tag.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleAlert} color="secondary">
+                ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       );
     } else {
@@ -161,8 +206,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createFeedback: (feedback, notifId) =>
-      dispatch(createFeedback(feedback, notifId))
+    createFeedback: (feedback, notifId, title) =>
+      dispatch(createFeedback(feedback, notifId, title))
   };
 };
 

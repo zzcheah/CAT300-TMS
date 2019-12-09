@@ -1,6 +1,6 @@
 import firebase from "../../config/fbConfig.js";
 
-export const createFeedback = (feedback, notificationId) => {
+export const createFeedback = (feedback, notificationId, title) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     //make asyn call to database
     const firestore = getFirestore();
@@ -15,6 +15,7 @@ export const createFeedback = (feedback, notificationId) => {
     var feedbackRef = firestore.collection("feedbacks").doc();
     batch.set(feedbackRef, {
       ...feedback,
+      trainingTitle: title,
       userId: userId,
       initials: profile.initials,
       username: profile.firstName + " " + profile.lastName,
