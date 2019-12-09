@@ -14,11 +14,13 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import Rating from "@material-ui/lab/Rating";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1, 2, 0, 3),
-    margin: "0px 300px 3px 300px"
+    margin: "0px 300px 20px 300px"
   },
   avat: {
     display: "flex",
@@ -54,12 +56,25 @@ const ViewAllFeedbacks = props => {
                     <Avatar className={classes.purple}>
                       {feedback.initials}
                     </Avatar>
+
                     <Typography variant="h5" component="h1" gutterBottom>
+                      {/* <Box
+                        display="flex"
+                        flexDirection="column"
+                        component="fieldset"
+                        mb={3}
+                        borderColor="transparent" 
+                      >*/}
+                      <Rating
+                        name="rate"
+                        value={feedback.rate}
+                        size="large"
+                        readOnly
+                      />
+                      <br />
+                      {/* </Box> */}
                       {feedback.feedback}
                     </Typography>
-                    {/* <Typography variant="h5" component="h1" gutterBottom>
-                      {feedback.username}
-                    </Typography> */}
                   </div>
 
                   <Typography variant="caption" display="block">

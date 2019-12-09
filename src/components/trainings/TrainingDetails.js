@@ -65,7 +65,8 @@ const TrainingDetails = props => {
                 <img
                   src={require("../../images/training.jpg")}
                   alt="no image"
-                  width="100%"
+                  width="auto"
+                  style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
               )}
 

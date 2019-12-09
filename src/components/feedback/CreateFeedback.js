@@ -56,12 +56,18 @@ class CreateFeedback extends Component {
                 <span className="card-title">{training.title}</span>
 
                 {training.url ? (
-                  <img src={training.url} alt="image" width="100%" />
+                  <img
+                    src={training.url}
+                    alt="image"
+                    width="auto"
+                    style={{ maxHeight: "300px", maxWidth: "100%" }}
+                  />
                 ) : (
                   <img
                     src={require("../../images/training.jpg")}
                     alt="no image"
-                    width="100%"
+                    width="auto"
+                    style={{ maxHeight: "300px", maxWidth: "100%" }}
                   />
                 )}
 
@@ -83,7 +89,7 @@ class CreateFeedback extends Component {
                 <div>{training.venue} </div>
                 <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
               </div>
-              <div className="card-action grey lighten-4 grey-text">
+              <div className="card-action black lighten-4 white-text">
                 {/* form */}
                 <form onSubmit={this.handleSubmit} className="white">
                   <h5 className="grey-text text-darken-3">Create Feedback</h5>

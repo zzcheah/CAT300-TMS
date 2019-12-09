@@ -206,7 +206,7 @@ const PrimarySearchAppBar = props => {
                 className={classes.logo}
               />
             </NavLink>
-            <Typography className={classes.title} variant="h5" noWrap>
+            <Typography className={classes.title} variant="h5">
               Training Management System
             </Typography>
 
@@ -218,19 +218,22 @@ const PrimarySearchAppBar = props => {
                 </IconButton>
               </NavLink>
 
-              <AddNew />
-              <Manage />
-              <NavLink to="/Recommendation">
-                <IconButton aria-label="show 4 new mails">
-                  <TableChartIcon style={{ color: "black" }} />
-                </IconButton>
-              </NavLink>
-
-              <NavLink to="/feedback">
-                <IconButton>
-                  <FeedbackIcon style={{ color: "black" }} />
-                </IconButton>
-              </NavLink>
+              {role && role == "admin" ? <AddNew /> : null}
+              {role && role == "admin" ? <Manage /> : null}
+              {role && role == "admin" ? (
+                <NavLink to="/Recommendation">
+                  <IconButton aria-label="show 4 new mails">
+                    <TableChartIcon style={{ color: "black" }} />
+                  </IconButton>
+                </NavLink>
+              ) : null}
+              {role && role == "admin" ? (
+                <NavLink to="/feedback">
+                  <IconButton>
+                    <FeedbackIcon style={{ color: "black" }} />
+                  </IconButton>
+                </NavLink>
+              ) : null}
 
               {isLoaded(auth) ? (
                 <Notification uid={auth.uid} />
@@ -240,6 +243,15 @@ const PrimarySearchAppBar = props => {
 
               {isLoaded(auth) ? <Profile /> : <AccountCircle />}
             </div>
+            <Typography
+              className={classes.title}
+              variant="subtitle1"
+              noWrap
+              style={{ maxWidth: "70px" }}
+            >
+              My name
+            </Typography>
+
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-label="show more"
