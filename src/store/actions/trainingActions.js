@@ -57,8 +57,7 @@ export const fetchTags = () => {
     firebase
       .firestore()
       .collection("tags")
-      .get()
-      .then(snapshot => {
+      .onSnapshot(snapshot => {
         var tags = [];
         if (snapshot.docs.empty !== false) {
           snapshot.docs.forEach(doc => {
@@ -84,8 +83,7 @@ export const fetchWords = id => {
       .collection("trainings")
       .doc(id)
       .collection("words")
-      .get()
-      .then(snapshot => {
+      .onSnapshot(snapshot => {
         var words = [];
         if (snapshot.docs.empty !== false) {
           snapshot.docs.forEach(doc => {

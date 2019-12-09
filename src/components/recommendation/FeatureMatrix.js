@@ -6,6 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import CustomTable from "./CustomTable";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +29,20 @@ export default function FeatureMatrix(props) {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
+      <CustomTable
+        xRows={tRows}
+        organizers={organizers}
+        tags={tags}
+        head="Training"
+      />
+      <br />
+      <CustomTable
+        xRows={uRows}
+        organizers={organizers}
+        tags={tags}
+        head="Users"
+      />
+      {/* <Paper className={classes.paper}>
         <Table
           className={classes.table}
           size="small"
@@ -89,6 +103,7 @@ export default function FeatureMatrix(props) {
           </TableBody>
         </Table>
       </Paper>
+    */}
     </div>
   );
 }
