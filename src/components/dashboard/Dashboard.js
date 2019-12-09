@@ -7,6 +7,8 @@ import { Redirect } from "react-router-dom";
 import moment from "moment";
 
 import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+
 import CircularLoad from "../loading/CircularLoad";
 import { testFM, testCloud } from "../../store/actions/trainingActions";
 
@@ -60,7 +62,11 @@ class Dashboard extends Component {
           <Container style={{ zIndex: -1 }}>
             <div className="row">
               <div className="col s12 m6">
-                <p>Available Training</p>
+                <Typography variant="h6">
+                  <br />
+                  Available Training
+                </Typography>
+
                 {/* <ProjectList projects={projects} /> */}
                 {!trainings ? <CircularLoad /> : null}
                 <TrainingList trainings={comingTraining} />

@@ -151,6 +151,7 @@ export const testCloud = () => {
 
 export const testFM = () => {
   return dispatch => {
+    console.log("Done");
     const db = firebase.firestore();
 
     var del = db
@@ -196,8 +197,12 @@ export const testFM = () => {
         .collection("trainings")
         .get()
         .then(snapshot => {
+          const now = moment();
           snapshot.forEach(doc => {
-            trainings.push(doc);
+            const daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
+            if (daysDiff <= 0) {
+              trainings.push(doc);
+            }
           });
         });
 
@@ -325,7 +330,6 @@ export const testFM = () => {
             var queue = new priorityQueue({
               comparator: compareNumbers
             });
-            console.log("hahahs");
 
             trainingRows.forEach(trainingRow => {
               const similarity = cosinesim(
