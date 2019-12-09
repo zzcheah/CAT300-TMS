@@ -279,11 +279,11 @@ const PrimarySearchAppBar = props => {
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              {/* <NavLink to="/dashboard">
+              <NavLink to="/dashboard">
                 <IconButton>
                   <DashboardIcon style={{ color: "black" }} />
                 </IconButton>
-              </NavLink> */}
+              </NavLink>
 
               <AddNew />
               <Manage />

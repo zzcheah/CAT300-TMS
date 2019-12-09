@@ -14,8 +14,7 @@ import { testFM, testCloud } from "../../store/actions/trainingActions";
 
 class Dashboard extends Component {
   componentWillMount() {
-    console.log("gaga");
-    this.props.testCloud();
+    // this.props.testFM();
   }
 
   render() {
