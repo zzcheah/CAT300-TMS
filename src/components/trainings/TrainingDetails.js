@@ -51,22 +51,21 @@ const TrainingDetails = props => {
       <div>
         <div className="container section training-details">
           <div className="card z-depth-0">
-            <div className="card-content">
+            <div className="card-content ">
               <span className="card-title">{training.title}</span>
 
               {training.url ? (
                 <img
                   src={training.url}
                   alt="image"
-                  height="400px"
-                  weight="400px"
+                  width="auto"
+                  style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
               ) : (
                 <img
                   src={require("../../images/training.jpg")}
                   alt="no image"
-                  height="400px"
-                  weight="400px"
+                  width="100%"
                 />
               )}
 
@@ -85,7 +84,7 @@ const TrainingDetails = props => {
                 </ul>
               </div>
             </div>
-            <div className="card-action grey lighten-4 grey-text">
+            <div className="card-action black lighten-4 white-text">
               <div>organized by {training.organizer} </div>
               <div className="right">
                 {/* {training.dateTime > Date() ? <p>passed</p> : <p>coming</p>} */}
@@ -120,6 +119,7 @@ const TrainingDetails = props => {
         {auth.isLoaded ? (
           <ViewAllFeedbacks trainingId={id} /> //<ViewUserFeedback uid={auth.uid} trainingId={id} />
         ) : null}
+        <div style={{ height: "100px" }} />
         {/* view user feedback */}
       </div>
     );

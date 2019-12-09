@@ -214,8 +214,7 @@ class CreateTraining extends Component {
             <img
               src={`${url}` || require("../../images/noImage.png")}
               alt="placeholder"
-              height="250px"
-              weight="250px"
+              width="50%"
             />
 
             <div className="input-field">

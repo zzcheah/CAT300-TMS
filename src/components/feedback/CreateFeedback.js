@@ -13,7 +13,7 @@ class CreateFeedback extends Component {
   state = {
     trainingId: this.props.match.params.trainingId,
     feedback: "",
-    trainingTitle: this.props.match.params.trainingTitle,
+    trainingTitle: this.props.title,
     rate: 1
   };
   handleChange = e => {
@@ -32,6 +32,7 @@ class CreateFeedback extends Component {
   handleSubmit = e => {
     e.preventDefault();
     //  console.log(this.state)
+
     this.props.createFeedback(
       this.state,
       this.props.match.params.notificationId
@@ -42,7 +43,7 @@ class CreateFeedback extends Component {
   render() {
     // console.log(this.props);
     // console.log(this.state);
-    const { auth, training } = this.props;
+    const { auth, training, title } = this.props;
     // const [value, setValue] = React.useState(2);
 
     if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
@@ -55,18 +56,12 @@ class CreateFeedback extends Component {
                 <span className="card-title">{training.title}</span>
 
                 {training.url ? (
-                  <img
-                    src={training.url}
-                    alt="image"
-                    height="400px"
-                    weight="400px"
-                  />
+                  <img src={training.url} alt="image" width="100%" />
                 ) : (
                   <img
                     src={require("../../images/training.jpg")}
                     alt="no image"
-                    height="400px"
-                    weight="400px"
+                    width="100%"
                   />
                 )}
 
@@ -146,6 +141,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     training: training,
+    title: training.title,
     auth: state.firebase.auth
   };
 };
