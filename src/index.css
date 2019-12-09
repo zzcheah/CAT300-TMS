@@ -10,8 +10,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: url(/img/background-v2.jpg) no-repeat;
-  background-size: bottom;
   background-attachment: fixed;
+  background-size: bottom;
   background-size: 100% 100%;
   /* background-color: whitesmoke; */
   min-height: 100%;
