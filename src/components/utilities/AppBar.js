@@ -299,11 +299,11 @@ const PrimarySearchAppBar = props => {
                 </IconButton>
               </NavLink>
 
-              {/* {isLoaded(auth) ? (
+              {isLoaded(auth) ? (
                 <Notification uid={auth.uid} />
               ) : (
                 <NotificationsOffOutlinedIcon />
-              )} */}
+              )}
               {/* <Profile /> */}
 
               {isLoaded(auth) ? <Profile /> : <AccountCircle />}
