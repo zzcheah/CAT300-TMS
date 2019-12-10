@@ -24,7 +24,7 @@ function TabPanel(props) {
 
   return children !== "" ? (
     <Typography
-      style={{ backgroundColor: "whitesmoke" }}
+      style={{ backgroundColor: "lightgrey" }}
       component="div"
       role="tabpanel"
       hidden={value !== index}
