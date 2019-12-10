@@ -22,7 +22,7 @@ import { Redirect } from "react-router-dom";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
-  return (
+  return children !== "" ? (
     <Typography
       style={{ backgroundColor: "whitesmoke" }}
       component="div"
@@ -34,6 +34,8 @@ function TabPanel(props) {
     >
       <Box p={3}>{children}</Box>
     </Typography>
+  ) : (
+    ""
   );
 }
 
