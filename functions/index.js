@@ -138,7 +138,7 @@ const updateRecommendation = () => {
         queue.queue({ id: trainingRow.data().id, similarity });
       });
 
-      const len = queue.length >= 5 ? 5 : queue.length;
+      const len = queue.length >= 10 ? 10 : queue.length;
       const recommendation = [];
 
       for (var i = 0; i < len; i++) {
