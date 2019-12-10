@@ -149,212 +149,103 @@ export const testCloud = () => {
 
 export const testFM = () => {
   return dispatch => {
-    console.log("Done");
     const db = firebase.firestore();
+    const userRows = [];
+    const trainingRows = [];
+    const users = [];
 
-    var del = db
-      .collection("trainingRows")
-      .get()
-      .then(snapshot => {
-        let batch = db.batch();
-        snapshot.docs.forEach(doc => {
-          batch.delete(doc.ref);
-        });
+    function cosinesim(A, B) {
+      var dotproduct = 0;
+      var mA = 0;
+      var mB = 0;
+      for (var i = 0; i < A.length; i++) {
+        dotproduct += A[i] * B[i];
+        mA += A[i] * A[i];
+        mB += B[i] * B[i];
+      }
+      mA = Math.sqrt(mA);
+      mB = Math.sqrt(mB);
+      var similarity = dotproduct / (mA * mB);
+      return similarity;
+    }
 
-        return batch.commit();
-      });
-
-    var del2 = db
+    var p1 = db
       .collection("userRows")
       .get()
       .then(snapshot => {
-        let batch = db.batch();
-        snapshot.docs.forEach(doc => {
-          batch.delete(doc.ref);
+        snapshot.forEach(doc => {
+          userRows.push(doc);
         });
-
-        return batch.commit();
       });
 
-    Promise.all([del, del2]).then(() => {
-      const users = [];
-      const trainings = [];
-      const tags = [];
-      const organizers = [];
+    var p2 = db
+      .collection("trainingRows")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          trainingRows.push(doc);
+        });
+      });
 
-      var p1 = db
-        .collection("users")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            users.push(doc);
-          });
+    var p3 = db
+      .collection("users")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          users.push(doc);
+        });
+      });
+
+    var loadData = Promise.all([p1, p2, p3]);
+
+    loadData.then(() => {
+      var compareNumbers = function(a, b) {
+        return b.similarity - a.similarity;
+      };
+
+      userRows.forEach(userRow => {
+        var queue = new priorityQueue({
+          comparator: compareNumbers
         });
 
-      var p2 = db
-        .collection("trainings")
-        .get()
-        .then(snapshot => {
-          const now = moment();
-          snapshot.forEach(doc => {
-            const daysDiff = now.diff(doc.data().dateTime.toDate(), "days");
-            if (daysDiff <= 0) {
-              trainings.push(doc);
-            }
-          });
+        trainingRows.forEach(trainingRow => {
+          const similarity = cosinesim(
+            userRow.data().vector,
+            trainingRow.data().vector
+          );
+          queue.queue({ id: trainingRow.data().id, similarity });
         });
 
-      var p3 = db
-        .collection("tags")
-        .orderBy("type", "asc")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            tags.push(doc);
-          });
-        });
+        const len = queue.length >= 10 ? 10 : queue.length;
+        const recommendation = [];
 
-      var p4 = db
-        .collection("organizers")
-        .orderBy("name", "asc")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            organizers.push(doc);
-          });
-        });
-
-      var fm = Promise.all([p1, p2, p3, p4]).then(() => {
-        trainings.map(training => {
-          const vector = [];
-          for (var i = 0; i < tags.length; i++) {
-            if (training.data().selectedTags.includes(tags[i].data().type))
-              vector.push(true);
-            else vector.push(false);
-          }
-
-          for (i = 0; i < organizers.length; i++) {
-            if (training.data().organizer === organizers[i].data().name)
-              vector.push(true);
-            else vector.push(false);
-          }
-
-          db.collection("trainingRows").add({
-            id: training.id,
-            title: training.data().title,
-            vector: vector
-          });
-
-          return null;
-        });
-
-        users.map(user => {
-          const vector = [];
-          for (var i = 0; i < tags.length; i++) {
-            if (user.data().tags.includes(tags[i].data().type))
-              vector.push(true);
-            else vector.push(false);
-          }
-          if (user.data().organizers) {
-            for (i = 0; i < organizers.length; i++) {
-              if (user.data().organizers.includes(organizers[i].data().name))
-                vector.push(true);
-              else vector.push(false);
-            }
+        var user;
+        for (var i = 0; i < users.length; i++) {
+          if (users[i].id !== userRow.data().id) {
+            continue;
           } else {
-            for (i = 0; i < organizers.length; i++) {
-              vector.push(false);
-            }
+            user = users[i];
+            break;
           }
-
-          db.collection("userRows").add({
-            id: user.id,
-            name: user.data().firstName,
-            vector: vector
-          });
-
-          return null;
-        });
-      });
-
-      var rec = fm.then(() => {
-        const userRows = [];
-        const trainingRows = [];
-
-        function cosinesim(A, B) {
-          var dotproduct = 0;
-          var mA = 0;
-          var mB = 0;
-          for (var i = 0; i < A.length; i++) {
-            dotproduct += A[i] * B[i];
-            mA += A[i] * A[i];
-            mB += B[i] * B[i];
+        }
+        if (user.data().trainings) {
+          while (recommendation.length < len) {
+            const temp = queue.dequeue().id;
+            if (user.data().trainings.includes(temp)) {
+              continue;
+            } else recommendation.push(temp);
           }
-          mA = Math.sqrt(mA);
-          mB = Math.sqrt(mB);
-          var similarity = dotproduct / (mA * mB);
-          return similarity;
+        } else {
+          for (var j = 0; j < len; j++) {
+            recommendation.push(queue.dequeue().id);
+          }
         }
 
-        var p1 = db
-          .collection("userRows")
-          .get()
-          .then(snapshot => {
-            console.log(snapshot);
-            snapshot.forEach(doc => {
-              userRows.push(doc);
-            });
-          });
+        console.log(recommendation);
 
-        var p2 = db
-          .collection("trainingRows")
-          .get()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              trainingRows.push(doc);
-            });
-          });
-
-        var loadData = Promise.all([p1, p2]);
-
-        loadData.then(() => {
-          var compareNumbers = function(a, b) {
-            return b.similarity - a.similarity;
-          };
-
-          console.log(trainingRows);
-
-          userRows.forEach(userRow => {
-            var queue = new priorityQueue({
-              comparator: compareNumbers
-            });
-
-            trainingRows.forEach(trainingRow => {
-              const similarity = cosinesim(
-                userRow.data().vector,
-                trainingRow.data().vector
-              );
-              queue.queue({ id: trainingRow.data().id, similarity });
-            });
-
-            const len = queue.length >= 5 ? 5 : queue.length;
-            const recommendation = [];
-
-            for (var i = 0; i < len; i++) {
-              recommendation.push(queue.dequeue().id);
-            }
-
-            db.collection("users")
-              .doc(userRow.data().id)
-              .update({ recommendation })
-              .then(() => console.log("done"))
-              .catch(err => console.log(err));
-          });
-        });
-      });
-
-      rec.then(() => {
-        console.log("done");
+        db.collection("users")
+          .doc(userRow.data().id)
+          .update({ recommendation });
       });
     });
   };

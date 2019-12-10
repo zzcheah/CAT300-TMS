@@ -277,7 +277,7 @@ const PrimarySearchAppBar = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state, "from appbar");
+  // console.log(state, "from appbar");
   return {
     auth: state.firebase.auth,
     composite: state.firestore.composite,

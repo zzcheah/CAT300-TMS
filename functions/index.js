@@ -84,6 +84,7 @@ const updateRecommendation = () => {
 
   const userRows = [];
   const trainingRows = [];
+  const users = [];
 
   function cosinesim(A, B) {
     var dotproduct = 0;
@@ -118,7 +119,16 @@ const updateRecommendation = () => {
       });
     });
 
-  var loadData = Promise.all([p1, p2]);
+  var p3 = db
+    .collection("users")
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        users.push(doc);
+      });
+    });
+
+  var loadData = Promise.all([p1, p2, p3]);
 
   loadData.then(() => {
     var compareNumbers = function(a, b) {
@@ -141,9 +151,34 @@ const updateRecommendation = () => {
       const len = queue.length >= 10 ? 10 : queue.length;
       const recommendation = [];
 
-      for (var i = 0; i < len; i++) {
-        recommendation.push(queue.dequeue().id);
+      var user;
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].id !== userRow.data().id) {
+          continue;
+        } else {
+          user = users[i];
+          break;
+        }
       }
+      if (user.data().trainings) {
+        while (recommendation.length < len) {
+          const temp = queue.dequeue().id;
+          if (user.data().trainings.includes(temp)) {
+            continue;
+          } else recommendation.push(temp);
+        }
+      } else {
+        for (var j = 0; j < len; j++) {
+          recommendation.push(queue.dequeue().id);
+        }
+      }
+
+      // const len = queue.length >= 10 ? 10 : queue.length;
+      // const recommendation = [];
+
+      // for (var i = 0; i < len; i++) {
+      //   recommendation.push(queue.dequeue().id);
+      // }
 
       db.collection("users")
         .doc(userRow.data().id)
