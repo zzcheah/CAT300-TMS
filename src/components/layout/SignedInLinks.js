@@ -21,7 +21,15 @@ const SignedInLinks = props => {
           <NavLink to="/createTraining">New Training</NavLink>
         </li>
         <li>
-          <a onClick={props.signOut}>Log Out</a>
+          <a
+            onClick={e => {
+              // window.location.href = "/result/html";
+              // props.history.push("/");
+              props.signOut();
+            }}
+          >
+            Log Out
+          </a>
         </li>
         <li>
           <NavLink
