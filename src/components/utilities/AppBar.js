@@ -81,13 +81,13 @@ const useStyles = makeStyles(theme => ({
 const PrimarySearchAppBar = props => {
   const { state, role, notif, auth, initials } = props;
   console.log(role, "role");
-
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  var test = false;
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);

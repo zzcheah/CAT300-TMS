@@ -42,18 +42,21 @@ const ViewAllFeedbacks = props => {
   const classes = useStyles();
 
   const { feedbacks, trainingId } = props;
-  var feedback = [];
+  var fback = [];
 
-  // if (feedbacks) {
-  //   feedbacks = feedbacks.filter(fb => fb.dateTime.toDate() < moment());
-  // }
+  if (feedbacks) {
+    fback = feedbacks.filter(fb => fb.trainingId == trainingId);
+    fback.sort(function(a, b) {
+      return a.createdAt.seconds - b.createdAt.seconds;
+    });
+  }
 
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
   if (feedbacks) {
     return (
       <div>
-        {feedbacks.map(feedback => {
+        {fback.map(feedback => {
           return (
             <div key={feedback.id}>
               <Paper className={classes.root} elevation={8}>
@@ -108,9 +111,9 @@ export default compose(
   connect(mapStateToProps),
   firestoreConnect(props => [
     {
-      collection: "feedbacks",
-      orderBy: ["createdAt", "asc"],
-      where: [["trainingId", "==", props.trainingId]]
+      collection: "feedbacks"
+      // orderBy: ["createdAt", "asc"],
+      // where: [["trainingId", "==", props.trainingId]]
     }
   ])
 )(ViewAllFeedbacks);

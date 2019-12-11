@@ -46,7 +46,7 @@ const TrainingDetails = props => {
         />
       );
     }
-
+    window.scrollTo(0, 0);
     return (
       <div>
         <div className="container section training-details">
