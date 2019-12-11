@@ -75,20 +75,20 @@ class CreateFeedback extends Component {
         <div>
           <div className="container section training-details">
             <div className="card z-depth-0">
-              <div className="card-content">
+              <div className="card-content ">
                 <span className="card-title">{training.title}</span>
 
                 {training.url ? (
                   <img
                     src={training.url}
-                    alt="trainingImg"
+                    alt="trainingIMG"
                     width="auto"
                     style={{ maxHeight: "300px", maxWidth: "100%" }}
                   />
                 ) : (
                   <img
                     src={require("../../images/training.jpg")}
-                    alt="missing"
+                    alt="nullImg"
                     width="auto"
                     style={{ maxHeight: "300px", maxWidth: "100%" }}
                   />
@@ -108,50 +108,71 @@ class CreateFeedback extends Component {
                     ))}
                   </ul>
                 </div>
-                <div
-                  className="card-action black lighten-4 white-text"
-                  style={{ paddingTop: "10px" }}
-                >
-                  <div>organized by {training.organizer} </div>
-                  <div>{training.venue} </div>
-                  <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
-                </div>
               </div>
-              <div>
-                {/* form */}
-                <form onSubmit={this.handleSubmit} className="white">
-                  <h5 className="grey-text text-darken-3">Create Feedback</h5>
-                  How would you rate the training?
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    component="fieldset"
-                    mb={3}
-                    borderColor="transparent"
+              <div className="card-action black lighten-4 white-text">
+                <div>organized by {training.organizer} </div>
+                <div className="right">
+                  {/* {training.dateTime > Date() ? <p>passed</p> : <p>coming</p>} */}
+                  {/* {profile.trainings && profile.trainings.includes(id) ? (
+                  <button
+                    className="btn green lighten-1 z-depth-0 left"
+                    disabled
                   >
-                    <Rating
-                      name="rate"
-                      value={this.state.rate}
-                      onChange={this.handleRating}
-                      size="large"
-                    />
-                  </Box>
-                  <div className="input-field">
-                    {/* <label htmlFor="feedback">Feedback</label> */}
-                    Add a comment about the quality of the training provided:
-                    <textarea
-                      id="feedback"
-                      className="materialize-textarea"
-                      onChange={this.handleChange}
-                    ></textarea>
-                  </div>
-                  <div className="input-field">
-                    <button className="btn pink lighten-1 z-depth-0">
-                      Submit feedback
-                    </button>
-                  </div>
-                </form>
+                    Purchased
+                  </button>
+                ) : (
+                  <PurchaseTicket
+                    trainingid={id}
+                    organizer={training.organizer}
+                  />
+                )} */}
+                </div>
+                <div>{training.venue} </div>
+
+                {/* <div>{moment().diff(training.dateTime.toDate(), "days")}</div> */}
+                <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
+
+                {/* <div>{moment(training.date.toDate()).format("DDMMYYYY")}</div> */}
+                {/* {console.log(
+              moment(training.dateTime.toDate()).format("DDMMYYYY"),
+              "training de moment"
+            )} */}
               </div>
+            </div>
+            <div>
+              {/* form */}
+              <form onSubmit={this.handleSubmit} className="white">
+                <h5 className="grey-text text-darken-3">Create Feedback</h5>
+                How would you rate the training?
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  component="fieldset"
+                  mb={3}
+                  borderColor="transparent"
+                >
+                  <Rating
+                    name="rate"
+                    value={this.state.rate}
+                    onChange={this.handleRating}
+                    size="large"
+                  />
+                </Box>
+                <div className="input-field">
+                  {/* <label htmlFor="feedback">Feedback</label> */}
+                  Add a comment about the quality of the training provided:
+                  <textarea
+                    id="feedback"
+                    className="materialize-textarea"
+                    onChange={this.handleChange}
+                  ></textarea>
+                </div>
+                <div className="input-field">
+                  <button className="btn pink lighten-1 z-depth-0">
+                    Submit feedback
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
           <Dialog

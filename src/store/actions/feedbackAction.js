@@ -1,4 +1,5 @@
 import firebase from "../../config/fbConfig.js";
+import Alert from "react-s-alert";
 
 export const createFeedback = (feedback, notificationId, title) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -49,9 +50,11 @@ export const createFeedback = (feedback, notificationId, title) => {
     batch
       .commit()
       .then(() => {
+        Alert.success("Feedback Posted");
         dispatch({ type: "CREATE_FEEDBACK", feedback });
       })
       .catch(err => {
+        Alert.error(err.message);
         dispatch({ type: "CREATE_FEEDBACK_ERROR", err });
       });
   };

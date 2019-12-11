@@ -30,7 +30,7 @@ const TrainingDetails = props => {
           Purchased
         </button>
       );
-    } else if (training && training.seat == 0) {
+    } else if (training && training.seat === 0) {
       purchaseButton = (
         <button className="btn green lighten-1 z-depth-0 left" disabled>
           Out of Stock
@@ -57,14 +57,14 @@ const TrainingDetails = props => {
               {training.url ? (
                 <img
                   src={training.url}
-                  alt="image"
+                  alt="trainingIMG"
                   width="auto"
                   style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
               ) : (
                 <img
                   src={require("../../images/training.jpg")}
-                  alt="no image"
+                  alt="nullImg"
                   width="auto"
                   style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
