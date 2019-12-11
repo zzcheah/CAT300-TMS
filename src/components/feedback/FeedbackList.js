@@ -13,10 +13,17 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    maxHeight: "400px",
+    overflow: "auto"
   },
   inline: {
     display: "inline"
+  },
+  fb: {
+    backgroundColor: "#cfd8dc",
+    marginBottom: "2px",
+    borderRadius: "5px"
   }
 }));
 
@@ -44,7 +51,7 @@ export default function FeedbackList(props) {
     <div>
       {feedbacks ? (
         <List className={classes.root}>
-          <ListItem alignItems="flex-start">
+          <ListItem alignItems="flex-start" className={classes.fb}>
             <ListItemAvatar>
               <Avatar>
                 <AccountCircleIcon fontSize="large" />
@@ -74,7 +81,7 @@ export default function FeedbackList(props) {
               {temp.map((fb, index) => (
                 <div key={index}>
                   <Divider variant="inset" component="li" />
-                  <ListItem alignItems="flex-start">
+                  <ListItem alignItems="flex-start" className={classes.fb}>
                     <ListItemAvatar>
                       <Avatar>
                         <AccountCircleIcon fontSize="large" />

@@ -41,7 +41,7 @@ class RatingStatistics extends React.Component {
       counts[element.rate - 1]++;
       sum += element.rate;
     });
-    const average = sum / feedbacks.length;
+    const average = (sum / feedbacks.length).toFixed(2);
     return (
       <React.Fragment>
         {five.map(element => (
@@ -59,7 +59,7 @@ class RatingStatistics extends React.Component {
                 size="medium"
                 readOnly
               />
-              <Box ml={2}>Count: {counts[element - 1]}</Box>
+              <Box ml={1}>Count: {counts[element - 1]}</Box>
             </div>
           </Box>
         ))}
