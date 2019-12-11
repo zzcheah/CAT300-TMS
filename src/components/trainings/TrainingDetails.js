@@ -18,7 +18,7 @@ const TrainingDetails = props => {
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
 
-  if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
+  // if (auth.isEmpty && auth.isLoaded) return <Redirect to="/signin" />;
   if (training) {
     var purchaseButton;
     if (training.dateTime.toDate() < moment()) {
@@ -30,7 +30,7 @@ const TrainingDetails = props => {
           Purchased
         </button>
       );
-    } else if (training && training.seat == 0) {
+    } else if (training && training.seat === 0) {
       purchaseButton = (
         <button className="btn green lighten-1 z-depth-0 left" disabled>
           Out of Stock

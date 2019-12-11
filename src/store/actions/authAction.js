@@ -1,3 +1,5 @@
+import Alert from "react-s-alert";
+
 export const signIn = credentials => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -6,6 +8,7 @@ export const signIn = credentials => {
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(() => {
+        Alert.success("Login Success");
         dispatch({ type: "LOGIN_SUCCESS" });
       })
       .catch(err => {
@@ -23,6 +26,7 @@ export const signOut = () => {
       .signOut()
       .then(() => {
         firebase.logout();
+        Alert.success("Signout Success");
         dispatch({ type: "SIGNOUT_SUCCESS" });
       });
   };
@@ -51,9 +55,11 @@ export const signUp = newUser => {
           });
       })
       .then(() => {
+        Alert.success("Registered Successfully");
         dispatch({ type: "SIGNUP_SUCCESS" });
       })
       .catch(err => {
+        Alert.error(err.message);
         dispatch({ type: "SIGNUP_ERROR", err });
       });
   };

@@ -6,6 +6,7 @@ import Popup from "reactjs-popup";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import "../../style/popup.css";
+import Alert from "react-s-alert";
 
 class PurchaseTicket extends Component {
   state = {
@@ -77,6 +78,7 @@ class PurchaseTicket extends Component {
                   style={{ marginRight: "100px" }}
                   onClick={() => {
                     console.log("No purchase ");
+                    Alert.error("Transaction Failed");
                     close();
                   }}
                 >

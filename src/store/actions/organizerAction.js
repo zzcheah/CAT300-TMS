@@ -1,3 +1,5 @@
+import Alert from "react-s-alert";
+
 export const createOrganizer = organizer => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     //make asyn call to database
@@ -10,9 +12,11 @@ export const createOrganizer = organizer => {
         ...organizer
       })
       .then(() => {
+        Alert.success("Organizer Added");
         dispatch({ type: "CREATE_ORGANIZER", organizer });
       })
       .catch(err => {
+        Alert.error(err.message);
         dispatch({ type: "CREATE_ORGANIZER_ERROR", err });
       });
   };

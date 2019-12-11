@@ -1,3 +1,5 @@
+import Alert from "react-s-alert";
+
 import firebase from "../../config/fbConfig.js";
 
 export const purchaseTicket = ticket => {
@@ -35,10 +37,12 @@ export const purchaseTicket = ticket => {
     batch
       .commit()
       .then(() => {
+        Alert.success("Ticket Purchased");
         dispatch({ type: "PURCHASE_TICKET", ticket });
       })
       .catch(err => {
         console.log(err);
+        Alert.error(err.message);
         dispatch({ type: "PURCHASE_TICKET_ERROR", err });
       });
   };

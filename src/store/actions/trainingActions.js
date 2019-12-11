@@ -1,5 +1,7 @@
 import firebase from "../../config/fbConfig";
 import moment from "moment";
+import Alert from "react-s-alert";
+
 // import PriorityQueue from "js-priority-queue";
 const priorityQueue = require("js-priority-queue");
 
@@ -18,9 +20,12 @@ export const createTraining = training => {
         attendees: []
       })
       .then(() => {
+        Alert.success("Training Created");
+
         dispatch({ type: "CREATE_TRAINING", training });
       })
       .catch(err => {
+        Alert.error(err.message);
         dispatch({ type: "CREATE_TRAINING_ERROR", err });
       });
   };
