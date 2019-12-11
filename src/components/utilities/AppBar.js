@@ -32,6 +32,7 @@ import NotificationsOffOutlinedIcon from "@material-ui/icons/NotificationsOffOut
 import TableChartIcon from "@material-ui/icons/TableChart";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import FeedbackIcon from "@material-ui/icons/Feedback";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -212,30 +213,49 @@ const PrimarySearchAppBar = props => {
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              {role ? (
-                <NavLink to="/dashboard">
-                  <IconButton>
-                    <DashboardIcon style={{ color: "black" }} />
-                  </IconButton>
-                </NavLink>
+              {role && role == "professional" ? (
+                <Tooltip title="Dashboard" enterDelay={500} leaveTouchDelay={0}>
+                  <NavLink to="/dashboard">
+                    <IconButton>
+                      <DashboardIcon style={{ color: "black" }} />
+                    </IconButton>
+                  </NavLink>
+                </Tooltip>
+              ) : null}
+              {role && role == "admin" ? (
+                <Tooltip title="Dashboard" enterDelay={500} leaveTouchDelay={0}>
+                  <NavLink to="/adminDashboard">
+                    <IconButton>
+                      <DashboardIcon style={{ color: "black" }} />
+                    </IconButton>
+                  </NavLink>
+                </Tooltip>
               ) : null}
 
               {role && role == "admin" ? <AddNew /> : null}
               {role && role == "admin" ? <Manage /> : null}
               {role && role == "admin" ? (
-                <NavLink to="/Recommendation">
-                  <IconButton aria-label="show 4 new mails">
-                    <TableChartIcon style={{ color: "black" }} />
-                  </IconButton>
-                </NavLink>
+                <Tooltip
+                  title="Recommendation"
+                  enterDelay={500}
+                  leaveTouchDelay={0}
+                >
+                  <NavLink to="/Recommendation">
+                    <IconButton aria-label="show 4 new mails">
+                      <TableChartIcon style={{ color: "black" }} />
+                    </IconButton>
+                  </NavLink>
+                </Tooltip>
               ) : null}
 
               {role && role == "admin" ? (
-                <NavLink to="/feedback">
-                  <IconButton>
-                    <FeedbackIcon style={{ color: "black" }} />
-                  </IconButton>
-                </NavLink>
+                <Tooltip title="Feedback" enterDelay={500} leaveTouchDelay={0}>
+                  <NavLink to="/feedback">
+                    <IconButton>
+                      <FeedbackIcon style={{ color: "black" }} />
+                    </IconButton>
+                  </NavLink>
+                </Tooltip>
               ) : null}
 
               {// isLoaded(auth)

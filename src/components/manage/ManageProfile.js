@@ -11,7 +11,7 @@ import moment from "moment";
 import CircularLoad from "../loading/CircularLoad";
 
 const ManageProfile = props => {
-  const { currentId, authUid, profile, auth, trainings } = props;
+  const { currentId, authUid, profile, auth, trainings, role } = props;
   console.log(currentId, "current id");
   console.log(authUid, "authUid");
 
@@ -62,7 +62,7 @@ const ManageProfile = props => {
                   : null}
               </ul>
             </div>
-            {trainings ? (
+            {trainings && role && role == "professional" ? (
               <ProfileTrainingTabs
                 pastTraining={pastTraining}
                 comingTraining={comingTraining}
@@ -89,7 +89,8 @@ const mapStateToProps = (state, ownProps) => {
     currentId: currentId,
     auth: state.firebase.auth,
     authUid: state.firebase.auth.uid,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    role: state.firebase.profile.role
   };
 };
 
@@ -104,8 +105,7 @@ export default compose(
   connect(mapStateToProps),
   firestoreConnect([
     {
-      collection: "trainings",
-      orderBy: ["dateTime", "asc"]
+      collection: "trainings"
       // where: [["attendees", "array-contains", props.match.params.id]]
     }
   ])

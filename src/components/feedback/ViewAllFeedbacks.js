@@ -41,7 +41,13 @@ const useStyles = makeStyles(theme => ({
 const ViewAllFeedbacks = props => {
   const classes = useStyles();
 
-  const { feedbacks } = props;
+  const { feedbacks, trainingId } = props;
+  var feedback = [];
+
+  // if (feedbacks) {
+  //   feedbacks = feedbacks.filter(fb => fb.dateTime.toDate() < moment());
+  // }
+
   // console.log(props, "props");
   // console.log(moment().format("DDMMYYYY"), "moment");
   if (feedbacks) {
@@ -49,31 +55,29 @@ const ViewAllFeedbacks = props => {
       <div>
         {feedbacks.map(feedback => {
           return (
-            <div>
-              <div key={feedback.id}>
-                <Paper className={classes.root} elevation="8">
-                  <div className={classes.avat}>
-                    <Avatar className={classes.purple}>
-                      {feedback.initials}
-                    </Avatar>
+            <div key={feedback.id}>
+              <Paper className={classes.root} elevation={8}>
+                <div className={classes.avat}>
+                  <Avatar className={classes.purple}>
+                    {feedback.initials}
+                  </Avatar>
 
-                    <Typography variant="h5" component="h1" gutterBottom>
-                      <Rating
-                        name="rate"
-                        value={feedback.rate}
-                        size="large"
-                        readOnly
-                      />
-                      <br />
-                      {feedback.feedback}
-                    </Typography>
-                  </div>
-
-                  <Typography variant="caption" display="block">
-                    {moment(feedback.createdAt.toDate()).format("LLLL")}
+                  <Typography variant="h5" component="h1" gutterBottom>
+                    <Rating
+                      name="rate"
+                      value={feedback.rate}
+                      size="large"
+                      readOnly
+                    />
+                    <br />
+                    {feedback.feedback}
                   </Typography>
-                </Paper>
-              </div>
+                </div>
+
+                <Typography variant="caption" display="block">
+                  {moment(feedback.createdAt.toDate()).format("LLLL")}
+                </Typography>
+              </Paper>
             </div>
           );
         })}
@@ -88,14 +92,15 @@ const ViewAllFeedbacks = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  // console.log(state, "state");
+  console.log(ownProps, "ownProps");
   // console.log(ownProps, "ownProps");
 
   // console.log(trainings, "trainings");
   // console.log(training, "training");
 
   return {
-    feedbacks: state.firestore.ordered.feedbacks
+    feedbacks: state.firestore.ordered.feedbacks,
+    trainingId: ownProps.trainingId
   };
 };
 

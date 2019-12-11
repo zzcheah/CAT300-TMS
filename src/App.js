@@ -17,6 +17,7 @@ import ManageProfile from "./components/manage/ManageProfile";
 import CreateFeedback from "./components/feedback/CreateFeedback";
 import LandingPage from "./components/layout/LandingPage";
 import SearchResult from "./components/recommendation/SearchResult";
+import AdminDashboard from "./components/dashboard/AdminDashboard";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/adminDashboard" component={AdminDashboard} />
           <Route path="/project/:id" component={ProjectDetails} />
           <Route path="/training/:id" component={TrainingDetails} />
           <Route path="/signin" component={SignIn} />
