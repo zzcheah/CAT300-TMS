@@ -28,7 +28,7 @@ const ManageProfile = props => {
         training.dateTime.toDate() < moment()
     );
     pastTraining.sort(function(a, b) {
-      return b.dateTime - a.dateTime;
+      return b.dateTime.seconds - a.dateTime.seconds;
     });
     comingTraining = trainings.filter(
       training =>
@@ -36,7 +36,7 @@ const ManageProfile = props => {
         training.dateTime.toDate() >= moment()
     );
     comingTraining.sort(function(a, b) {
-      return a.dateTime - b.dateTime;
+      return a.dateTime.seconds - b.dateTime.seconds;
     });
   }
 
