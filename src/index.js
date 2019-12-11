@@ -21,6 +21,9 @@ import {
   authIsReady
 } from "react-redux-firebase";
 import firebase, { storage } from "./config/fbConfig";
+import Alert from "react-s-alert";
+import "react-s-alert/dist/s-alert-default.css";
+import "react-s-alert/dist/s-alert-css-effects/slide.css";
 
 //react-redux-firebase config
 const rrfConfig = {
@@ -83,6 +86,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
       <App />
+      <Alert stack={{ limit: 3 }} effect="slide" style={{ margin: "100px" }} />
     </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
