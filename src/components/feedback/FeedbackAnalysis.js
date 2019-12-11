@@ -21,12 +21,7 @@ const useStyles = theme => ({
   root: {
     flexGrow: 1,
     // backgroundColor: theme.palette.background.paper
-    backgroundColor: "#eeeeee",
-    position: "absolute",
-    top: theme.spacing(8),
-    right: 0,
-    bottom: 0,
-    left: 0
+    backgroundColor: "#eeeeee"
   }
 });
 
