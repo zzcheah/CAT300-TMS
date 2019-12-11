@@ -87,7 +87,10 @@ const TrainingDetails = props => {
             </div>
             <div className="card-action black lighten-4 white-text">
               <div>organized by {training.organizer} </div>
-              <div className="right">{purchaseButton}</div>
+              {role && role == "admin" ? null : (
+                <div className="right">{purchaseButton}</div>
+              )}
+
               <div>{training.venue} </div>
 
               {/* <div>{moment().diff(training.dateTime.toDate(), "days")}</div> */}

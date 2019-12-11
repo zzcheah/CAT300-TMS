@@ -16,6 +16,7 @@ import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
 import { Link } from "react-router-dom";
 import { signOut } from "../../store/actions/authAction";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -152,16 +153,19 @@ const Profile = props => {
     //       <Toolbar>
     //         <div className={classes.grow} />
     <div className={classes.sectionDesktop}>
-      <IconButton
-        aria-label="show 17 new notifications"
-        color="inherit"
-        ref={anchorRef}
-        aria-controls={open ? "menu-list-grow" : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
-      >
-        <AccountCircle />
-      </IconButton>
+      <Tooltip title="Profile" enterDelay={500} leaveTouchDelay={0}>
+        <IconButton
+          aria-label="show 17 new notifications"
+          color="inherit"
+          ref={anchorRef}
+          aria-controls={open ? "menu-list-grow" : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+        >
+          <AccountCircle />
+        </IconButton>
+      </Tooltip>
+
       {renderProfileSubmenu}
     </div>
     //       </Toolbar>
