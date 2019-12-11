@@ -241,7 +241,7 @@ class CreateTraining extends Component {
               </div>
 
               <div className="input-field">
-                <label htmlFor="seat">Seat</label>
+                <label htmlFor="seat">Total Seats</label>
                 <input type="number" id="seat" onChange={this.handleChange} />
               </div>
 
