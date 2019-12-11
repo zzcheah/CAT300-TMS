@@ -37,20 +37,30 @@ class Dashboard extends Component {
     // console.log(auth, "auth 1");
     var comingTraining = [];
     var recommendedTraining = [];
-    if (trainings) {
-      comingTraining = trainings.filter(
-        training => training.dateTime.toDate() >= moment()
-      );
-      comingTraining.sort(function(a, b) {
-        return a.dateTime - b.dateTime;
-      });
-    }
+    // if (trainings) {
+    //   comingTraining = trainings.filter(
+    //     training => training.dateTime.toDate() >= moment()
+    //   );
+    //   comingTraining.sort(function(a, b) {
+    //     return a.dateTime.seconds - b.dateTime.seconds;
+    //   });
+    // }
     if (recommendation && trainings) {
+      comingTraining = trainings.filter(
+        training =>
+          training.dateTime.toDate() >= moment() &&
+          !recommendation.includes(training.id)
+      );
+
       recommendedTraining = trainings.filter(training =>
         recommendation.includes(training.id)
       );
+
+      comingTraining.sort(function(a, b) {
+        return a.dateTime.seconds - b.dateTime.seconds;
+      });
       recommendedTraining.sort(function(a, b) {
-        return a.dateTime - b.dateTime;
+        return a.dateTime.seconds - b.dateTime.seconds;
       });
     }
 

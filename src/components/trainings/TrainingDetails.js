@@ -87,38 +87,16 @@ const TrainingDetails = props => {
             </div>
             <div className="card-action black lighten-4 white-text">
               <div>organized by {training.organizer} </div>
-              <div className="right">
-                {/* {training.dateTime > Date() ? <p>passed</p> : <p>coming</p>} */}
-                {purchaseButton}
-                {/* {profile.trainings && profile.trainings.includes(id) ? (
-                  <button
-                    className="btn green lighten-1 z-depth-0 left"
-                    disabled
-                  >
-                    Purchased
-                  </button>
-                ) : (
-                  <PurchaseTicket
-                    trainingid={id}
-                    organizer={training.organizer}
-                  />
-                )} */}
-              </div>
+              <div className="right">{purchaseButton}</div>
               <div>{training.venue} </div>
 
               {/* <div>{moment().diff(training.dateTime.toDate(), "days")}</div> */}
               <div>{moment(training.dateTime.toDate()).format("LLLL")}</div>
-
-              {/* <div>{moment(training.date.toDate()).format("DDMMYYYY")}</div> */}
-              {/* {console.log(
-              moment(training.dateTime.toDate()).format("DDMMYYYY"),
-              "training de moment"
-            )} */}
             </div>
           </div>
         </div>
         {auth.isLoaded && role == "admin" ? (
-          <ViewAllFeedbacks trainingId={id} /> //<ViewUserFeedback uid={auth.uid} trainingId={id} />
+          <ViewAllFeedbacks trainingId={id} />
         ) : null}
 
         {auth.isLoaded && role == "professional" ? (
@@ -130,8 +108,7 @@ const TrainingDetails = props => {
       </div>
     );
   } else {
-    console.log("Load from trainingDetail");
-    console.log(state);
+    // console.log(state);
     return (
       <div className="container center">
         <CircularLoad />

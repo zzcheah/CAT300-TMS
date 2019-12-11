@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import TrainingList from "../trainings/TrainingList";
+import CircularLoad from "../loading/CircularLoad";
 
 const useStyles = makeStyles(theme => ({
   root: {}
@@ -57,24 +58,32 @@ const SearchResult = props => {
         arrayContainsAnotherArray(tags, training.selectedTags)
     );
     result.sort(function(a, b) {
-      return a.seat - b.seat;
+      return a.dateTime.seconds - b.dateTime.seconds;
     });
-    // console.log(result, "after");
+    console.log(result, "after");
   }
 
-  return result.length !== 0 ? (
-    <Container>
-      <CssBaseline />
-      <div className={classes.root}>
-        <div style={{ height: "20px" }} />
-        <Typography variant="h6">Search Results</Typography>
+  if (trainings) {
+    return result.length !== 0 ? (
+      <Container>
+        <CssBaseline />
+        <div className={classes.root}>
+          <div style={{ height: "20px" }} />
+          <Typography variant="h6">Search Results</Typography>
 
-        <TrainingList trainings={result} />
+          <TrainingList trainings={result} />
+        </div>
+      </Container>
+    ) : (
+      " Currently no such training. Please try other tag"
+    );
+  } else {
+    return (
+      <div className="container center">
+        <CircularLoad />
       </div>
-    </Container>
-  ) : (
-    ""
-  );
+    );
+  }
 };
 
 const mapStateToProps = (state, ownProps) => {

@@ -212,11 +212,13 @@ const PrimarySearchAppBar = props => {
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <NavLink to="/dashboard">
-                <IconButton>
-                  <DashboardIcon style={{ color: "black" }} />
-                </IconButton>
-              </NavLink>
+              {role ? (
+                <NavLink to="/dashboard">
+                  <IconButton>
+                    <DashboardIcon style={{ color: "black" }} />
+                  </IconButton>
+                </NavLink>
+              ) : null}
 
               {role && role == "admin" ? <AddNew /> : null}
               {role && role == "admin" ? <Manage /> : null}
@@ -236,13 +238,13 @@ const PrimarySearchAppBar = props => {
                 </NavLink>
               ) : null}
 
-              {isLoaded(auth) ? (
+              {// isLoaded(auth)
+              role && role == "professional" ? (
                 <Notification uid={auth.uid} />
-              ) : (
-                <NotificationsOffOutlinedIcon />
-              )}
+              ) : // <NotificationsOffOutlinedIcon />
+              null}
 
-              {isLoaded(auth) ? <Profile /> : <AccountCircle />}
+              {role ? <Profile /> : null}
             </div>
 
             {initials ? (
@@ -270,8 +272,8 @@ const PrimarySearchAppBar = props => {
           </Toolbar>
         </Container>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {/* {renderMobileMenu}
+      {renderMenu} */}
     </div>
   );
 };
