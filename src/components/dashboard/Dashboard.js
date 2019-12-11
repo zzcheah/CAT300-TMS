@@ -24,7 +24,7 @@ class Dashboard extends Component {
       margin: "25px 100px 75px",
       paddingLeft: "300px"
     };
-    const { trainings, auth } = this.props;
+    const { trainings, auth, recommendation } = this.props;
     // console.log(test.firestore.ordered, "state from render");
 
     // console.log("Dashboard");
@@ -36,10 +36,22 @@ class Dashboard extends Component {
 
     // console.log(auth, "auth 1");
     var comingTraining = [];
+    var recommendedTraining = [];
     if (trainings) {
       comingTraining = trainings.filter(
         training => training.dateTime.toDate() >= moment()
       );
+      comingTraining.sort(function(a, b) {
+        return a.dateTime - b.dateTime;
+      });
+    }
+    if (recommendation && trainings) {
+      recommendedTraining = trainings.filter(training =>
+        recommendation.includes(training.id)
+      );
+      recommendedTraining.sort(function(a, b) {
+        return a.dateTime - b.dateTime;
+      });
     }
 
     if (auth.isEmpty && !auth.isLoaded)
@@ -66,9 +78,18 @@ class Dashboard extends Component {
                   Available Training
                 </Typography>
 
-                {/* <ProjectList projects={projects} /> */}
                 {!trainings ? <CircularLoad /> : null}
                 <TrainingList trainings={comingTraining} />
+              </div>
+
+              <div className="col s12 m6">
+                <Typography variant="h6">
+                  <br />
+                  Recommended Training
+                </Typography>
+
+                {!trainings ? <CircularLoad /> : null}
+                <TrainingList trainings={recommendedTraining} />
               </div>
               {/* <div className="col s12 m5 offset-m1">
                 <img
@@ -81,7 +102,6 @@ class Dashboard extends Component {
                   src="https://img.mobiscroll.com/demos/fruit-4.png"
                   alt="strawberry"
                 />
-                <Notifications notifications={notifications} />
               </div> */}
             </div>
           </Container>
@@ -91,14 +111,15 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state, "state from map");
+  console.log(state, "state from map");
 
   return {
     trainings: state.firestore.ordered.trainings,
     test: state,
     notif: state.firebase.profile.notif,
     auth: state.firebase.auth,
-    notifications: state.firestore.ordered.notifications
+    notifications: state.firestore.ordered.notifications,
+    recommendation: state.firebase.profile.recommendation
   };
 };
 
@@ -111,8 +132,8 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   firestoreConnect([
-    { collection: "trainings", orderBy: ["dateTime", "desc"] },
-    { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
+    { collection: "trainings" }
+    // { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
   ]),
   connect(mapStateToProps, mapDispatchToProps)
 )(Dashboard);

@@ -15,6 +15,13 @@ const useStyles = makeStyles(theme => ({
   root: {}
 }));
 
+function arrayContainsAnotherArray(needle, haystack) {
+  for (var i = 0; i < needle.length; i++) {
+    if (haystack.indexOf(needle[i]) === -1) return false;
+  }
+  return true;
+}
+
 const SearchResult = props => {
   const classes = useStyles();
   const { tagString, trainings } = props;
@@ -22,22 +29,37 @@ const SearchResult = props => {
   //   console.log(tags);
   // console.log(trainings);
   var result = [];
+
+  // if (trainings) {
+  //   const now = moment();
+  //   console.log("Now:", now);
+  //   for (var i = 0; i < trainings.length; i++) {
+  //     const daysDiff = now.diff(trainings[i].dateTime.toDate(), "days");
+  //     console.log("Event Time:", trainings[i].dateTime.toDate(), daysDiff);
+  //     if (daysDiff > 0) continue;
+  //     console.log(daysDiff);
+  //     for (var j = 0; j < trainings[i].selectedTags.length; j++) {
+  //       if (tags.includes(trainings[i].selectedTags[j])) {
+  //         result.push(trainings[i]);
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   result.sort(function(a, b) {
+  //     return a.dateTime - b.dateTime;
+  //   });
+  // }
+
   if (trainings) {
-    const now = moment();
-    console.log("Now:", now);
-    for (var i = 0; i < trainings.length; i++) {
-      const daysDiff = now.diff(trainings[i].dateTime.toDate(), "days");
-      console.log("Event Time:", trainings[i].dateTime.toDate(), daysDiff);
-      if (daysDiff > 0) continue;
-      console.log(daysDiff);
-      for (var j = 0; j < trainings[i].selectedTags.length; j++) {
-        if (tags.includes(trainings[i].selectedTags[j])) {
-          result.push(trainings[i]);
-          break;
-        }
-      }
-    }
-    // console.log(result);
+    result = trainings.filter(
+      training =>
+        moment().diff(training.dateTime.toDate(), "days") <= 0 &&
+        arrayContainsAnotherArray(tags, training.selectedTags)
+    );
+    result.sort(function(a, b) {
+      return a.seat - b.seat;
+    });
+    // console.log(result, "after");
   }
 
   return result.length !== 0 ? (
@@ -65,5 +87,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([{ collection: "trainings", orderBy: ["dateTime", "asc"] }])
+  firestoreConnect([{ collection: "trainings" }])
 )(SearchResult);
