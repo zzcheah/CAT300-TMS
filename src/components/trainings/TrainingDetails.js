@@ -57,14 +57,14 @@ const TrainingDetails = props => {
               {training.url ? (
                 <img
                   src={training.url}
-                  alt="image"
+                  alt="trainingIMG"
                   width="auto"
                   style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
               ) : (
                 <img
                   src={require("../../images/training.jpg")}
-                  alt="no image"
+                  alt="nullImg"
                   width="auto"
                   style={{ maxHeight: "300px", maxWidth: "100%" }}
                 />
