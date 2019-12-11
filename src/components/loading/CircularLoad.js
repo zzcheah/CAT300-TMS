@@ -8,8 +8,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     "& > * + *": {
-      marginLeft: theme.spacing(2)
-    }
+      margin: theme.spacing(2)
+    },
+    marginTop: theme.spacing(5),
+    textAlign: "center",
+    justifyContent: "center"
   }
 }));
 

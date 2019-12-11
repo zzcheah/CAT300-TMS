@@ -20,7 +20,13 @@ import { Redirect } from "react-router-dom";
 const useStyles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    // backgroundColor: theme.palette.background.paper
+    backgroundColor: "#eeeeee",
+    position: "absolute",
+    top: theme.spacing(8),
+    right: 0,
+    bottom: 0,
+    left: 0
   }
 });
 
@@ -103,13 +109,13 @@ class FeedbackAnalysis extends React.Component {
                     parentCallback={changeCurrentTraining}
                     text="Select Training"
                   />
-                  <div style={{ height: "20px" }} />
+                  <div style={{ height: "10px" }} />
 
                   {currentTraining !== -1 ? (
                     <div>
                       <div>
                         <hr />
-                        <div style={{ height: "20px" }} />
+                        <div style={{ height: "10px" }} />
                         <Typography
                           className={classes.title}
                           variant="h6"
@@ -117,25 +123,28 @@ class FeedbackAnalysis extends React.Component {
                         >
                           Training Analysis:
                         </Typography>
-                        <div style={{ height: "20px" }} />
+                        <div style={{ height: "10px" }} />
                       </div>
+
                       <div className="row">
-                        <div className="col s5 ">
+                        <div className="col s3 ">
                           <Typography
                             className={classes.title}
                             variant="h6"
                             noWrap
                           >
                             Rating: <br />
-                            <div style={{ height: "20px" }} />
+                            <div style={{ height: "10px" }} />
                           </Typography>
                           <RatingStatistics feedbacks={currentFB} />
                         </div>
-                        <div className="col s7">
+
+                        <div className="col s5">
                           <Typography
                             className={classes.title}
                             variant="h6"
                             noWrap
+                            style={{ paddingLeft: "25px" }}
                           >
                             Word Cloud: <br />
                             <div style={{ height: "40px" }} />
@@ -143,15 +152,23 @@ class FeedbackAnalysis extends React.Component {
                           {/* <div className="col s12 m5 offset-m1"> */}
                           <WordCloud id={trainingsData[currentTraining].id} />
                         </div>
-                        <div className="col s12 ">
-                          <div style={{ height: "20px" }} />
-                          <hr />
-                          <div style={{ height: "20px" }} />
 
+                        <div className="col s4 ">
+                          {/* <div style={{ height: "10px" }} />
+                          <hr />
+                          <div style={{ height: "10px" }} /> */}
+                          <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                          >
+                            Feedback: <br />
+                            <div style={{ height: "10px" }} />
+                          </Typography>
                           <FeedbackList feedbacks={currentFB} />
                         </div>
                       </div>
-                      <div style={{ height: "80px" }} />
+                      <div style={{ height: "10px" }} />
                     </div>
                   ) : (
                     ""
