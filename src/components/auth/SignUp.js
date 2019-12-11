@@ -73,7 +73,15 @@ class SignUp extends Component {
     if (!auth.isEmpty) return <Redirect to="/" />;
     return (
       <div className="container">
-        <form onSubmit={this.handleSubmit} className="white">
+        <form
+          onSubmit={this.handleSubmit}
+          className="white"
+          style={{
+            borderRadius: "7px",
+            boxShadow:
+              "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+          }}
+        >
           <h5 className="grey-text text-darken-3">Sign Up</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>

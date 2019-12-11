@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     maxHeight: "400px",
     overflow: "auto"
   },
@@ -80,7 +80,7 @@ export default function FeedbackList(props) {
             <div>
               {temp.map((fb, index) => (
                 <div key={index}>
-                  <Divider variant="inset" component="li" />
+                  {/* <Divider variant="inset" component="li" /> */}
                   <ListItem alignItems="flex-start" className={classes.fb}>
                     <ListItemAvatar>
                       <Avatar>

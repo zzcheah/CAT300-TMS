@@ -15,6 +15,16 @@ const TrainingSummary = ({ training }) => {
         }}
       >
         <span className="card-title">{training.title}</span>
+        {training.url ? (
+          <img
+            src={training.url}
+            alt="trainingIMG"
+            width="auto"
+            style={{ maxHeight: "300px", maxWidth: "50%" }}
+          />
+        ) : (
+          ""
+        )}
         <p>Posted by {training.organizer} </p>
         <p className="grey-text">
           DateTime: {moment(training.dateTime.toDate()).calendar()}
