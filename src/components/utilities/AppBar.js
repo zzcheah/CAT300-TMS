@@ -179,7 +179,7 @@ const PrimarySearchAppBar = props => {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleProfileMenuOpen} style={{ marginRight: "20px" }}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"

@@ -27,6 +27,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 
 import CircularLoad from "../loading/CircularLoad";
+import { Box } from "@material-ui/core";
 
 const useStyles = theme => ({
   button: {
@@ -175,7 +176,15 @@ class CreateTraining extends Component {
         <React.Fragment>
           <CssBaseline />
           <Container className="">
-            <form onSubmit={this.handleSubmit} className="white">
+            <form
+              onSubmit={this.handleSubmit}
+              className="white"
+              style={{
+                borderRadius: "7px",
+                boxShadow:
+                  "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+              }}
+            >
               <h5 className="grey-text text-darken-3">Create Training</h5>
 
               <div className="input-field">
@@ -273,6 +282,7 @@ class CreateTraining extends Component {
                 </Button>
               </div>
             </form>
+            <Box mb={6} borderColor="transparent" />
           </Container>
 
           <Dialog

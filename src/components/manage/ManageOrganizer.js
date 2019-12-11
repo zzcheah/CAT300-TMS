@@ -18,11 +18,21 @@ const ManageOrganizer = props => {
     return (
       <div>
         <div className="container center">
-          <div className="row">
+          <div className="row" style={{ marginTop: "20px" }}>
             {organizers.map(organizer => {
               return (
-                <div className="card z-depth-0 " key={organizer.name}>
-                  <div className="card-content grey-text text-darken-3">
+                <div
+                  className="card z-depth-0 "
+                  style={{ borderRadius: "7px" }}
+                  key={organizer.name}
+                >
+                  <div
+                    className="card-content grey-text text-darken-3"
+                    style={{
+                      boxShadow:
+                        "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+                    }}
+                  >
                     <span className="card-title">{organizer.name}</span>
                   </div>
                 </div>

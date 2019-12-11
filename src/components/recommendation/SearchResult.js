@@ -13,7 +13,9 @@ import TrainingList from "../trainings/TrainingList";
 import CircularLoad from "../loading/CircularLoad";
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: {
+    width: "75%"
+  }
 }));
 
 function arrayContainsAnotherArray(needle, haystack) {
