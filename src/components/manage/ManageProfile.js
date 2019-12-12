@@ -21,20 +21,37 @@ const ManageProfile = props => {
   var pastTraining = [];
   var comingTraining = [];
 
-  if (trainings) {
-    pastTraining = trainings.filter(
-      training =>
-        training.attendees.includes(currentId) &&
-        training.dateTime.toDate() < moment()
-    );
+  // if (trainings) {
+  //   pastTraining = trainings.filter(
+  //     training =>
+  //       training.attendees.includes(currentId) &&
+  //       training.dateTime.toDate() < moment()
+  //   );
+  //   pastTraining.sort(function(a, b) {
+  //     return b.dateTime.seconds - a.dateTime.seconds;
+  //   });
+  //   comingTraining = trainings.filter(
+  //     training =>
+  //       training.attendees.includes(currentId) &&
+  //       training.dateTime.toDate() >= moment()
+  //   );
+  //   comingTraining.sort(function(a, b) {
+  //     return a.dateTime.seconds - b.dateTime.seconds;
+  //   });
+  // }
+
+  if (trainings && profile.trainings) {
+    profile.trainings.forEach(training => {
+      if (trainings[training].dateTime.toDate() < moment()) {
+        pastTraining.push(trainings[training]);
+      } else {
+        comingTraining.push(trainings[training]);
+      }
+    });
+
     pastTraining.sort(function(a, b) {
       return b.dateTime.seconds - a.dateTime.seconds;
     });
-    comingTraining = trainings.filter(
-      training =>
-        training.attendees.includes(currentId) &&
-        training.dateTime.toDate() >= moment()
-    );
     comingTraining.sort(function(a, b) {
       return a.dateTime.seconds - b.dateTime.seconds;
     });
@@ -82,10 +99,10 @@ const mapStateToProps = (state, ownProps) => {
   // console.log(state);
 
   // console.log(ownProps, "ownProps");
-  // console.log(state, "state");
+  console.log(state, "state");
 
   return {
-    trainings: state.firestore.ordered.trainings,
+    trainings: state.firestore.data.trainings,
     currentId: currentId,
     auth: state.firebase.auth,
     authUid: state.firebase.auth.uid,

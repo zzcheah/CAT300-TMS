@@ -23,7 +23,12 @@ const TrainingSummary = ({ training }) => {
             style={{ maxHeight: "300px", maxWidth: "50%" }}
           />
         ) : (
-          ""
+          <img
+            src={require("../../images/training.jpg")}
+            alt="nullImg"
+            width="auto"
+            style={{ maxHeight: "300px", maxWidth: "50%" }}
+          />
         )}
         <p>Posted by {training.organizer} </p>
         <p className="grey-text">

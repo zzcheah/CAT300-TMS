@@ -77,7 +77,15 @@ const SearchResult = props => {
         </div>
       </Container>
     ) : (
-      " Currently no such training. Please try other tag"
+      <Container>
+        <CssBaseline />
+        <div className={classes.root}>
+          <div style={{ height: "20px" }} />
+          <Typography variant="h6">
+            Currently no such training. Please try other tag
+          </Typography>
+        </div>
+      </Container>
     );
   } else {
     return (
