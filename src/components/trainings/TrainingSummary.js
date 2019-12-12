@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 
 const TrainingSummary = ({ training }) => {
+  console.log(training);
   return (
     <div
       className="card z-depth-0 training-summary"
