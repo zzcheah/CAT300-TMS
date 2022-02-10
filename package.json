@@ -12,7 +12,7 @@
     "firebase-functions": "^3.3.0",
     "js-priority-queue": "^0.1.5",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "react": "^16.11.0",
     "react-codemod": "^5.1.1",
     "react-delay-render": "^0.1.2",
