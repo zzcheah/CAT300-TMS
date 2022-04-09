@@ -16,7 +16,7 @@
     "firebase-functions": "^3.3.0",
     "js-priority-queue": "^0.1.5",
     "lint": "^0.7.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "@google-cloud/language": "^3.6.2"
   },
   "devDependencies": {
